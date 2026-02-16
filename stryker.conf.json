@@ -3,9 +3,10 @@
   "mutator": "javascript",
   "testRunner": "command",
   "commandRunner": {
-    "command": "npm test"
+    "command": "npx qunit"
   },
   "reporters": ["html", "clear-text", "progress"],
   "coverageAnalysis": "off",
-  "files": ["js/**/*.js", "test/**/*.js"]
+  "files": ["src/**/*.js", "tests/**/*.js", "test/**/*.cjs"],
+  "mutate": ["src/**/*.js"]
 }
