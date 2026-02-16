@@ -1,19 +1,52 @@
 {
-  "name": "your-project-name",
-  "version": "1.0.0",
-  "description": "Your project description",
-  "main": "index.js",
+  "name": "smartlearning",
+  "private": true,
+  "version": "0.0.0-development",
+  "type": "module",
   "scripts": {
-    "test": "qunit"
+    "serve": "npx http-server ./src -p 8000 -c-1",
+    "test": "node ./tools/run-qunit-headless.mjs",
+    "lint": "eslint src tests --ext .js --max-warnings 0",
+    "format": "prettier --write .",
+    "release": "semantic-release"
   },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.3",
     "@stryker-mutator/core": "^9.5.1",
     "cypress": "^15.10.0",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "http-server": "^14.1.1",
     "jsdoc": "^4.0.5",
-    "qunit": "^2.25.0"
+    "prettier": "^3.2.5",
+    "puppeteer": "^23.8.0",
+    "qunit": "^2.25.0",
+    "semantic-release": "^23.0.0"
   },
-  "keywords": [],
-  "author": "Your Name",
-  "license": "ISC"
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json"
+          ]
+        }
+      ],
+      "@semantic-release/github"
+    ]
+  }
 }
