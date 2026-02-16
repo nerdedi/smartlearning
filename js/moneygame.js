@@ -60,17 +60,17 @@ const MoneyGame = (() => {
   // Pixel coordinates for cropping each currency from the sprite
   // Auto-calibrated from image analysis
   const SPRITE_REGIONS = {
-    note5:   { x: 27,   y: 120, w: 468, h: 230 },
-    note10:  { x: 516,  y: 119, w: 504, h: 230 },
-    note20:  { x: 1020, y: 120, w: 488, h: 228 },
-    note50:  { x: 260,  y: 400, w: 510, h: 280 },
-    note100: { x: 770,  y: 400, w: 510, h: 280 },
-    coin5c:  { x: 92,   y: 701, w: 167, h: 169 },
-    coin10c: { x: 275,  y: 697, w: 174, h: 176 },
-    coin20c: { x: 460,  y: 693, w: 220, h: 186 },
-    coin50c: { x: 670,  y: 669, w: 250, h: 216 },
-    coin1:   { x: 920,  y: 680, w: 240, h: 210 },
-    coin2:   { x: 1160, y: 700, w: 160, h: 186 },
+    note5:   { x: 27,   y: 120, w: 466, h: 260 },
+    note10:  { x: 516,  y: 120, w: 503, h: 260 },
+    note20:  { x: 1022, y: 120, w: 484, h: 260 },
+    note50:  { x: 516,  y: 380, w: 467, h: 300 },
+    note100: { x: 999,  y: 380, w: 508, h: 300 },
+    coin5c:  { x: 92,   y: 701, w: 167, h: 168 },
+    coin10c: { x: 276,  y: 697, w: 173, h: 175 },
+    coin20c: { x: 460,  y: 693, w: 184, h: 185 },
+    coin50c: { x: 655,  y: 680, w: 220, h: 203 },
+    coin1:   { x: 893,  y: 680, w: 218, h: 209 },
+    coin2:   { x: 1125, y: 693, w: 194, h: 192 },
   };
 
   /* ---------- Render Currency Item ---------- */

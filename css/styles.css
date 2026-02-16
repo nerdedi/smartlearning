@@ -1683,24 +1683,68 @@ h3, .h3 { font-size: var(--fs-lg); }
 }
 
 /* Sprite-based money display */
+/* ========== CSS Variable-based Sprite System ========== */
 .money-sprite {
+  background-image: url("../assets/money/windgap-currency.png");
   background-repeat: no-repeat;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
+
+  /* Sprite sheet dimensions */
+  --sheet-w: 1536;
+  --sheet-h: 1024;
+
+  /* Default UI scale */
+  --ui-scale: 0.35;
+
+  /* Region coordinates (set per-item) */
+  --spr-x: 0;
+  --spr-y: 0;
+  --spr-w: 100;
+  --spr-h: 100;
+
+  /* Calculate rendered size */
+  width: calc(var(--spr-w) * var(--ui-scale) * 1px);
+  height: calc(var(--spr-h) * var(--ui-scale) * 1px);
+
+  /* Scale background and position together */
+  background-size:
+    calc(var(--sheet-w) * var(--ui-scale) * 1px)
+    calc(var(--sheet-h) * var(--ui-scale) * 1px);
+  background-position:
+    calc(var(--spr-x) * var(--ui-scale) * -1px)
+    calc(var(--spr-y) * var(--ui-scale) * -1px);
 }
 
 .note-sprite {
   border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .coin-sprite {
   border-radius: 50%;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 1px 2px rgba(255,255,255,0.2);
 }
 
-/* Notes */
+/* Sprite classes for each currency item */
+.spr-note5   { --spr-x: 27;   --spr-y: 120; --spr-w: 466; --spr-h: 260; }
+.spr-note10  { --spr-x: 516;  --spr-y: 120; --spr-w: 503; --spr-h: 260; }
+.spr-note20  { --spr-x: 1022; --spr-y: 120; --spr-w: 484; --spr-h: 260; }
+.spr-note50  { --spr-x: 516;  --spr-y: 380; --spr-w: 467; --spr-h: 300; }
+.spr-note100 { --spr-x: 999;  --spr-y: 380; --spr-w: 508; --spr-h: 300; }
+.spr-coin5c  { --spr-x: 92;   --spr-y: 701; --spr-w: 167; --spr-h: 168; }
+.spr-coin10c { --spr-x: 276;  --spr-y: 697; --spr-w: 173; --spr-h: 175; }
+.spr-coin20c { --spr-x: 460;  --spr-y: 693; --spr-w: 184; --spr-h: 185; }
+.spr-coin50c { --spr-x: 655;  --spr-y: 680; --spr-w: 220; --spr-h: 203; }
+.spr-coin1   { --spr-x: 893;  --spr-y: 680; --spr-w: 218; --spr-h: 209; }
+.spr-coin2   { --spr-x: 1125; --spr-y: 693; --spr-w: 194; --spr-h: 192; }
+
+/* Notes: maintain ~1.8:1 aspect ratio (actual note dimensions) */
 .note-visual {
-  width: 140px;
-  height: 70px;
+  aspect-ratio: 1.8 / 1;
+  width: clamp(140px, 22vw, 220px);
   border-radius: 8px;
   position: relative;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
@@ -1711,13 +1755,11 @@ h3, .h3 { font-size: var(--fs-lg); }
 }
 
 .money-large .note-visual {
-  width: 160px;
-  height: 80px;
+  width: clamp(180px, 28vw, 280px);
 }
 
 .money-small .note-visual {
-  width: 100px;
-  height: 50px;
+  width: clamp(100px, 16vw, 160px);
 }
 
 .note-corner {
@@ -1769,10 +1811,10 @@ h3, .h3 { font-size: var(--fs-lg); }
   opacity: 0.7;
 }
 
-/* Coins */
+/* Coins: perfect circles with 1:1 aspect ratio */
 .coin-visual {
-  width: 60px;
-  height: 60px;
+  aspect-ratio: 1 / 1;
+  width: clamp(60px, 12vw, 90px);
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -1783,6 +1825,7 @@ h3, .h3 { font-size: var(--fs-lg); }
     inset 0 2px 4px rgba(255,255,255,0.3),
     inset 0 -2px 4px rgba(0,0,0,0.2);
   position: relative;
+  overflow: hidden;
 }
 
 .money-large .coin-visual {
