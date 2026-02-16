@@ -7,20 +7,114 @@ const MoneyGame = (() => {
   /* ---------- Currency Data ---------- */
   const CURRENCY = {
     notes: [
-      { id: 'note5', value: 5, label: '$5', color: '#e8b4d4', textColor: '#6b1c50', icon: '🏛️', name: 'Five Dollars' },
-      { id: 'note10', value: 10, label: '$10', color: '#b8c4e8', textColor: '#2d3a6b', icon: '🐦', name: 'Ten Dollars' },
-      { id: 'note20', value: 20, label: '$20', color: '#f4a855', textColor: '#7d4200', icon: '🦆', name: 'Twenty Dollars' },
-      { id: 'note50', value: 50, label: '$50', color: '#f4d455', textColor: '#6b5a00', icon: '👤', name: 'Fifty Dollars' },
-      { id: 'note100', value: 100, label: '$100', color: '#8bc48b', textColor: '#1a4d1a', icon: '🐨', name: 'One Hundred Dollars' },
+      {
+        id: 'note5',
+        value: 5,
+        label: '$5',
+        color: '#e8b4d4',
+        textColor: '#6b1c50',
+        icon: '🏛️',
+        name: 'Five Dollars',
+      },
+      {
+        id: 'note10',
+        value: 10,
+        label: '$10',
+        color: '#b8c4e8',
+        textColor: '#2d3a6b',
+        icon: '🐦',
+        name: 'Ten Dollars',
+      },
+      {
+        id: 'note20',
+        value: 20,
+        label: '$20',
+        color: '#f4a855',
+        textColor: '#7d4200',
+        icon: '🦆',
+        name: 'Twenty Dollars',
+      },
+      {
+        id: 'note50',
+        value: 50,
+        label: '$50',
+        color: '#f4d455',
+        textColor: '#6b5a00',
+        icon: '👤',
+        name: 'Fifty Dollars',
+      },
+      {
+        id: 'note100',
+        value: 100,
+        label: '$100',
+        color: '#8bc48b',
+        textColor: '#1a4d1a',
+        icon: '🐨',
+        name: 'One Hundred Dollars',
+      },
     ],
     coins: [
-      { id: 'coin5c', value: 0.05, label: '5c', color: '#c0c0c0', textColor: '#333', icon: '🦔', name: 'Five Cents', shape: 'circle' },
-      { id: 'coin10c', value: 0.10, label: '10c', color: '#c0c0c0', textColor: '#333', icon: '🦚', name: 'Ten Cents', shape: 'circle' },
-      { id: 'coin20c', value: 0.20, label: '20c', color: '#c0c0c0', textColor: '#333', icon: '🦆', name: 'Twenty Cents', shape: 'circle' },
-      { id: 'coin50c', value: 0.50, label: '50c', color: '#c0c0c0', textColor: '#333', icon: '🦘', name: 'Fifty Cents', shape: 'dodecagon' },
-      { id: 'coin1', value: 1, label: '$1', color: '#d4af37', textColor: '#5c4600', icon: '🦘', name: 'One Dollar', shape: 'circle' },
-      { id: 'coin2', value: 2, label: '$2', color: '#d4af37', textColor: '#5c4600', icon: '👴', name: 'Two Dollars', shape: 'circle-small' },
-    ]
+      {
+        id: 'coin5c',
+        value: 0.05,
+        label: '5c',
+        color: '#c0c0c0',
+        textColor: '#333',
+        icon: '🦔',
+        name: 'Five Cents',
+        shape: 'circle',
+      },
+      {
+        id: 'coin10c',
+        value: 0.1,
+        label: '10c',
+        color: '#c0c0c0',
+        textColor: '#333',
+        icon: '🦚',
+        name: 'Ten Cents',
+        shape: 'circle',
+      },
+      {
+        id: 'coin20c',
+        value: 0.2,
+        label: '20c',
+        color: '#c0c0c0',
+        textColor: '#333',
+        icon: '🦆',
+        name: 'Twenty Cents',
+        shape: 'circle',
+      },
+      {
+        id: 'coin50c',
+        value: 0.5,
+        label: '50c',
+        color: '#c0c0c0',
+        textColor: '#333',
+        icon: '🦘',
+        name: 'Fifty Cents',
+        shape: 'dodecagon',
+      },
+      {
+        id: 'coin1',
+        value: 1,
+        label: '$1',
+        color: '#d4af37',
+        textColor: '#5c4600',
+        icon: '🦘',
+        name: 'One Dollar',
+        shape: 'circle',
+      },
+      {
+        id: 'coin2',
+        value: 2,
+        label: '$2',
+        color: '#d4af37',
+        textColor: '#5c4600',
+        icon: '👴',
+        name: 'Two Dollars',
+        shape: 'circle-small',
+      },
+    ],
   };
 
   // Sprite map positions (x%, y%) for windgap-currency.png
@@ -60,17 +154,17 @@ const MoneyGame = (() => {
   // Pixel coordinates for cropping each currency from the sprite
   // Auto-calibrated from image analysis
   const SPRITE_REGIONS = {
-    note5:   { x: 27,   y: 120, w: 466, h: 260 },
-    note10:  { x: 516,  y: 120, w: 503, h: 260 },
-    note20:  { x: 1022, y: 120, w: 484, h: 260 },
-    note50:  { x: 516,  y: 380, w: 467, h: 300 },
-    note100: { x: 999,  y: 380, w: 508, h: 300 },
-    coin5c:  { x: 92,   y: 701, w: 167, h: 168 },
-    coin10c: { x: 276,  y: 697, w: 173, h: 175 },
-    coin20c: { x: 460,  y: 693, w: 184, h: 185 },
-    coin50c: { x: 655,  y: 680, w: 220, h: 203 },
-    coin1:   { x: 893,  y: 680, w: 218, h: 209 },
-    coin2:   { x: 1125, y: 693, w: 194, h: 192 },
+    note5: { x: 27, y: 120, w: 466, h: 260 },
+    note10: { x: 516, y: 120, w: 503, h: 260 },
+    note20: { x: 1022, y: 120, w: 484, h: 260 },
+    note50: { x: 516, y: 380, w: 467, h: 300 },
+    note100: { x: 999, y: 380, w: 508, h: 300 },
+    coin5c: { x: 92, y: 701, w: 167, h: 168 },
+    coin10c: { x: 276, y: 697, w: 173, h: 175 },
+    coin20c: { x: 460, y: 693, w: 184, h: 185 },
+    coin50c: { x: 655, y: 680, w: 220, h: 203 },
+    coin1: { x: 893, y: 680, w: 218, h: 209 },
+    coin2: { x: 1125, y: 693, w: 194, h: 192 },
   };
 
   /* ---------- Render Currency Item ---------- */
@@ -86,8 +180,16 @@ const MoneyGame = (() => {
 
     // UI scale based on size variant
     const uiScale = isNote
-      ? (size === 'large' ? 0.42 : size === 'small' ? 0.24 : 0.32)
-      : (size === 'large' ? 0.50 : size === 'small' ? 0.32 : 0.40);
+      ? size === 'large'
+        ? 0.42
+        : size === 'small'
+          ? 0.24
+          : 0.32
+      : size === 'large'
+        ? 0.5
+        : size === 'small'
+          ? 0.32
+          : 0.4;
 
     const spriteClass = isNote ? 'note-sprite' : 'coin-sprite';
 
@@ -102,8 +204,8 @@ const MoneyGame = (() => {
     const num = parseInt(color.replace('#', ''), 16);
     const amt = Math.round(2.55 * percent);
     const R = Math.min(255, (num >> 16) + amt);
-    const G = Math.min(255, ((num >> 8) & 0x00FF) + amt);
-    const B = Math.min(255, (num & 0x0000FF) + amt);
+    const G = Math.min(255, ((num >> 8) & 0x00ff) + amt);
+    const B = Math.min(255, (num & 0x0000ff) + amt);
     return `#${(0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1)}`;
   }
 
@@ -116,7 +218,7 @@ const MoneyGame = (() => {
         <h3 class="heading" style="margin-bottom:1rem;">💵 Australian Notes</h3>
         <p class="text-muted" style="margin-bottom:1rem;">Tap each note to hear its value</p>
         <div class="money-grid money-grid-notes">
-          ${CURRENCY.notes.map(n => renderCurrency(n, 'large', true, `MoneyGame.speakValue('${n.name}')`)).join('')}
+          ${CURRENCY.notes.map((n) => renderCurrency(n, 'large', true, `MoneyGame.speakValue('${n.name}')`)).join('')}
         </div>
       </div>
 
@@ -124,7 +226,7 @@ const MoneyGame = (() => {
         <h3 class="heading" style="margin-bottom:1rem;">🪙 Australian Coins</h3>
         <p class="text-muted" style="margin-bottom:1rem;">Tap each coin to hear its value</p>
         <div class="money-grid money-grid-coins">
-          ${CURRENCY.coins.map(c => renderCurrency(c, 'medium', true, `MoneyGame.speakValue('${c.name}')`)).join('')}
+          ${CURRENCY.coins.map((c) => renderCurrency(c, 'medium', true, `MoneyGame.speakValue('${c.name}')`)).join('')}
         </div>
       </div>
 
@@ -143,17 +245,17 @@ const MoneyGame = (() => {
 
     const challenge = gameState.currentChallenge;
     const allCurrency = [...CURRENCY.notes, ...CURRENCY.coins];
-    const targetItem = allCurrency.find(c => c.id === challenge.targetId);
+    const targetItem = allCurrency.find((c) => c.id === challenge.targetId);
 
     // Shuffle options
-    const options = challenge.options.map(id => allCurrency.find(c => c.id === id));
+    const options = challenge.options.map((id) => allCurrency.find((c) => c.id === id));
 
     return `
       <div class="money-game-header">
         <div class="game-progress">
           <span class="progress-text">Round ${gameState.round + 1} of ${gameState.totalRounds}</span>
           <div class="progress-bar">
-            <div class="progress-fill" style="width:${((gameState.round) / gameState.totalRounds) * 100}%"></div>
+            <div class="progress-fill" style="width:${(gameState.round / gameState.totalRounds) * 100}%"></div>
           </div>
         </div>
         <div class="game-score">Score: ${gameState.score} ⭐</div>
@@ -165,34 +267,46 @@ const MoneyGame = (() => {
         </h3>
 
         <div class="match-options">
-          ${options.map(item => `
+          ${options
+            .map(
+              (item) => `
             <button class="match-option ${gameState.selected === item.id ? (item.id === challenge.targetId ? 'correct' : 'incorrect') : ''}"
                     onclick="MoneyGame.checkMatch('${item.id}')"
                     ${gameState.selected ? 'disabled' : ''}>
               ${renderCurrency(item, 'medium')}
             </button>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
       </div>
 
-      ${gameState.feedback ? `
+      ${
+        gameState.feedback
+          ? `
         <div class="game-feedback ${gameState.feedback.correct ? 'feedback-correct' : 'feedback-incorrect'}">
           ${gameState.feedback.correct ? '✅ Correct! Well done!' : `❌ That's ${gameState.feedback.selectedName}.`}
         </div>
-        ${!gameState.feedback.correct ? `
+        ${
+          !gameState.feedback.correct
+            ? `
           <div class="feedback-hint" style="text-align:center; margin-top:1rem; padding:1rem; background:rgba(255,255,255,0.1); border-radius:var(--radius);">
             <p style="margin-bottom:0.75rem;">This is ${challenge.targetValue}:</p>
             <div style="display:flex; justify-content:center;">
               ${renderCurrency(targetItem, 'large')}
             </div>
           </div>
-        ` : ''}
+        `
+            : ''
+        }
         <div class="text-center" style="margin-top:1rem;">
           <button class="btn btn-primary" onclick="MoneyGame.nextRound()">
             ${gameState.round + 1 >= gameState.totalRounds ? '🏆 See Results' : '➡️ Next Round'}
           </button>
         </div>
-      ` : ''}`;
+      `
+          : ''
+      }`;
   }
 
   // Count Money Game - Add up displayed currency
@@ -209,7 +323,7 @@ const MoneyGame = (() => {
         <div class="game-progress">
           <span class="progress-text">Round ${gameState.round + 1} of ${gameState.totalRounds}</span>
           <div class="progress-bar">
-            <div class="progress-fill" style="width:${((gameState.round) / gameState.totalRounds) * 100}%"></div>
+            <div class="progress-fill" style="width:${(gameState.round / gameState.totalRounds) * 100}%"></div>
           </div>
         </div>
         <div class="game-score">Score: ${gameState.score} ⭐</div>
@@ -221,24 +335,32 @@ const MoneyGame = (() => {
         </h3>
 
         <div class="count-display">
-          ${challenge.items.map(id => {
-            const item = allCurrency.find(c => c.id === id);
-            return renderCurrency(item, 'small');
-          }).join('')}
+          ${challenge.items
+            .map((id) => {
+              const item = allCurrency.find((c) => c.id === id);
+              return renderCurrency(item, 'small');
+            })
+            .join('')}
         </div>
 
         <div class="count-options">
-          ${challenge.options.map(opt => `
+          ${challenge.options
+            .map(
+              (opt) => `
             <button class="count-option btn ${gameState.selected === opt ? (opt === challenge.answer ? 'correct' : 'incorrect') : 'btn-ghost'}"
                     onclick="MoneyGame.checkCount('${opt}')"
                     ${gameState.selected ? 'disabled' : ''}>
               ${opt}
             </button>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
       </div>
 
-      ${gameState.feedback ? `
+      ${
+        gameState.feedback
+          ? `
         <div class="game-feedback ${gameState.feedback.correct ? 'feedback-correct' : 'feedback-incorrect'}">
           ${gameState.feedback.correct ? '✅ Correct!' : `❌ The answer is ${challenge.answer}`}
         </div>
@@ -247,15 +369,20 @@ const MoneyGame = (() => {
             ${gameState.round + 1 >= gameState.totalRounds ? '🏆 See Results' : '➡️ Next Round'}
           </button>
         </div>
-      ` : ''}`;
+      `
+          : ''
+      }`;
   }
 
   // Results Screen
   function renderResults() {
     const percentage = Math.round((gameState.score / gameState.totalRounds) * 100);
-    const message = percentage >= 80 ? "🌟 Excellent! You're a money expert!" :
-                    percentage >= 60 ? "👍 Good job! Keep practicing!" :
-                    "💪 Keep learning! Practice makes perfect!";
+    const message =
+      percentage >= 80
+        ? "🌟 Excellent! You're a money expert!"
+        : percentage >= 60
+          ? '👍 Good job! Keep practicing!'
+          : '💪 Keep learning! Practice makes perfect!';
 
     return `
       <div class="game-results bounce-in">
@@ -288,7 +415,7 @@ const MoneyGame = (() => {
     const target = allCurrency[Math.floor(Math.random() * allCurrency.length)];
 
     // Get 3 other random items as distractors
-    const others = allCurrency.filter(c => c.id !== target.id);
+    const others = allCurrency.filter((c) => c.id !== target.id);
     const shuffled = others.sort(() => Math.random() - 0.5).slice(0, 3);
 
     // Add target and shuffle all options
@@ -297,7 +424,7 @@ const MoneyGame = (() => {
     gameState.currentChallenge = {
       targetId: target.id,
       targetValue: target.name,
-      options: options.map(o => o.id)
+      options: options.map((o) => o.id),
     };
   }
 
@@ -318,33 +445,29 @@ const MoneyGame = (() => {
     const answer = total >= 1 ? `$${total.toFixed(2)}` : `${Math.round(total * 100)}c`;
 
     // Generate wrong options
-    const wrongOptions = [
-      total * 2,
-      total + 5,
-      total - (total > 1 ? 1 : 0.1),
-      total + 10
-    ].filter(v => v > 0 && v !== total)
-     .slice(0, 3)
-     .map(v => v >= 1 ? `$${v.toFixed(2)}` : `${Math.round(v * 100)}c`);
+    const wrongOptions = [total * 2, total + 5, total - (total > 1 ? 1 : 0.1), total + 10]
+      .filter((v) => v > 0 && v !== total)
+      .slice(0, 3)
+      .map((v) => (v >= 1 ? `$${v.toFixed(2)}` : `${Math.round(v * 100)}c`));
 
     const options = [answer, ...wrongOptions].sort(() => Math.random() - 0.5);
 
     gameState.currentChallenge = {
       items,
       answer,
-      options
+      options,
     };
   }
 
   function checkMatch(selectedId) {
     const allCurrency = [...CURRENCY.notes, ...CURRENCY.coins];
-    const selected = allCurrency.find(c => c.id === selectedId);
+    const selected = allCurrency.find((c) => c.id === selectedId);
     const correct = selectedId === gameState.currentChallenge.targetId;
 
     gameState.selected = selectedId;
     gameState.feedback = {
       correct,
-      selectedName: selected.name
+      selectedName: selected.name,
     };
 
     if (correct) {
@@ -393,7 +516,7 @@ const MoneyGame = (() => {
       selected: null,
       currentChallenge: null,
       feedback: null,
-      useSpriteImage: true
+      useSpriteImage: true,
     };
     render();
   }
@@ -486,6 +609,6 @@ const MoneyGame = (() => {
     checkCount,
     nextRound,
     speakValue,
-    CURRENCY
+    CURRENCY,
   };
 })();

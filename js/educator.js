@@ -33,7 +33,7 @@ const Educator = (() => {
     const learners = getAllLearners();
     const totalModules = MODULES.length;
 
-    return learners.map(learner => {
+    return learners.map((learner) => {
       const completedCount = (learner.modulesCompleted || []).length;
       const progress = Math.round((completedCount / totalModules) * 100);
       const avgQuizScore = calculateAvgQuizScore(learner);
@@ -62,32 +62,34 @@ const Educator = (() => {
   function getLastActivity(learner) {
     const dates = [
       learner.createdAt,
-      ...(learner.portfolio || []).map(p => p.date),
-      ...Object.values(learner.quizScores || {}).map(s => s.date),
+      ...(learner.portfolio || []).map((p) => p.date),
+      ...Object.values(learner.quizScores || {}).map((s) => s.date),
     ].filter(Boolean);
 
     if (dates.length === 0) return null;
-    return new Date(Math.max(...dates.map(d => new Date(d)))).toLocaleDateString();
+    return new Date(Math.max(...dates.map((d) => new Date(d)))).toLocaleDateString();
   }
 
   /* ---------- Module completion stats ---------- */
   function getModuleStats() {
     const learners = getAllLearners();
 
-    return MODULES.map(mod => {
-      const completions = learners.filter(l =>
+    return MODULES.map((mod) => {
+      const completions = learners.filter((l) =>
         (l.modulesCompleted || []).includes(mod.id)
       ).length;
 
-      const quizAttempts = learners.filter(l =>
-        l.quizScores && l.quizScores[mod.id]
-      );
+      const quizAttempts = learners.filter((l) => l.quizScores && l.quizScores[mod.id]);
 
-      const avgScore = quizAttempts.length > 0
-        ? Math.round(quizAttempts.reduce((sum, l) =>
-            sum + (l.quizScores[mod.id].score / l.quizScores[mod.id].total) * 100, 0
-          ) / quizAttempts.length)
-        : null;
+      const avgScore =
+        quizAttempts.length > 0
+          ? Math.round(
+              quizAttempts.reduce(
+                (sum, l) => sum + (l.quizScores[mod.id].score / l.quizScores[mod.id].total) * 100,
+                0
+              ) / quizAttempts.length
+            )
+          : null;
 
       return {
         ...mod,
@@ -103,16 +105,23 @@ const Educator = (() => {
   function getOverallStats() {
     const learners = getAllLearners();
     const totalLearners = learners.length;
-    const activeLearners = learners.filter(l => (l.modulesCompleted || []).length > 0).length;
-    const totalCompletions = learners.reduce((sum, l) => sum + (l.modulesCompleted || []).length, 0);
+    const activeLearners = learners.filter((l) => (l.modulesCompleted || []).length > 0).length;
+    const totalCompletions = learners.reduce(
+      (sum, l) => sum + (l.modulesCompleted || []).length,
+      0
+    );
     const totalBadges = learners.reduce((sum, l) => sum + (l.badges || []).length, 0);
     const totalPortfolioItems = learners.reduce((sum, l) => sum + (l.portfolio || []).length, 0);
 
-    const avgProgress = totalLearners > 0
-      ? Math.round(learners.reduce((sum, l) =>
-          sum + ((l.modulesCompleted || []).length / MODULES.length) * 100, 0
-        ) / totalLearners)
-      : 0;
+    const avgProgress =
+      totalLearners > 0
+        ? Math.round(
+            learners.reduce(
+              (sum, l) => sum + ((l.modulesCompleted || []).length / MODULES.length) * 100,
+              0
+            ) / totalLearners
+          )
+        : 0;
 
     return {
       totalLearners,
@@ -185,9 +194,11 @@ const Educator = (() => {
           <!-- Learner Progress Table -->
           <div class="card">
             <h2 class="heading" style="margin-bottom:1rem;">📋 Learner Progress</h2>
-            ${learners.length === 0
-              ? '<p class="text-muted">No learners yet.</p>'
-              : renderLearnerTable(learners)}
+            ${
+              learners.length === 0
+                ? '<p class="text-muted">No learners yet.</p>'
+                : renderLearnerTable(learners)
+            }
           </div>
 
           <!-- Module Stats -->
@@ -239,7 +250,9 @@ const Educator = (() => {
             </tr>
           </thead>
           <tbody>
-            ${learners.map(l => `
+            ${learners
+              .map(
+                (l) => `
               <tr>
                 <td><strong>${esc(l.name)}</strong></td>
                 <td>
@@ -258,7 +271,9 @@ const Educator = (() => {
                   <button class="btn btn-sm btn-ghost" onclick="Educator.exportLearner('${l.id}')" title="Export">📥</button>
                 </td>
               </tr>
-            `).join('')}
+            `
+              )
+              .join('')}
           </tbody>
         </table>
       </div>`;
@@ -279,9 +294,10 @@ const Educator = (() => {
             </tr>
           </thead>
           <tbody>
-            ${modules.map(m => {
-              const strand = strandFor(m.num);
-              return `
+            ${modules
+              .map((m) => {
+                const strand = strandFor(m.num);
+                return `
               <tr>
                 <td>${m.num}</td>
                 <td>${m.icon} ${esc(m.title)}</td>
@@ -295,7 +311,8 @@ const Educator = (() => {
                 </td>
                 <td>${m.avgQuizScore !== null ? m.avgQuizScore + '%' : '–'}</td>
               </tr>`;
-            }).join('')}
+              })
+              .join('')}
           </tbody>
         </table>
       </div>`;
@@ -303,7 +320,7 @@ const Educator = (() => {
 
   /* ---------- View individual learner ---------- */
   function viewLearner(id) {
-    const learner = getAllLearners().find(l => l.id === id);
+    const learner = getAllLearners().find((l) => l.id === id);
     if (!learner) {
       App.toast('Learner not found', 'error');
       return;
@@ -318,13 +335,13 @@ const Educator = (() => {
     if (!isLoggedIn()) return renderLogin();
 
     const id = sessionStorage.getItem('sl_viewing_learner');
-    const learner = getAllLearners().find(l => l.id === id);
+    const learner = getAllLearners().find((l) => l.id === id);
 
     if (!learner) {
       return `<div class="screen"><div class="container"><p>Learner not found.</p><button class="btn btn-ghost" onclick="App.go('educator')">← Back</button></div></div>`;
     }
 
-    const completedMods = MODULES.filter(m => (learner.modulesCompleted || []).includes(m.id));
+    const completedMods = MODULES.filter((m) => (learner.modulesCompleted || []).includes(m.id));
     const checklistScores = learner.checklistScores || {};
 
     return `
@@ -352,55 +369,67 @@ const Educator = (() => {
           <!-- Completed Modules -->
           <div class="card">
             <h2 class="heading" style="margin-bottom:0.75rem;">✅ Completed Modules</h2>
-            ${completedMods.length === 0
-              ? '<p class="text-muted">No modules completed yet.</p>'
-              : `<div class="flex gap-sm flex-wrap">${completedMods.map(m =>
-                  `<span class="badge badge-green">${m.icon} ${esc(m.title)}</span>`
-                ).join('')}</div>`}
+            ${
+              completedMods.length === 0
+                ? '<p class="text-muted">No modules completed yet.</p>'
+                : `<div class="flex gap-sm flex-wrap">${completedMods
+                    .map((m) => `<span class="badge badge-green">${m.icon} ${esc(m.title)}</span>`)
+                    .join('')}</div>`
+            }
           </div>
 
           <!-- Quiz Scores -->
           <div class="card">
             <h2 class="heading" style="margin-bottom:0.75rem;">📝 Quiz Scores</h2>
-            ${Object.keys(learner.quizScores || {}).length === 0
-              ? '<p class="text-muted">No quizzes taken yet.</p>'
-              : `<div class="space-y-sm">${Object.entries(learner.quizScores).map(([modId, score]) => {
-                  const mod = MODULES.find(m => m.id === modId);
-                  const pct = Math.round((score.score / score.total) * 100);
-                  return `<div class="flex justify-between items-center">
+            ${
+              Object.keys(learner.quizScores || {}).length === 0
+                ? '<p class="text-muted">No quizzes taken yet.</p>'
+                : `<div class="space-y-sm">${Object.entries(learner.quizScores)
+                    .map(([modId, score]) => {
+                      const mod = MODULES.find((m) => m.id === modId);
+                      const pct = Math.round((score.score / score.total) * 100);
+                      return `<div class="flex justify-between items-center">
                     <span>${mod?.icon || ''} ${mod?.title || modId}</span>
                     <span class="badge ${pct >= 60 ? 'badge-green' : 'badge-gold'}">${score.score}/${score.total} (${pct}%)</span>
                   </div>`;
-                }).join('')}</div>`}
+                    })
+                    .join('')}</div>`
+            }
           </div>
 
           <!-- Skills Checklist -->
           <div class="card">
             <h2 class="heading" style="margin-bottom:0.75rem;">📋 Skills Checklist</h2>
-            ${Object.keys(checklistScores).length === 0
-              ? '<p class="text-muted">Checklist not completed yet.</p>'
-              : `<div class="space-y-sm">${SKILLS_CHECKLIST.map(item => {
-                  const score = checklistScores[item.id];
-                  return `<div class="flex justify-between items-center" style="font-size:0.9rem;">
+            ${
+              Object.keys(checklistScores).length === 0
+                ? '<p class="text-muted">Checklist not completed yet.</p>'
+                : `<div class="space-y-sm">${SKILLS_CHECKLIST.map((item) => {
+                    const score = checklistScores[item.id];
+                    return `<div class="flex justify-between items-center" style="font-size:0.9rem;">
                     <span>${esc(item.text)}</span>
                     <span class="badge ${score ? (score >= 4 ? 'badge-green' : score >= 2 ? 'badge-gold' : 'badge-blue') : ''}">${score || '–'}/5</span>
                   </div>`;
-                }).join('')}</div>`}
+                  }).join('')}</div>`
+            }
           </div>
 
           <!-- Portfolio -->
           <div class="card">
             <h2 class="heading" style="margin-bottom:0.75rem;">📁 Portfolio Items (${(learner.portfolio || []).length})</h2>
-            ${(learner.portfolio || []).length === 0
-              ? '<p class="text-muted">No portfolio items yet.</p>'
-              : `<div class="space-y">${(learner.portfolio || []).map(item => {
-                  const mod = MODULES.find(m => m.id === item.moduleId);
-                  return `<div class="card" style="padding:0.75rem;">
+            ${
+              (learner.portfolio || []).length === 0
+                ? '<p class="text-muted">No portfolio items yet.</p>'
+                : `<div class="space-y">${(learner.portfolio || [])
+                    .map((item) => {
+                      const mod = MODULES.find((m) => m.id === item.moduleId);
+                      return `<div class="card" style="padding:0.75rem;">
                     <p class="heading" style="font-size:0.85rem;">${mod?.icon || '📄'} ${esc(item.label)}</p>
                     <p style="font-size:0.85rem;white-space:pre-wrap;margin-top:0.25rem;">${esc(item.data)}</p>
                     <p class="text-muted" style="font-size:0.75rem;margin-top:0.25rem;">${new Date(item.date).toLocaleDateString()}</p>
                   </div>`;
-                }).join('')}</div>`}
+                    })
+                    .join('')}</div>`
+            }
           </div>
         </div>
       </div>`;
@@ -434,21 +463,22 @@ const Educator = (() => {
               <thead>
                 <tr>
                   <th>Skill</th>
-                  ${learners.map(l => `<th style="writing-mode:vertical-rl;text-orientation:mixed;">${esc(l.name)}</th>`).join('')}
+                  ${learners.map((l) => `<th style="writing-mode:vertical-rl;text-orientation:mixed;">${esc(l.name)}</th>`).join('')}
                   <th>Avg</th>
                 </tr>
               </thead>
               <tbody>
-                ${SKILLS_CHECKLIST.map(item => {
-                  const scores = learners.map(l => (l.checklistScores || {})[item.id] || null);
-                  const validScores = scores.filter(s => s !== null);
-                  const avg = validScores.length > 0
-                    ? (validScores.reduce((a, b) => a + b, 0) / validScores.length).toFixed(1)
-                    : '–';
+                ${SKILLS_CHECKLIST.map((item) => {
+                  const scores = learners.map((l) => (l.checklistScores || {})[item.id] || null);
+                  const validScores = scores.filter((s) => s !== null);
+                  const avg =
+                    validScores.length > 0
+                      ? (validScores.reduce((a, b) => a + b, 0) / validScores.length).toFixed(1)
+                      : '–';
                   return `
                     <tr>
                       <td style="font-size:0.85rem;">${esc(item.text)}</td>
-                      ${scores.map(s => `<td class="text-center">${s !== null ? s : '–'}</td>`).join('')}
+                      ${scores.map((s) => `<td class="text-center">${s !== null ? s : '–'}</td>`).join('')}
                       <td class="text-center"><strong>${avg}</strong></td>
                     </tr>`;
                 }).join('')}
@@ -486,7 +516,11 @@ const Educator = (() => {
   /* ---------- Helper ---------- */
   function esc(s) {
     if (!s) return '';
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   /* ---------- Public API ---------- */

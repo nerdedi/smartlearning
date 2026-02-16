@@ -2,7 +2,7 @@ name: EarlyAI Test Generation
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   earlyai:

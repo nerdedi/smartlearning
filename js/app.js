@@ -4,9 +4,9 @@
    ============================================================ */
 const App = (() => {
   /* ---------- State ---------- */
-  let screen = 'welcome';      // welcome | dashboard | module | portfolio | checklist | settings | educator | educator-learner | educator-checklist | media-manager | export
+  let screen = 'welcome'; // welcome | dashboard | module | portfolio | checklist | settings | educator | educator-learner | educator-checklist | media-manager | export
   let activeModuleId = null;
-  let modulePhase = 'learn';    // learn | activity | quiz | done
+  let modulePhase = 'learn'; // learn | activity | quiz | done
   let quizIndex = 0;
   let quizScore = 0;
   let quizAnswered = [];
@@ -24,7 +24,7 @@ const App = (() => {
     root().querySelector('.screen')?.scrollTo(0, 0);
     // announce to screen readers
     const title = root().querySelector('h1');
-    if (title) title.setAttribute('tabindex', '-1'), title.focus({ preventScroll: true });
+    if (title) (title.setAttribute('tabindex', '-1'), title.focus({ preventScroll: true }));
   }
 
   /* ---------- Accessibility ---------- */
@@ -36,7 +36,7 @@ const App = (() => {
 
   /* ---------- Toast ---------- */
   function toast(msg, type = 'info') {
-    document.querySelectorAll('.toast').forEach(t => t.remove());
+    document.querySelectorAll('.toast').forEach((t) => t.remove());
     const el = document.createElement('div');
     el.className = `toast toast-${type}`;
     el.setAttribute('role', 'alert');
@@ -68,13 +68,14 @@ const App = (() => {
   /* ---------- HTML helpers ---------- */
   function h(tag, attrs, ...children) {
     let html = `<${tag}`;
-    if (attrs) Object.entries(attrs).forEach(([k, v]) => {
-      if (v === false || v == null) return;
-      if (v === true) html += ` ${k}`;
-      else html += ` ${k}="${String(v).replace(/"/g, '&quot;')}"`;
-    });
+    if (attrs)
+      Object.entries(attrs).forEach(([k, v]) => {
+        if (v === false || v == null) return;
+        if (v === true) html += ` ${k}`;
+        else html += ` ${k}="${String(v).replace(/"/g, '&quot;')}"`;
+      });
     html += '>';
-    const voidTags = ['img','input','br','hr','meta','link'];
+    const voidTags = ['img', 'input', 'br', 'hr', 'meta', 'link'];
     if (!voidTags.includes(tag)) {
       html += children.flat().join('');
       html += `</${tag}>`;
@@ -98,7 +99,10 @@ const App = (() => {
     s[key] = !s[key];
     Storage.saveSettings(s);
     applySettings();
-    toast(`${key === 'highContrast' ? 'High Contrast' : key === 'largeText' ? 'Large Text' : 'Read Aloud'} ${s[key] ? 'ON' : 'OFF'}`, 'info');
+    toast(
+      `${key === 'highContrast' ? 'High Contrast' : key === 'largeText' ? 'Large Text' : 'Read Aloud'} ${s[key] ? 'ON' : 'OFF'}`,
+      'info'
+    );
     render();
   }
 
@@ -124,15 +128,24 @@ const App = (() => {
           🚀 Let's Start!
         </button>
 
-        ${profiles.length ? `
+        ${
+          profiles.length
+            ? `
           <div style="border-top:1px solid rgba(255,255,255,0.15);padding-top:1rem;margin-top:1rem;">
             <p class="text-muted" style="font-size:0.85rem;margin-bottom:0.75rem;">Continue as:</p>
             <div class="flex gap-sm justify-center flex-wrap">
-              ${profiles.slice(-5).map(p => `
+              ${profiles
+                .slice(-5)
+                .map(
+                  (p) => `
                 <button class="btn btn-sm btn-ghost" onclick="App.loadProfile('${p.id}')">👤 ${esc(p.name)}</button>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
-          </div>` : ''}
+          </div>`
+            : ''
+        }
 
         <div style="margin-top:1.5rem;">
           ${renderA11yToolbar()}
@@ -196,28 +209,33 @@ const App = (() => {
         </div>
 
         <!-- Badges -->
-        ${badges.length ? `
+        ${
+          badges.length
+            ? `
         <div class="card slide-up">
           <p class="heading" style="font-weight:700;margin-bottom:0.75rem;">🏅 Badges Earned</p>
-          <div class="flex gap-sm flex-wrap">${badges.map(b => `<span class="badge badge-gold">${esc(b)}</span>`).join('')}</div>
-        </div>` : ''}
+          <div class="flex gap-sm flex-wrap">${badges.map((b) => `<span class="badge badge-gold">${esc(b)}</span>`).join('')}</div>
+        </div>`
+            : ''
+        }
 
         <!-- A11y toolbar -->
         <div class="slide-up">${renderA11yToolbar()}</div>
 
         <!-- Strands -->
         ${STRANDS.map((strand, si) => {
-          const strandMods = MODULES.filter(m => m.strand === strand.id);
+          const strandMods = MODULES.filter((m) => m.strand === strand.id);
           return `
           <div class="slide-up" style="animation-delay:${si * 0.08}s;">
             <h2 class="heading flex items-center gap-sm" style="font-size:var(--fs-lg);margin-bottom:0.75rem;">
               <span>${strand.icon}</span> ${esc(strand.title)}
             </h2>
             <div class="grid grid-3 stagger">
-              ${strandMods.map(mod => {
-                const done = completed.includes(mod.id);
-                const score = p.quizScores[mod.id];
-                return `
+              ${strandMods
+                .map((mod) => {
+                  const done = completed.includes(mod.id);
+                  const score = p.quizScores[mod.id];
+                  return `
                 <button class="card card-clickable module-card ${done ? 'card-success' : ''}" onclick="App.openModule('${mod.id}')" aria-label="${esc(mod.title)} ${done ? '(completed)' : ''}">
                   <div class="strand-indicator" style="--strand-color:${strand.color};"></div>
                   <span class="module-icon">${mod.icon}</span>
@@ -228,7 +246,8 @@ const App = (() => {
                     ${score ? `<span class="badge badge-blue" style="margin-top:0.25rem;">Quiz: ${score.score}/${score.total}</span>` : ''}
                   </div>
                 </button>`;
-              }).join('')}
+                })
+                .join('')}
             </div>
           </div>`;
         }).join('')}
@@ -250,7 +269,7 @@ const App = (() => {
   }
 
   function getModule() {
-    return MODULES.find(m => m.id === activeModuleId);
+    return MODULES.find((m) => m.id === activeModuleId);
   }
 
   function renderModule() {
@@ -270,20 +289,32 @@ const App = (() => {
         </div>
         <!-- Visual schedule -->
         <div class="visual-schedule" style="margin-top:0.75rem;" role="navigation" aria-label="Module phases">
-          ${['learn', 'activity', 'quiz', 'done'].map((ph, i) => {
-            const icons = ['📖', '🎯', '❓', '🏆'];
-            const labels = ['Learn', 'Activity', 'Quiz', 'Done'];
-            const cls = modulePhase === ph ? 'active' : (['learn','activity','quiz','done'].indexOf(modulePhase) > i ? 'done' : '');
-            return `<div class="schedule-step ${cls}"><span class="schedule-icon">${icons[i]}</span>${labels[i]}</div>`;
-          }).join('')}
+          ${['learn', 'activity', 'quiz', 'done']
+            .map((ph, i) => {
+              const icons = ['📖', '🎯', '❓', '🏆'];
+              const labels = ['Learn', 'Activity', 'Quiz', 'Done'];
+              const cls =
+                modulePhase === ph
+                  ? 'active'
+                  : ['learn', 'activity', 'quiz', 'done'].indexOf(modulePhase) > i
+                    ? 'done'
+                    : '';
+              return `<div class="schedule-step ${cls}"><span class="schedule-icon">${icons[i]}</span>${labels[i]}</div>`;
+            })
+            .join('')}
         </div>
       </header>
 
       <div class="container space-y-lg" style="padding-bottom:3rem;">
-        ${modulePhase === 'learn' ? renderLearnPhase(mod) :
-          modulePhase === 'activity' ? renderActivityPhase(mod) :
-          modulePhase === 'quiz' ? renderQuizPhase(mod) :
-          renderDonePhase(mod)}
+        ${
+          modulePhase === 'learn'
+            ? renderLearnPhase(mod)
+            : modulePhase === 'activity'
+              ? renderActivityPhase(mod)
+              : modulePhase === 'quiz'
+                ? renderQuizPhase(mod)
+                : renderDonePhase(mod)
+        }
       </div>
     </div>`;
   }
@@ -295,23 +326,27 @@ const App = (() => {
         <!-- Outcomes -->
         <div class="card card-info slide-up">
           <h2 class="heading" style="font-size:var(--fs-lg);margin-bottom:0.5rem;">🎯 What You'll Learn</h2>
-          <ul class="checklist">${mod.outcomes.map(o => `<li><span>✅</span><span>${esc(o)}</span></li>`).join('')}</ul>
+          <ul class="checklist">${mod.outcomes.map((o) => `<li><span>✅</span><span>${esc(o)}</span></li>`).join('')}</ul>
         </div>
 
         <!-- Vocabulary -->
         <div class="card slide-up">
           <h3 class="heading" style="margin-bottom:0.5rem;">📝 Key Words</h3>
-          <div class="flex gap-sm flex-wrap">${mod.vocabulary.map(v => `<span class="badge badge-blue">${esc(v)}</span>`).join('')}</div>
+          <div class="flex gap-sm flex-wrap">${mod.vocabulary.map((v) => `<span class="badge badge-blue">${esc(v)}</span>`).join('')}</div>
         </div>
 
         <!-- Teach content -->
-        ${mod.teachContent.map((tc, i) => `
+        ${mod.teachContent
+          .map(
+            (tc, i) => `
           <div class="card slide-up step-card" style="animation-delay:${(i + 2) * 0.06}s;">
             <h3 class="step-title">${esc(tc.title)}</h3>
             <p class="step-body">${esc(tc.body)}</p>
             <button class="btn btn-sm btn-ghost" style="margin-top:0.5rem;" onclick="App.speak(\`${esc(tc.body)}\`, true)">🔊 Read Aloud</button>
           </div>
-        `).join('')}
+        `
+          )
+          .join('')}
 
         <button class="btn btn-primary btn-lg btn-block" onclick="App.nextPhase('activity')">
           Next: Activity 🎯 →
@@ -393,25 +428,35 @@ const App = (() => {
       return `
         <div class="space-y">
           <div class="grid grid-2">
-            ${act.buckets.map((b, bi) => `
+            ${act.buckets
+              .map(
+                (b, bi) => `
               <div class="activity-zone" id="bucket-${bi}">
                 <p class="heading" style="margin-bottom:0.5rem;">${esc(b)}</p>
                 <div id="bucket-items-${bi}" class="space-y-sm"></div>
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
           <div class="space-y-sm stagger">
-            ${items.map((item, idx) => {
-              const answered = activityState.sortAnswers[idx];
-              return `
+            ${items
+              .map((item, idx) => {
+                const answered = activityState.sortAnswers[idx];
+                return `
               <div class="flex gap-sm items-center ${answered !== undefined ? (answered ? 'drag-item correct' : 'drag-item incorrect') : 'drag-item'}" style="justify-content:space-between;">
                 <span>${esc(item.text)}</span>
-                ${answered === undefined ? `
+                ${
+                  answered === undefined
+                    ? `
                   <div class="flex gap-sm">
                     ${act.buckets.map((b, bi) => `<button class="btn btn-sm ${bi === 0 ? 'btn-primary' : 'btn-danger'}" onclick="App.sortAnswer(${idx}, ${bi}, ${item.bucket})">${esc(b)}</button>`).join('')}
-                  </div>` : ''}
+                  </div>`
+                    : ''
+                }
               </div>`;
-            }).join('')}
+              })
+              .join('')}
           </div>
         </div>`;
     }
@@ -419,29 +464,35 @@ const App = (() => {
     // type === 'sort' (match pairs)
     return `
       <div class="space-y-sm stagger">
-        ${items.map((item, idx) => {
-          const answered = activityState.sortAnswers[idx];
-          return `
+        ${items
+          .map((item, idx) => {
+            const answered = activityState.sortAnswers[idx];
+            return `
           <div class="card ${answered !== undefined ? (answered ? 'card-success' : 'card-danger') : ''}" style="padding:1rem;">
             <p class="heading" style="font-weight:700;margin-bottom:0.5rem;">${esc(item.text)}</p>
-            ${answered === undefined ? `
+            ${
+              answered === undefined
+                ? `
               <div class="flex gap-sm flex-wrap">
                 ${items.map((other, oi) => `<button class="btn btn-sm btn-ghost" onclick="App.matchAnswer(${idx}, ${oi})">${esc(other.match)}</button>`).join('')}
-              </div>` : `<p class="text-success">→ ${esc(item.match)}</p>`}
+              </div>`
+                : `<p class="text-success">→ ${esc(item.match)}</p>`
+            }
           </div>`;
-        }).join('')}
+          })
+          .join('')}
       </div>`;
   }
 
   function sortAnswer(idx, chosen, correct) {
-    activityState.sortAnswers[idx] = (chosen === correct);
+    activityState.sortAnswers[idx] = chosen === correct;
     if (chosen === correct) toast('✅ Correct!', 'success');
     else toast('❌ Try again next time!', 'error');
     render();
   }
 
   function matchAnswer(itemIdx, matchIdx) {
-    activityState.sortAnswers[itemIdx] = (itemIdx === matchIdx);
+    activityState.sortAnswers[itemIdx] = itemIdx === matchIdx;
     if (itemIdx === matchIdx) toast('✅ Correct match!', 'success');
     else toast('❌ Not quite — keep trying!', 'error');
     render();
@@ -452,14 +503,18 @@ const App = (() => {
     return `
       <div class="card">
         <ul class="checklist">
-          ${act.items.map((item, i) => `
+          ${act.items
+            .map(
+              (item, i) => `
             <li>
               <button class="check-box ${activityState.checked[i] ? 'checked' : ''}" onclick="App.toggleCheck(${i})" aria-label="${esc(item)} ${activityState.checked[i] ? 'done' : 'not done'}">
                 ${activityState.checked[i] ? '✓' : ''}
               </button>
               <span>${esc(item)}</span>
             </li>
-          `).join('')}
+          `
+            )
+            .join('')}
         </ul>
       </div>`;
   }
@@ -472,32 +527,47 @@ const App = (() => {
 
   function renderPassphraseBuilder(act) {
     if (!activityState.passphrase) activityState.passphrase = ['', '', ''];
-    const phrase = activityState.passphrase.filter(w => w).join('') + (activityState.passphraseNum || '');
+    const phrase =
+      activityState.passphrase.filter((w) => w).join('') + (activityState.passphraseNum || '');
     return `
       <div class="card space-y">
         <div class="grid grid-3">
-          ${act.columns.map((col, ci) => `
+          ${act.columns
+            .map(
+              (col, ci) => `
             <div class="space-y-sm">
               <p class="heading" style="font-size:0.85rem;">Word ${ci + 1}</p>
-              ${col.map(word => `
+              ${col
+                .map(
+                  (word) => `
                 <button class="option-btn ${activityState.passphrase[ci] === word ? 'correct' : ''}" onclick="App.pickPassWord(${ci},'${word}')" style="padding:0.5rem;">${esc(word)}</button>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
         <div class="card card-accent">
           <p class="heading" style="margin-bottom:0.25rem;">Your Passphrase:</p>
           <p style="font-size:var(--fs-lg);font-weight:800;letter-spacing:1px;word-break:break-all;">${phrase || '(Pick words above!)'}</p>
           <p class="text-muted" style="font-size:0.8rem;margin-top:0.25rem;">Add a number too!</p>
           <div class="flex gap-sm flex-wrap" style="margin-top:0.5rem;">
-            ${[1,2,3,4,5,6,7,8,9,0].map(n => `<button class="btn btn-sm ${activityState.passphraseNum == n ? 'btn-accent' : 'btn-ghost'}" onclick="App.pickPassNum(${n})">${n}</button>`).join('')}
+            ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((n) => `<button class="btn btn-sm ${activityState.passphraseNum == n ? 'btn-accent' : 'btn-ghost'}" onclick="App.pickPassNum(${n})">${n}</button>`).join('')}
           </div>
         </div>
       </div>`;
   }
 
-  function pickPassWord(col, word) { activityState.passphrase[col] = word; render(); }
-  function pickPassNum(n) { activityState.passphraseNum = n; render(); }
+  function pickPassWord(col, word) {
+    activityState.passphrase[col] = word;
+    render();
+  }
+  function pickPassNum(n) {
+    activityState.passphraseNum = n;
+    render();
+  }
 
   function renderScenarioActivity(act) {
     if (!activityState.scenarioIdx) activityState.scenarioIdx = 0;
@@ -513,17 +583,25 @@ const App = (() => {
       <div class="card space-y">
         <p class="heading" style="font-size:var(--fs-lg);">${esc(sc.situation)}</p>
         <div class="space-y-sm">
-          ${sc.options.map((opt, oi) => `
-            <button class="option-btn ${answered !== undefined ? (oi === sc.correct ? 'correct' : (answered === oi ? 'incorrect' : '')) : ''}"
+          ${sc.options
+            .map(
+              (opt, oi) => `
+            <button class="option-btn ${answered !== undefined ? (oi === sc.correct ? 'correct' : answered === oi ? 'incorrect' : '') : ''}"
               onclick="App.answerScenario(${idx},${oi},${sc.correct})" ${answered !== undefined ? 'disabled' : ''}>
               ${esc(opt)}
             </button>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
-        ${answered !== undefined ? `
+        ${
+          answered !== undefined
+            ? `
           <p style="margin-top:0.5rem;">${answered === sc.correct ? '✅ Great choice!' : '❌ ' + esc(sc.explanation || 'Not the best choice.')}</p>
           <button class="btn btn-primary btn-sm" onclick="App.nextScenario()">Next →</button>
-        ` : ''}
+        `
+            : ''
+        }
       </div>`;
   }
 
@@ -543,7 +621,9 @@ const App = (() => {
     const items = act.items || [];
     const budget = act.budget || 50;
     let spent = 0;
-    items.forEach((item, i) => { if (activityState.budgetSelected[i]) spent += item.price; });
+    items.forEach((item, i) => {
+      if (activityState.budgetSelected[i]) spent += item.price;
+    });
     const remaining = budget - spent;
     return `
       <div class="card space-y">
@@ -553,14 +633,18 @@ const App = (() => {
         </div>
         <div class="progress-track"><div class="progress-fill" style="width:${Math.min(100, (spent / budget) * 100)}%;${remaining < 0 ? 'background:var(--clr-danger);' : ''}"></div></div>
         <div class="grid grid-2">
-          ${items.map((item, i) => `
+          ${items
+            .map(
+              (item, i) => `
             <button class="card card-clickable ${activityState.budgetSelected[i] ? 'card-success' : ''}" onclick="App.toggleBudgetItem(${i})" style="text-align:center;">
               <span style="font-size:2rem;">${item.icon || '🛍️'}</span>
               <p class="heading" style="font-size:0.9rem;">${esc(item.name)}</p>
               <p class="text-accent heading">$${item.price.toFixed(2)}</p>
               ${item.isNeed !== undefined ? `<span class="badge ${item.isNeed ? 'badge-green' : 'badge-gold'}">${item.isNeed ? 'Need' : 'Want'}</span>` : ''}
             </button>
-          `).join('')}
+          `
+            )
+            .join('')}
         </div>
       </div>`;
   }
@@ -582,37 +666,62 @@ const App = (() => {
     if (!activityState.stepsChecked) activityState.stepsChecked = {};
     const steps = act.steps || [];
     return `<div class="card"><h3 class="heading" style="margin-bottom:0.75rem;">Put the steps in order:</h3>
-      <ol class="checklist">${steps.map((s, i) => `
+      <ol class="checklist">${steps
+        .map(
+          (s, i) => `
         <li><button class="check-box ${activityState.stepsChecked[i] ? 'checked' : ''}" onclick="App.toggleStepCheck(${i})">${activityState.stepsChecked[i] ? '✓' : i + 1}</button><span>${esc(s)}</span></li>
-      `).join('')}</ol></div>`;
+      `
+        )
+        .join('')}</ol></div>`;
   }
-  function toggleStepCheck(i) { if (!activityState.stepsChecked) activityState.stepsChecked = {}; activityState.stepsChecked[i] = !activityState.stepsChecked[i]; render(); }
+  function toggleStepCheck(i) {
+    if (!activityState.stepsChecked) activityState.stepsChecked = {};
+    activityState.stepsChecked[i] = !activityState.stepsChecked[i];
+    render();
+  }
 
   function renderSpotDangerActivity(act) {
     if (!activityState.dangerFound) activityState.dangerFound = {};
     const items = act.items || [];
-    return `<div class="space-y-sm stagger">${items.map((item, i) => `
+    return `<div class="space-y-sm stagger">${items
+      .map(
+        (item, i) => `
       <button class="option-btn ${activityState.dangerFound[i] !== undefined ? (item.isDanger ? 'correct' : 'incorrect') : ''}" onclick="App.spotDanger(${i}, ${item.isDanger})">
         ${item.icon || ''} ${esc(item.text)} ${activityState.dangerFound[i] !== undefined ? (item.isDanger ? ' ⚠️ DANGER!' : ' ✅ Safe') : ''}
       </button>
-    `).join('')}</div>`;
+    `
+      )
+      .join('')}</div>`;
   }
-  function spotDanger(i, isDanger) { activityState.dangerFound[i] = true; toast(isDanger ? '⚠️ Good catch — that\'s a danger!' : '✅ That one is safe.', isDanger ? 'error' : 'success'); render(); }
+  function spotDanger(i, isDanger) {
+    activityState.dangerFound[i] = true;
+    toast(
+      isDanger ? "⚠️ Good catch — that's a danger!" : '✅ That one is safe.',
+      isDanger ? 'error' : 'success'
+    );
+    render();
+  }
 
   function renderPlanBuilderActivity(act) {
     return `<div class="card space-y">
       <h3 class="heading">${esc(act.title)}</h3>
-      ${(act.fields || act.sections || ['My plan']).map((f, i) => `
+      ${(act.fields || act.sections || ['My plan'])
+        .map(
+          (f, i) => `
         <div><label class="heading" style="font-size:0.9rem;display:block;margin-bottom:0.25rem;">${esc(typeof f === 'string' ? f : f.label)}</label>
-        <textarea class="input" rows="2" placeholder="${esc(typeof f === 'string' ? 'Write here…' : (f.hint || 'Write here…'))}" id="plan-field-${i}"></textarea></div>
-      `).join('')}
+        <textarea class="input" rows="2" placeholder="${esc(typeof f === 'string' ? 'Write here…' : f.hint || 'Write here…')}" id="plan-field-${i}"></textarea></div>
+      `
+        )
+        .join('')}
       <button class="btn btn-primary btn-sm" onclick="App.savePlan()">💾 Save to Portfolio</button>
     </div>`;
   }
   function savePlan() {
     const mod = getModule();
     const fields = document.querySelectorAll('[id^="plan-field-"]');
-    const data = Array.from(fields).map(f => f.value).join('\n---\n');
+    const data = Array.from(fields)
+      .map((f) => f.value)
+      .join('\n---\n');
     if (data.trim()) {
       Storage.addPortfolioItem(mod.id, 'text', mod.title + ' Plan', data);
       toast('📁 Saved to portfolio!', 'success');
@@ -625,7 +734,7 @@ const App = (() => {
       <div><label class="heading" style="font-size:0.9rem;">Where are you going?</label><input class="input" id="trip-dest" placeholder="e.g. Shopping centre, library…"></div>
       <div><label class="heading" style="font-size:0.9rem;">How will you get there?</label>
         <div class="flex gap-sm flex-wrap" style="margin-top:0.5rem;">
-          ${['🚌 Bus', '🚂 Train', '🚶 Walk', '🚗 Car', '🚲 Bike'].map(t => `<button class="btn btn-sm btn-ghost" onclick="this.classList.toggle('btn-primary');this.classList.toggle('btn-ghost');">${t}</button>`).join('')}
+          ${['🚌 Bus', '🚂 Train', '🚶 Walk', '🚗 Car', '🚲 Bike'].map((t) => `<button class="btn btn-sm btn-ghost" onclick="this.classList.toggle('btn-primary');this.classList.toggle('btn-ghost');">${t}</button>`).join('')}
         </div>
       </div>
       <div><label class="heading" style="font-size:0.9rem;">What time will you leave?</label><input class="input" type="time" id="trip-time"></div>
@@ -652,7 +761,7 @@ const App = (() => {
       { name: 'My Health Record', icon: '🏥', description: 'View your health information' },
     ];
     return `<div class="space-y-sm stagger">
-      ${portals.map(p => `<div class="card"><div class="flex gap items-center"><span style="font-size:2rem;">${p.icon}</span><div><p class="heading">${esc(p.name)}</p><p class="text-muted" style="font-size:0.85rem;">${esc(p.description)}</p></div></div></div>`).join('')}
+      ${portals.map((p) => `<div class="card"><div class="flex gap items-center"><span style="font-size:2rem;">${p.icon}</span><div><p class="heading">${esc(p.name)}</p><p class="text-muted" style="font-size:0.85rem;">${esc(p.description)}</p></div></div></div>`).join('')}
       <div class="card card-warning"><p class="heading">⚠️ Remember:</p><p>Always get help from a trusted person when logging in for the first time. Never share your login details.</p></div>
     </div>`;
   }
@@ -660,7 +769,9 @@ const App = (() => {
   function renderComparisonActivity(act) {
     const items = act.items || [];
     if (!activityState.comparisonChoice) activityState.comparisonChoice = null;
-    return `<div class="grid grid-2 stagger">${items.map((item, i) => `
+    return `<div class="grid grid-2 stagger">${items
+      .map(
+        (item, i) => `
       <button class="card card-clickable ${activityState.comparisonChoice === i ? 'card-success' : ''}" onclick="App.pickComparison(${i})" style="text-align:center;">
         <span style="font-size:2.5rem;">${item.icon || '🛍️'}</span>
         <p class="heading">${esc(item.name)}</p>
@@ -668,9 +779,15 @@ const App = (() => {
         ${item.delivery ? `<p class="text-muted" style="font-size:0.8rem;">🚚 ${esc(item.delivery)}</p>` : ''}
         ${item.fees ? `<p class="text-muted" style="font-size:0.8rem;">💰 Fees: ${esc(item.fees)}</p>` : ''}
       </button>
-    `).join('')}</div>`;
+    `
+      )
+      .join('')}</div>`;
   }
-  function pickComparison(i) { activityState.comparisonChoice = i; toast('Good choice! Think about why.', 'info'); render(); }
+  function pickComparison(i) {
+    activityState.comparisonChoice = i;
+    toast('Good choice! Think about why.', 'info');
+    render();
+  }
 
   function renderRoutineBuilderActivity(act) {
     const timeSlots = act.timeSlots || ['🌅 Morning', '☀️ Afternoon', '🌙 Evening'];
@@ -682,20 +799,34 @@ const App = (() => {
 
   function renderJobExplorerActivity(act) {
     const jobs = act.jobs || [
-      { title: 'Shop Assistant', icon: '🛍️', tasks: 'Help customers, stack shelves, use the register' },
+      {
+        title: 'Shop Assistant',
+        icon: '🛍️',
+        tasks: 'Help customers, stack shelves, use the register',
+      },
       { title: 'Office Helper', icon: '🏢', tasks: 'Sort mail, answer phones, organise files' },
       { title: 'Café Worker', icon: '☕', tasks: 'Take orders, make drinks, clean tables' },
       { title: 'Garden Worker', icon: '🌿', tasks: 'Mow lawns, plant flowers, water gardens' },
     ];
-    return `<div class="grid grid-2 stagger">${jobs.map(j => `
+    return `<div class="grid grid-2 stagger">${jobs
+      .map(
+        (j) => `
       <div class="card"><span style="font-size:2rem;">${j.icon}</span><p class="heading">${esc(j.title)}</p><p class="text-muted" style="font-size:0.85rem;">${esc(j.tasks)}</p></div>
-    `).join('')}
+    `
+      )
+      .join('')}
     <div class="card card-accent" style="grid-column:1/-1;"><label class="heading" style="font-size:0.9rem;">Which job interests you? Why?</label><textarea class="input" rows="2" id="plan-field-0" placeholder="I'm interested in…"></textarea>
     <button class="btn btn-primary btn-sm" style="margin-top:0.5rem;" onclick="App.savePlan()">💾 Save</button></div></div>`;
   }
 
   function renderCVBuilderActivity(act) {
-    const fields = ['Your Name', 'Your Strengths', 'Your Interests / Hobbies', 'Skills You Have', 'Experience or Volunteering'];
+    const fields = [
+      'Your Name',
+      'Your Strengths',
+      'Your Interests / Hobbies',
+      'Skills You Have',
+      'Experience or Volunteering',
+    ];
     return `<div class="card space-y"><h3 class="heading">📄 Build Your CV</h3>
       ${fields.map((f, i) => `<div><label class="heading" style="font-size:0.9rem;">${esc(f)}</label><input class="input" id="plan-field-${i}" placeholder="Write here…"></div>`).join('')}
       <button class="btn btn-primary btn-sm" onclick="App.savePlan()">💾 Save CV to Portfolio</button>
@@ -721,7 +852,8 @@ const App = (() => {
     ];
     if (!activityState.interviewIdx) activityState.interviewIdx = 0;
     const idx = activityState.interviewIdx;
-    if (idx >= questions.length) return `<div class="card card-success text-center"><span style="font-size:3rem;">🎉</span><p class="heading">Interview practice complete!</p></div>`;
+    if (idx >= questions.length)
+      return `<div class="card card-success text-center"><span style="font-size:3rem;">🎉</span><p class="heading">Interview practice complete!</p></div>`;
     return `<div class="card space-y text-center">
       <span style="font-size:3rem;">🎤</span>
       <p class="text-muted">Question ${idx + 1} of ${questions.length}</p>
@@ -730,7 +862,10 @@ const App = (() => {
       <div class="flex gap-sm justify-center"><button class="btn btn-primary" onclick="App.nextInterview()">Next Question →</button></div>
     </div>`;
   }
-  function nextInterview() { activityState.interviewIdx = (activityState.interviewIdx || 0) + 1; render(); }
+  function nextInterview() {
+    activityState.interviewIdx = (activityState.interviewIdx || 0) + 1;
+    render();
+  }
 
   function renderPledgeBuilderActivity(act) {
     const pledges = act.pledges || [
@@ -742,22 +877,34 @@ const App = (() => {
     ];
     if (!activityState.pledgeSigned) activityState.pledgeSigned = {};
     return `<div class="card space-y"><h3 class="heading">✍️ My Workplace Pledge</h3>
-      <ul class="checklist">${pledges.map((p, i) => `
+      <ul class="checklist">${pledges
+        .map(
+          (p, i) => `
         <li><button class="check-box ${activityState.pledgeSigned[i] ? 'checked' : ''}" onclick="App.togglePledge(${i})">${activityState.pledgeSigned[i] ? '✓' : ''}</button><span>${esc(p)}</span></li>
-      `).join('')}</ul>
+      `
+        )
+        .join('')}</ul>
       <div><label class="heading" style="font-size:0.9rem;">Sign your name:</label><input class="input" id="plan-field-0" placeholder="Your name"></div>
       <button class="btn btn-primary btn-sm" onclick="App.savePlan()">💾 Save Pledge</button>
     </div>`;
   }
-  function togglePledge(i) { if (!activityState.pledgeSigned) activityState.pledgeSigned = {}; activityState.pledgeSigned[i] = !activityState.pledgeSigned[i]; render(); }
+  function togglePledge(i) {
+    if (!activityState.pledgeSigned) activityState.pledgeSigned = {};
+    activityState.pledgeSigned[i] = !activityState.pledgeSigned[i];
+    render();
+  }
 
   function renderPortfolioReviewActivity(act) {
     const strands = act.strands || [];
-    return `<div class="space-y stagger">${strands.map((s, i) => `
+    return `<div class="space-y stagger">${strands
+      .map(
+        (s, i) => `
       <div class="card"><div class="flex gap items-center" style="margin-bottom:0.5rem;"><span style="font-size:1.5rem;">${s.icon}</span><p class="heading">${esc(s.name)}</p></div>
         <textarea class="input" rows="2" placeholder="${esc(s.captionHint || 'Write your caption…')}" id="plan-field-${i}"></textarea>
       </div>
-    `).join('')}
+    `
+      )
+      .join('')}
     <button class="btn btn-primary btn-sm" onclick="App.savePlan()">💾 Save Portfolio Captions</button>
     </div>`;
   }
@@ -778,22 +925,28 @@ const App = (() => {
             <span class="heading">Question ${quizIndex + 1} of ${questions.length}</span>
             <span class="badge badge-gold">Score: ${quizScore}</span>
           </div>
-          <div class="progress-track"><div class="progress-fill" style="width:${((quizIndex) / questions.length) * 100}%;"></div></div>
+          <div class="progress-track"><div class="progress-fill" style="width:${(quizIndex / questions.length) * 100}%;"></div></div>
         </div>
 
         <div class="card slide-up" style="animation-delay:0.06s;">
           <h2 class="heading" style="font-size:var(--fs-lg);margin-bottom:1rem;">${esc(q.q)}</h2>
           <div class="space-y-sm">
-            ${q.options.map((opt, oi) => `
-              <button class="option-btn ${answered !== undefined ? (oi === q.answer ? 'correct' : (answered === oi ? 'incorrect' : '')) : ''}"
+            ${q.options
+              .map(
+                (opt, oi) => `
+              <button class="option-btn ${answered !== undefined ? (oi === q.answer ? 'correct' : answered === oi ? 'incorrect' : '') : ''}"
                 onclick="App.answerQuiz(${oi})" ${answered !== undefined ? 'disabled' : ''}>
                 ${esc(opt)}
               </button>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
         </div>
 
-        ${answered !== undefined ? `
+        ${
+          answered !== undefined
+            ? `
           <div class="card ${answered === q.answer ? 'card-success' : 'card-danger'} slide-up">
             <p class="heading">${answered === q.answer ? '✅ Correct!' : '❌ Not quite.'}</p>
             <p>The answer is: <strong>${esc(q.options[q.answer])}</strong></p>
@@ -801,7 +954,9 @@ const App = (() => {
           <button class="btn btn-primary btn-lg btn-block" onclick="App.nextQuizQuestion()">
             ${quizIndex + 1 >= questions.length ? 'See Results 🏆' : 'Next Question →'}
           </button>
-        ` : ''}
+        `
+            : ''
+        }
       </div>`;
   }
 
@@ -840,7 +995,9 @@ const App = (() => {
   }
 
   function retryQuiz() {
-    quizIndex = 0; quizScore = 0; quizAnswered = [];
+    quizIndex = 0;
+    quizScore = 0;
+    quizAnswered = [];
     modulePhase = 'quiz';
     render();
   }
@@ -898,9 +1055,10 @@ const App = (() => {
       </div></header>
       <div class="container space-y-lg" style="padding-bottom:3rem;">
         ${items.length === 0 ? `<div class="card text-center"><span style="font-size:3rem;">📭</span><p class="heading" style="margin-top:0.5rem;">No portfolio items yet.</p><p class="text-muted">Complete modules and save your work!</p></div>` : ''}
-        ${items.map((item, i) => {
-          const mod = MODULES.find(m => m.id === item.moduleId);
-          return `
+        ${items
+          .map((item, i) => {
+            const mod = MODULES.find((m) => m.id === item.moduleId);
+            return `
             <div class="artefact slide-up" style="animation-delay:${i * 0.05}s;">
               <span class="artefact-icon">${mod?.icon || '📄'}</span>
               <div class="artefact-info">
@@ -909,7 +1067,8 @@ const App = (() => {
                 <p class="artefact-date">${new Date(item.date).toLocaleDateString()}</p>
               </div>
             </div>`;
-        }).join('')}
+          })
+          .join('')}
       </div>
     </div>`;
   }
@@ -926,16 +1085,22 @@ const App = (() => {
         <div class="header-title-group"><h1 class="heading" style="font-size:var(--fs-xl);">📋 Skills Checklist</h1><p class="text-muted">Rate your confidence 1–5</p></div>
       </div></header>
       <div class="container space-y" style="padding-bottom:3rem;">
-        ${SKILLS_CHECKLIST.map((item, i) => `
+        ${SKILLS_CHECKLIST.map(
+          (item, i) => `
           <div class="card slide-up" style="animation-delay:${i * 0.04}s;">
             <p style="margin-bottom:0.5rem;font-weight:600;">${esc(item.text)}</p>
             <div class="flex gap-sm">
-              ${[1,2,3,4,5].map(v => `
+              ${[1, 2, 3, 4, 5]
+                .map(
+                  (v) => `
                 <button class="btn btn-sm ${scores[item.id] === v ? 'btn-accent' : 'btn-ghost'}" onclick="App.rateSkill('${item.id}', ${v})" aria-label="Rate ${v} out of 5">${v}</button>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
           </div>
-        `).join('')}
+        `
+        ).join('')}
         <button class="btn btn-primary btn-block" onclick="App.saveChecklist()">💾 Save Checklist</button>
       </div>
     </div>`;
@@ -957,17 +1122,38 @@ const App = (() => {
   function render() {
     let html = '';
     switch (screen) {
-      case 'welcome':   html = renderWelcome(); break;
-      case 'dashboard': html = renderDashboard(); break;
-      case 'module':    html = renderModule(); break;
-      case 'portfolio': html = renderPortfolio(); break;
-      case 'checklist': html = renderChecklist(); break;
-      case 'educator':  html = Educator.renderDashboard(); break;
-      case 'educator-learner': html = Educator.renderLearnerDetail(); break;
-      case 'educator-checklist': html = Educator.renderChecklistReport(); break;
-      case 'media-manager': html = renderMediaManager(); break;
-      case 'export':    html = renderExportPage(); break;
-      default:          html = renderWelcome();
+      case 'welcome':
+        html = renderWelcome();
+        break;
+      case 'dashboard':
+        html = renderDashboard();
+        break;
+      case 'module':
+        html = renderModule();
+        break;
+      case 'portfolio':
+        html = renderPortfolio();
+        break;
+      case 'checklist':
+        html = renderChecklist();
+        break;
+      case 'educator':
+        html = Educator.renderDashboard();
+        break;
+      case 'educator-learner':
+        html = Educator.renderLearnerDetail();
+        break;
+      case 'educator-checklist':
+        html = Educator.renderChecklistReport();
+        break;
+      case 'media-manager':
+        html = renderMediaManager();
+        break;
+      case 'export':
+        html = renderExportPage();
+        break;
+      default:
+        html = renderWelcome();
     }
     root().innerHTML = html;
   }
@@ -1051,18 +1237,24 @@ const App = (() => {
       toast('Please select a backup file', 'error');
       return;
     }
-    Export.importJSON(input.files[0]).then(() => {
-      toast('✅ Data restored successfully!', 'success');
-      render();
-    }).catch(err => {
-      toast('❌ ' + err.message, 'error');
-    });
+    Export.importJSON(input.files[0])
+      .then(() => {
+        toast('✅ Data restored successfully!', 'success');
+        render();
+      })
+      .catch((err) => {
+        toast('❌ ' + err.message, 'error');
+      });
   }
 
   /* ---------- Escape HTML ---------- */
   function esc(s) {
     if (!s) return '';
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   /* ---------- Init ---------- */
@@ -1078,22 +1270,36 @@ const App = (() => {
 
   /* ---------- Public API ---------- */
   return {
-    init, go, render, toast, speak,
-    startNew, loadProfile,
-    openModule, nextPhase, finishModule,
-    retryQuiz, answerQuiz, nextQuizQuestion,
-    sortAnswer, matchAnswer,
+    init,
+    go,
+    render,
+    toast,
+    speak,
+    startNew,
+    loadProfile,
+    openModule,
+    nextPhase,
+    finishModule,
+    retryQuiz,
+    answerQuiz,
+    nextQuizQuestion,
+    sortAnswer,
+    matchAnswer,
     toggleCheck,
-    pickPassWord, pickPassNum,
-    answerScenario, nextScenario,
+    pickPassWord,
+    pickPassNum,
+    answerScenario,
+    nextScenario,
     toggleBudgetItem,
     toggleStepCheck,
     spotDanger,
-    savePlan, savePortfolioEntry,
+    savePlan,
+    savePortfolioEntry,
     pickComparison,
     nextInterview,
     togglePledge,
-    rateSkill, saveChecklist,
+    rateSkill,
+    saveChecklist,
     toggleSetting,
     importBackup,
   };

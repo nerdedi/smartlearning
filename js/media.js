@@ -103,17 +103,17 @@ const Media = (() => {
 
   /* ---------- Get media for module ---------- */
   function getMediaForModule(moduleId) {
-    return _getLibrary().filter(m => m.moduleId === moduleId);
+    return _getLibrary().filter((m) => m.moduleId === moduleId);
   }
 
   /* ---------- Get media by ID ---------- */
   function getMediaById(id) {
-    return _getLibrary().find(m => m.id === id) || null;
+    return _getLibrary().find((m) => m.id === id) || null;
   }
 
   /* ---------- Delete media ---------- */
   function deleteMedia(id) {
-    const library = _getLibrary().filter(m => m.id !== id);
+    const library = _getLibrary().filter((m) => m.id !== id);
     _saveLibrary(library);
     return { success: true };
   }
@@ -121,7 +121,7 @@ const Media = (() => {
   /* ---------- Update media caption ---------- */
   function updateCaption(id, caption) {
     const library = _getLibrary();
-    const item = library.find(m => m.id === id);
+    const item = library.find((m) => m.id === id);
     if (item) {
       item.caption = caption;
       _saveLibrary(library);
@@ -192,7 +192,7 @@ const Media = (() => {
   function extractYouTubeId(url) {
     const patterns = [
       /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?]+)/,
-      /^([a-zA-Z0-9_-]{11})$/
+      /^([a-zA-Z0-9_-]{11})$/,
     ];
     for (const pattern of patterns) {
       const match = url.match(pattern);
@@ -215,7 +215,9 @@ const Media = (() => {
         ${item.caption ? `<p class="lightbox-caption">${esc(item.caption)}</p>` : ''}
       </div>
     `;
-    overlay.onclick = (e) => { if (e.target === overlay) closeLightbox(); };
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeLightbox();
+    };
     document.body.appendChild(overlay);
     document.body.style.overflow = 'hidden';
   }
@@ -263,8 +265,8 @@ const Media = (() => {
   }
 
   function showUploadTab(tab) {
-    document.querySelectorAll('.upload-section').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.upload-tabs .btn').forEach(el => {
+    document.querySelectorAll('.upload-section').forEach((el) => (el.style.display = 'none'));
+    document.querySelectorAll('.upload-tabs .btn').forEach((el) => {
       el.classList.remove('btn-primary');
       el.classList.add('btn-ghost');
     });
@@ -394,14 +396,18 @@ const Media = (() => {
 
     return `
       <div class="media-gallery">
-        ${items.map(item => renderMedia(item, { showCaption: true, showControls: options.editable, size: 'medium' })).join('')}
+        ${items.map((item) => renderMedia(item, { showCaption: true, showControls: options.editable, size: 'medium' })).join('')}
       </div>`;
   }
 
   /* ---------- Helper ---------- */
   function esc(s) {
     if (!s) return '';
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   /* ---------- Public API ---------- */

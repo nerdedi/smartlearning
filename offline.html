@@ -1,45 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-AU">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offline – Smart Learning</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Nunito', system-ui, sans-serif;
-      background: linear-gradient(135deg, #064e3b 0%, #0d9488 100%);
-      color: #ecfdf5;
-      padding: 1.5rem;
-      text-align: center;
-    }
-    .container { max-width: 400px; }
-    .icon { font-size: 5rem; margin-bottom: 1rem; }
-    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    p { opacity: 0.8; margin-bottom: 1.5rem; }
-    button {
-      padding: 1rem 2rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #059669, #0d9488);
-      border: none;
-      border-radius: 1rem;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover { opacity: 0.9; }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="icon">📡</div>
-    <h1>You're Offline</h1>
-    <p>Smart Learning needs an internet connection to load new content. Please check your connection and try again.</p>
-    <button onclick="location.reload()">🔄 Try Again</button>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offline – Smart Learning</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Nunito', system-ui, sans-serif;
+        background: linear-gradient(135deg, #064e3b 0%, #0d9488 100%);
+        color: #ecfdf5;
+        padding: 1.5rem;
+        text-align: center;
+      }
+      .container {
+        max-width: 400px;
+      }
+      .icon {
+        font-size: 5rem;
+        margin-bottom: 1rem;
+      }
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        opacity: 0.8;
+        margin-bottom: 1.5rem;
+      }
+      button {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #059669, #0d9488);
+        border: none;
+        border-radius: 1rem;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="icon">📡</div>
+      <h1>You're Offline</h1>
+      <p>
+        Smart Learning needs an internet connection to load new content. Please check your
+        connection and try again.
+      </p>
+      <button onclick="location.reload()">🔄 Try Again</button>
+    </div>
+  </body>
 </html>

@@ -4,7 +4,6 @@
    ============================================================ */
 
 const Export = (() => {
-
   /* ---------- CSV Export ---------- */
   function generateCSV() {
     const learners = Storage.getAllProfiles();
@@ -18,16 +17,19 @@ const Export = (() => {
       'Badges Earned',
       'Portfolio Items',
       'Avg Quiz Score %',
-      ...SKILLS_CHECKLIST.map(s => s.text.substring(0, 40) + '...')
+      ...SKILLS_CHECKLIST.map((s) => s.text.substring(0, 40) + '...'),
     ];
 
-    const rows = learners.map(l => {
+    const rows = learners.map((l) => {
       const completed = (l.modulesCompleted || []).length;
       const progress = Math.round((completed / MODULES.length) * 100);
       const quizScores = Object.values(l.quizScores || {});
-      const avgQuiz = quizScores.length > 0
-        ? Math.round(quizScores.reduce((sum, s) => sum + (s.score / s.total) * 100, 0) / quizScores.length)
-        : '';
+      const avgQuiz =
+        quizScores.length > 0
+          ? Math.round(
+              quizScores.reduce((sum, s) => sum + (s.score / s.total) * 100, 0) / quizScores.length
+            )
+          : '';
 
       return [
         l.name,
@@ -39,7 +41,7 @@ const Export = (() => {
         (l.badges || []).length,
         (l.portfolio || []).length,
         avgQuiz,
-        ...SKILLS_CHECKLIST.map(s => (l.checklistScores || {})[s.id] || '')
+        ...SKILLS_CHECKLIST.map((s) => (l.checklistScores || {})[s.id] || ''),
       ];
     });
 
@@ -48,16 +50,20 @@ const Export = (() => {
 
   function downloadCSV() {
     const data = generateCSV();
-    const csv = data.map(row =>
-      row.map(cell => {
-        const str = String(cell);
-        // Escape quotes and wrap in quotes if contains comma/newline
-        if (str.includes(',') || str.includes('\n') || str.includes('"')) {
-          return '"' + str.replace(/"/g, '""') + '"';
-        }
-        return str;
-      }).join(',')
-    ).join('\n');
+    const csv = data
+      .map((row) =>
+        row
+          .map((cell) => {
+            const str = String(cell);
+            // Escape quotes and wrap in quotes if contains comma/newline
+            if (str.includes(',') || str.includes('\n') || str.includes('"')) {
+              return '"' + str.replace(/"/g, '""') + '"';
+            }
+            return str;
+          })
+          .join(',')
+      )
+      .join('\n');
 
     const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -75,19 +81,27 @@ const Export = (() => {
   /* ---------- Module Stats CSV ---------- */
   function downloadModuleStatsCSV() {
     const stats = Educator.getModuleStats();
-    const headers = ['Module #', 'Title', 'Strand', 'Completions', 'Completion Rate %', 'Quiz Attempts', 'Avg Quiz Score %'];
+    const headers = [
+      'Module #',
+      'Title',
+      'Strand',
+      'Completions',
+      'Completion Rate %',
+      'Quiz Attempts',
+      'Avg Quiz Score %',
+    ];
 
-    const rows = stats.map(m => [
+    const rows = stats.map((m) => [
       m.num,
       m.title,
       strandFor(m.num).title,
       m.completions,
       m.completionRate,
       m.quizAttempts,
-      m.avgQuizScore || ''
+      m.avgQuizScore || '',
     ]);
 
-    const csv = [headers, ...rows].map(row => row.join(',')).join('\n');
+    const csv = [headers, ...rows].map((row) => row.join(',')).join('\n');
     const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -178,7 +192,9 @@ const Export = (() => {
       </tr>
     </thead>
     <tbody>
-      ${learners.map(l => `
+      ${learners
+        .map(
+          (l) => `
         <tr>
           <td><strong>${esc(l.name)}</strong></td>
           <td>
@@ -191,7 +207,9 @@ const Export = (() => {
           <td>${l.portfolioCount}</td>
           <td>${l.lastActivity || '–'}</td>
         </tr>
-      `).join('')}
+      `
+        )
+        .join('')}
     </tbody>
   </table>
 
@@ -207,7 +225,9 @@ const Export = (() => {
       </tr>
     </thead>
     <tbody>
-      ${moduleStats.map(m => `
+      ${moduleStats
+        .map(
+          (m) => `
         <tr>
           <td>${m.num}</td>
           <td>${m.icon} ${esc(m.title)}</td>
@@ -218,7 +238,9 @@ const Export = (() => {
           </td>
           <td>${m.avgQuizScore !== null ? m.avgQuizScore + '%' : '–'}</td>
         </tr>
-      `).join('')}
+      `
+        )
+        .join('')}
     </tbody>
   </table>
 
@@ -232,9 +254,12 @@ const Export = (() => {
       </tr>
     </thead>
     <tbody>
-      ${SKILLS_CHECKLIST.map(item => {
-        const scores = learners.map(l => (l.checklistScores || {})[item.id]).filter(s => s !== undefined);
-        const avg = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : '–';
+      ${SKILLS_CHECKLIST.map((item) => {
+        const scores = learners
+          .map((l) => (l.checklistScores || {})[item.id])
+          .filter((s) => s !== undefined);
+        const avg =
+          scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : '–';
         return `
           <tr>
             <td>${esc(item.text)}</td>
@@ -268,13 +293,13 @@ const Export = (() => {
 
   /* ---------- Individual Learner Report ---------- */
   function downloadLearnerReport(learnerId) {
-    const learner = Storage.getAllProfiles().find(l => l.id === learnerId);
+    const learner = Storage.getAllProfiles().find((l) => l.id === learnerId);
     if (!learner) {
       App.toast('Learner not found', 'error');
       return;
     }
 
-    const completedMods = MODULES.filter(m => (learner.modulesCompleted || []).includes(m.id));
+    const completedMods = MODULES.filter((m) => (learner.modulesCompleted || []).includes(m.id));
     const progress = Math.round((completedMods.length / MODULES.length) * 100);
 
     const html = `
@@ -336,33 +361,39 @@ const Export = (() => {
   </div>
 
   <h2>✅ Completed Modules</h2>
-  ${completedMods.length === 0
-    ? '<p>No modules completed yet.</p>'
-    : `<p>${completedMods.map(m => `<span class="badge">${m.icon} ${esc(m.title)}</span>`).join(' ')}</p>`}
+  ${
+    completedMods.length === 0
+      ? '<p>No modules completed yet.</p>'
+      : `<p>${completedMods.map((m) => `<span class="badge">${m.icon} ${esc(m.title)}</span>`).join(' ')}</p>`
+  }
 
   <h2>📝 Quiz Scores</h2>
-  ${Object.keys(learner.quizScores || {}).length === 0
-    ? '<p>No quizzes taken yet.</p>'
-    : `<table>
+  ${
+    Object.keys(learner.quizScores || {}).length === 0
+      ? '<p>No quizzes taken yet.</p>'
+      : `<table>
         <thead><tr><th>Module</th><th>Score</th><th>Percentage</th><th>Date</th></tr></thead>
         <tbody>
-          ${Object.entries(learner.quizScores).map(([modId, score]) => {
-            const mod = MODULES.find(m => m.id === modId);
-            return `<tr>
+          ${Object.entries(learner.quizScores)
+            .map(([modId, score]) => {
+              const mod = MODULES.find((m) => m.id === modId);
+              return `<tr>
               <td>${mod?.icon || ''} ${mod?.title || modId}</td>
               <td>${score.score}/${score.total}</td>
               <td>${Math.round((score.score / score.total) * 100)}%</td>
               <td>${new Date(score.date).toLocaleDateString()}</td>
             </tr>`;
-          }).join('')}
+            })
+            .join('')}
         </tbody>
-      </table>`}
+      </table>`
+  }
 
   <h2>📋 Skills Self-Assessment</h2>
   <table>
     <thead><tr><th>Skill</th><th>Rating (1-5)</th></tr></thead>
     <tbody>
-      ${SKILLS_CHECKLIST.map(item => {
+      ${SKILLS_CHECKLIST.map((item) => {
         const score = (learner.checklistScores || {})[item.id];
         return `<tr>
           <td>${esc(item.text)}</td>
@@ -373,16 +404,20 @@ const Export = (() => {
   </table>
 
   <h2>📁 Portfolio</h2>
-  ${(learner.portfolio || []).length === 0
-    ? '<p>No portfolio items yet.</p>'
-    : (learner.portfolio || []).map(item => {
-        const mod = MODULES.find(m => m.id === item.moduleId);
-        return `<div class="portfolio-item">
+  ${
+    (learner.portfolio || []).length === 0
+      ? '<p>No portfolio items yet.</p>'
+      : (learner.portfolio || [])
+          .map((item) => {
+            const mod = MODULES.find((m) => m.id === item.moduleId);
+            return `<div class="portfolio-item">
           <div class="portfolio-label">${mod?.icon || '📄'} ${esc(item.label)}</div>
           <div class="portfolio-content">${esc(item.data)}</div>
           <div class="portfolio-date">${new Date(item.date).toLocaleDateString()}</div>
         </div>`;
-      }).join('')}
+          })
+          .join('')
+  }
 
   <div class="footer">
     <p>Smart Learning for Independence – Windgap Foundation LLND & Transition</p>
@@ -452,7 +487,11 @@ const Export = (() => {
   /* ---------- Helper ---------- */
   function esc(s) {
     if (!s) return '';
-    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
 
   /* ---------- Public API ---------- */
