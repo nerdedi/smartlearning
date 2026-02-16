@@ -1,3 +1,11 @@
+## [1.0.1](https://github.com/nerdedi/smartlearning/compare/v1.0.0...v1.0.1) (2026-02-16)
+
+
+### Bug Fixes
+
+* update ESLint configuration and refactor app.js and app.test.js for consistency ([a898ca3](https://github.com/nerdedi/smartlearning/commit/a898ca3dc1ffd2d38c0a27a43a1a73112fadd125))
+* update ESLint configuration and refactor app.js and app.test.js for consistency ([a8d0faf](https://github.com/nerdedi/smartlearning/commit/a8d0faf62b22792acf085e47b0fe3591b4158542))
+
 # 1.0.0 (2026-02-16)
 
 
