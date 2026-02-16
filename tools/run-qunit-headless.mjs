@@ -29,14 +29,16 @@ const browser = await puppeteer.launch({ headless: 'new' });
 const page = await browser.newPage();
 page.on('console', (msg) => {
   const args = msg.args();
-  Promise.all(args.map(a => a.jsonValue())).then(vals => console[msg.type?.() || 'log'](...vals));
+  Promise.all(args.map((a) => a.jsonValue())).then((vals) =>
+    console[msg.type?.() || 'log'](...vals)
+  );
 });
 await page.goto('http://localhost:8123/tests/qunit.html');
 await page.waitForFunction(() => window.QUnit?.config?.doneCalled === true, { timeout: 30000 });
 const result = await page.evaluate(() => ({
   failed: QUnit?.config?.stats?.bad || 0,
   passed: QUnit?.config?.stats?.all - QUnit?.config?.stats?.bad || 0,
-  total: QUnit?.config?.stats?.all || 0
+  total: QUnit?.config?.stats?.all || 0,
 }));
 await browser.close();
 server.close();

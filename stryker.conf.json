@@ -7,8 +7,5 @@
   },
   "reporters": ["html", "clear-text", "progress"],
   "coverageAnalysis": "off",
-  "files": [
-    "js/**/*.js",
-    "test/**/*.js"
-  ]
+  "files": ["js/**/*.js", "test/**/*.js"]
 }

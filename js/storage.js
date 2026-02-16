@@ -7,14 +7,17 @@
 const Storage = (() => {
   const KEYS = {
     PROFILES: 'sl_profiles',
-    ACTIVE:   'sl_active_profile',
+    ACTIVE: 'sl_active_profile',
     SETTINGS: 'sl_settings',
   };
 
   /* ---------- helpers ---------- */
   function _get(key) {
-    try { return JSON.parse(localStorage.getItem(key)); }
-    catch { return null; }
+    try {
+      return JSON.parse(localStorage.getItem(key));
+    } catch {
+      return null;
+    }
   }
   function _set(key, val) {
     localStorage.setItem(key, JSON.stringify(val));
@@ -41,11 +44,11 @@ const Storage = (() => {
       id: 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
       name: name || 'Learner',
       createdAt: new Date().toISOString(),
-      modulesCompleted: [],       // array of module ids
-      quizScores: {},             // { moduleId: { score, total, date } }
-      badges: [],                 // array of badge strings
-      portfolio: [],              // [{ moduleId, type, label, data, date }]
-      checklistScores: {},        // baseline/post { itemId: value 1-5 }
+      modulesCompleted: [], // array of module ids
+      quizScores: {}, // { moduleId: { score, total, date } }
+      badges: [], // array of badge strings
+      portfolio: [], // [{ moduleId, type, label, data, date }]
+      checklistScores: {}, // baseline/post { itemId: value 1-5 }
       totalPoints: 0,
     };
   }
@@ -73,12 +76,12 @@ const Storage = (() => {
   function getActiveProfile() {
     const id = getActiveProfileId();
     if (!id) return null;
-    return getAllProfiles().find(p => p.id === id) || null;
+    return getAllProfiles().find((p) => p.id === id) || null;
   }
 
   function _updateProfile(id, updater) {
     const profiles = getAllProfiles();
-    const idx = profiles.findIndex(p => p.id === id);
+    const idx = profiles.findIndex((p) => p.id === id);
     if (idx === -1) return null;
     updater(profiles[idx]);
     _set(KEYS.PROFILES, profiles);
@@ -89,7 +92,7 @@ const Storage = (() => {
   function completeModule(moduleId, badge) {
     const id = getActiveProfileId();
     if (!id) return;
-    return _updateProfile(id, p => {
+    return _updateProfile(id, (p) => {
       if (!p.modulesCompleted.includes(moduleId)) {
         p.modulesCompleted.push(moduleId);
         p.totalPoints += 10;
@@ -104,7 +107,7 @@ const Storage = (() => {
   function saveQuizScore(moduleId, score, total) {
     const id = getActiveProfileId();
     if (!id) return;
-    return _updateProfile(id, p => {
+    return _updateProfile(id, (p) => {
       p.quizScores[moduleId] = { score, total, date: new Date().toISOString() };
       p.totalPoints += score;
     });
@@ -113,7 +116,7 @@ const Storage = (() => {
   function addPortfolioItem(moduleId, type, label, data) {
     const id = getActiveProfileId();
     if (!id) return;
-    return _updateProfile(id, p => {
+    return _updateProfile(id, (p) => {
       p.portfolio.push({
         moduleId,
         type, // 'text' | 'checklist' | 'drawing' | 'note'
@@ -127,14 +130,14 @@ const Storage = (() => {
   function saveChecklistScores(scores) {
     const id = getActiveProfileId();
     if (!id) return;
-    return _updateProfile(id, p => {
+    return _updateProfile(id, (p) => {
       p.checklistScores = { ...p.checklistScores, ...scores };
     });
   }
 
   /* ---------- Reset ---------- */
   function resetProfile(profileId) {
-    return _updateProfile(profileId, p => {
+    return _updateProfile(profileId, (p) => {
       p.modulesCompleted = [];
       p.quizScores = {};
       p.badges = [];
@@ -145,7 +148,7 @@ const Storage = (() => {
   }
 
   function deleteProfile(profileId) {
-    const profiles = getAllProfiles().filter(p => p.id !== profileId);
+    const profiles = getAllProfiles().filter((p) => p.id !== profileId);
     _set(KEYS.PROFILES, profiles);
     if (getActiveProfileId() === profileId) {
       _set(KEYS.ACTIVE, profiles.length ? profiles[0].id : null);
@@ -154,11 +157,18 @@ const Storage = (() => {
 
   /* ---------- Public API ---------- */
   return {
-    getSettings, saveSettings,
-    getAllProfiles, createProfile, getActiveProfile,
-    getActiveProfileId, setActiveProfile,
-    completeModule, saveQuizScore,
-    addPortfolioItem, saveChecklistScores,
-    resetProfile, deleteProfile,
+    getSettings,
+    saveSettings,
+    getAllProfiles,
+    createProfile,
+    getActiveProfile,
+    getActiveProfileId,
+    setActiveProfile,
+    completeModule,
+    saveQuizScore,
+    addPortfolioItem,
+    saveChecklistScores,
+    resetProfile,
+    deleteProfile,
   };
 })();
