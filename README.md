@@ -20,8 +20,9 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 ## Curriculum Structure
 
 ### Strand 1: Digital Foundations (Modules 1-6)
+
 | # | Module | Skills |
-|---|--------|--------|
+| --- | -------- | -------- |
 | 1 | Device Basics | Power on, charge, volume, brightness |
 | 2 | Touch & Navigate | Tap, swipe, scroll, pinch-zoom |
 | 3 | Internet Safety | Passwords, phishing, privacy settings |
@@ -30,8 +31,9 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 | 6 | Smart Searching | Browser, keywords, reliable sources |
 
 ### Strand 2: Financial Independence (Modules 7-12)
+
 | # | Module | Skills |
-|---|--------|--------|
+| --- | -------- | -------- |
 | 7 | Money Awareness | Notes, coins, card types |
 | 8 | Banking Basics | Account types, statements, transfers |
 | 9 | Budgeting | Income/expenses, pay yourself first |
@@ -40,8 +42,9 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 | 12 | Opal & Transport | Top-up, tap on/off, fare calculation |
 
 ### Strand 3: Community & Travel (Modules 13-18)
+
 | # | Module | Skills |
-|---|--------|--------|
+| --- | -------- | -------- |
 | 13 | Trip Planning | Apps, timetables, journey planning |
 | 14 | Transport Safety | Stations, vehicles, emergencies |
 | 15 | Maps & Navigation | GPS, directions, landmarks |
@@ -50,8 +53,9 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 | 18 | Emergency Response | 000, contacts, first aid basics |
 
 ### Strand 4: Work Readiness (Modules 19-24)
+
 | # | Module | Skills |
-|---|--------|--------|
+| --- | -------- | -------- |
 | 19 | Job Exploring | Interest matching, local opportunities |
 | 20 | Workplace Skills | Punctuality, teamwork, following instructions |
 | 21 | Resume Building | Personal details, skills, references |
@@ -163,7 +167,7 @@ All data is stored locally in the browser's LocalStorage:
 ### Export Options
 
 | Format | Contents | Use Case |
-|--------|----------|----------|
+| -------- | ---------- | ---------- |
 | CSV | All learner progress | Spreadsheet analysis |
 | PDF | Summary report | Print/acquittal |
 | JSON | Complete backup | Data migration |
@@ -180,6 +184,7 @@ All data is stored locally in the browser's LocalStorage:
 ### Skills Checklist
 
 Administered at baseline and post-program:
+
 - 24 skills mapped to NDIS goals
 - 5-point confidence scale (1 = Not at all → 5 = Always)
 - Automatic gain calculation
@@ -200,7 +205,7 @@ Administered at baseline and post-program:
 ## Budget & Funding
 
 | Item | Amount |
-|------|--------|
+| ------ | -------- |
 | Transurban Community Grant | $10,000 |
 | Windgap Internal | $5,000 |
 | **Total** | **$15,000** |
@@ -215,7 +220,7 @@ Administered at baseline and post-program:
 ## Timeline
 
 | Phase | Dates | Deliverables |
-|-------|-------|--------------|
+| ------- | ------- | -------------- |
 | Build | Jan–Feb 2026 | App v1.0, content complete |
 | Pilot | Mar–Apr 2026 | User testing with 10 learners |
 | Rollout | May–Jul 2026 | Full deployment, 50 learners |
@@ -251,4 +256,4 @@ LLND & Transition Program
 
 ---
 
-*Built with ❤️ for the Windgap community*
+### Built with ❤️ for the Windgap community
