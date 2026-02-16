@@ -8,6 +8,8 @@
     "test": "node ./tools/run-qunit-headless.mjs",
     "lint": "eslint src tests --ext .js --max-warnings 0",
     "format": "prettier --write .",
+    "e2e": "cypress run",
+    "cypress:open": "cypress open",
     "release": "semantic-release"
   },
   "devDependencies": {
