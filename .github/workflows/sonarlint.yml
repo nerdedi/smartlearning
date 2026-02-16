@@ -1,0 +1,15 @@
+name: SonarLint Analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  sonarlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: SonarLint Scan
+        uses: sonarsource/sonarlint-github-action@v1

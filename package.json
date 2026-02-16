@@ -7,7 +7,9 @@
     "test": "qunit"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
     "@stryker-mutator/core": "^9.5.1",
+    "cypress": "^15.10.0",
     "jsdoc": "^4.0.5",
     "qunit": "^2.25.0"
   },

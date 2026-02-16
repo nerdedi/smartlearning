@@ -1,0 +1,15 @@
+name: EarlyAI Test Generation
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  earlyai:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: EarlyAI test generation
+        uses: early-ai/earlyai-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

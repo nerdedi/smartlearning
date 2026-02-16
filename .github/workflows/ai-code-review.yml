@@ -1,0 +1,15 @@
+name: AI Code Review
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  copilot-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Request GitHub Copilot code review
+        uses: github/copilot-review-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
