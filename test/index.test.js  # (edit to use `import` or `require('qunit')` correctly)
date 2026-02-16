@@ -1,0 +1,7 @@
+const QUnit = require('qunit');
+
+QUnit.module('Sample Test Module', () => {
+    QUnit.test('hello world test', (assert) => {
+        assert.ok(true, 'This test should pass.');
+    });
+});

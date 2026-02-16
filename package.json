@@ -7,7 +7,7 @@
     "test": "qunit"
   },
   "devDependencies": {
-    "qunit": "^2.0.0"
+    "qunit": "^2.25.0"
   },
   "keywords": [],
   "author": "Your Name",
