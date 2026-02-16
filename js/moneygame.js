@@ -54,22 +54,25 @@ const MoneyGame = (() => {
   const SPRITE_IMAGE = 'assets/money/windgap-currency.png';
 
   // Image dimensions: 1536 x 1024
-  // Sprite regions as percentages of total image (more reliable than pixels)
+  const IMG_W = 1536;
+  const IMG_H = 1024;
+
+  // Exact pixel crop regions for each currency item
   const SPRITE_REGIONS = {
-    // Row 1: Notes $5, $10, $20 (top row)
-    note5:   { xPct: 2.5, yPct: 3, wPct: 28, hPct: 29 },
-    note10:  { xPct: 35, yPct: 3, wPct: 28, hPct: 29 },
-    note20:  { xPct: 68, yPct: 3, wPct: 28, hPct: 29 },
-    // Row 2: Notes $50, $100 (middle row - using middle $50 with person)
-    note50:  { xPct: 35, yPct: 35, wPct: 28, hPct: 29 },
-    note100: { xPct: 68, yPct: 35, wPct: 28, hPct: 29 },
-    // Row 3: Coins (bottom row)
-    coin5c:  { xPct: 5, yPct: 70, wPct: 10, hPct: 22 },
-    coin10c: { xPct: 15, yPct: 70, wPct: 10, hPct: 22 },
-    coin20c: { xPct: 25.5, yPct: 70, wPct: 11, hPct: 22 },
-    coin50c: { xPct: 37.5, yPct: 68, wPct: 13, hPct: 26 },
-    coin1:   { xPct: 52, yPct: 69, wPct: 13, hPct: 24 },
-    coin2:   { xPct: 66, yPct: 69, wPct: 13, hPct: 24 },
+    // Row 1: Notes $5, $10, $20 - each note is ~430px wide, ~270px tall
+    note5:   { x: 40,   y: 55,  w: 430, h: 270 },
+    note10:  { x: 540,  y: 55,  w: 430, h: 270 },
+    note20:  { x: 1050, y: 55,  w: 440, h: 270 },
+    // Row 2: $50 (with portrait, middle), $100 (right)
+    note50:  { x: 540,  y: 360, w: 430, h: 270 },
+    note100: { x: 1050, y: 360, w: 440, h: 270 },
+    // Row 3: Coins - varying sizes
+    coin5c:  { x: 95,   y: 720, w: 145, h: 145 },
+    coin10c: { x: 280,  y: 720, w: 145, h: 145 },
+    coin20c: { x: 475,  y: 710, w: 175, h: 175 },
+    coin50c: { x: 695,  y: 690, w: 210, h: 210 },
+    coin1:   { x: 950,  y: 705, w: 195, h: 195 },
+    coin2:   { x: 1195, y: 705, w: 195, h: 195 },
   };
 
   /* ---------- Render Currency Item ---------- */
@@ -78,23 +81,26 @@ const MoneyGame = (() => {
     const sizeClass = `money-${size}`;
     const clickAttr = clickable ? `onclick="${onclick}" tabindex="0" role="button"` : '';
 
-    // Use real sprite image with percentage-based positioning
+    // Use real sprite image
     if (gameState.useSpriteImage && SPRITE_REGIONS[item.id]) {
       const region = SPRITE_REGIONS[item.id];
 
-      // Display sizes
-      const noteSize = size === 'large' ? { w: 180, h: 110 } : size === 'small' ? { w: 110, h: 65 } : { w: 150, h: 90 };
-      const coinSize = size === 'large' ? { w: 85, h: 85 } : size === 'small' ? { w: 50, h: 50 } : { w: 65, h: 65 };
+      // Target display sizes
+      const noteSize = size === 'large' ? { w: 200, h: 125 } : size === 'small' ? { w: 120, h: 75 } : { w: 160, h: 100 };
+      const coinSize = size === 'large' ? { w: 90, h: 90 } : size === 'small' ? { w: 55, h: 55 } : { w: 70, h: 70 };
       const displaySize = isNote ? noteSize : coinSize;
 
-      // Calculate background size so the region fills the display area
-      // Background size = display size / region percentage
-      const bgW = Math.round(displaySize.w / (region.wPct / 100));
-      const bgH = Math.round(displaySize.h / (region.hPct / 100));
+      // Scale factor: how much to scale the sprite region to fit display size
+      const scaleX = displaySize.w / region.w;
+      const scaleY = displaySize.h / region.h;
 
-      // Position as percentage of background size
-      const bgX = Math.round(bgW * (region.xPct / 100));
-      const bgY = Math.round(bgH * (region.yPct / 100));
+      // Scale the entire image by the same factor
+      const bgW = Math.round(IMG_W * scaleX);
+      const bgH = Math.round(IMG_H * scaleY);
+
+      // Position = region position * scale factor
+      const bgX = Math.round(region.x * scaleX);
+      const bgY = Math.round(region.y * scaleY);
 
       return `
         <div class="money-item ${isNote ? 'money-note' : 'money-coin'} ${sizeClass}" data-id="${item.id}" ${clickAttr}>
