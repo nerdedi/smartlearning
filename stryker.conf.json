@@ -3,7 +3,7 @@
   "mutator": "javascript",
   "testRunner": "command",
   "commandRunner": {
-    "command": "npx qunit"
+    "command": "npx qunit test/lib.test.js"
   },
   "reporters": ["html", "clear-text", "progress"],
   "coverageAnalysis": "off",
