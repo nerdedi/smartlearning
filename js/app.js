@@ -46,13 +46,23 @@ const App = (() => {
   }
 
   /* ---------- Speak aloud helper ---------- */
-  function speak(text) {
+  function speak(text, force = false) {
+    if (!('speechSynthesis' in window)) return;
     const s = Storage.getSettings();
-    if (!s.speakAloud || !('speechSynthesis' in window)) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.9;
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
+    // Only check setting if not forced
+    if (!force && !s.speakAloud) return;
+
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-AU';
+      u.rate = 0.9;
+      u.volume = 1;
+      // Small delay helps with browser quirks
+      setTimeout(() => speechSynthesis.speak(u), 50);
+    } catch (e) {
+      console.log('Speech error:', e);
+    }
   }
 
   /* ---------- HTML helpers ---------- */
@@ -299,7 +309,7 @@ const App = (() => {
           <div class="card slide-up step-card" style="animation-delay:${(i + 2) * 0.06}s;">
             <h3 class="step-title">${esc(tc.title)}</h3>
             <p class="step-body">${esc(tc.body)}</p>
-            <button class="btn btn-sm btn-ghost" style="margin-top:0.5rem;" onclick="App.speak(\`${esc(tc.body)}\`)">🔊 Read Aloud</button>
+            <button class="btn btn-sm btn-ghost" style="margin-top:0.5rem;" onclick="App.speak(\`${esc(tc.body)}\`, true)">🔊 Read Aloud</button>
           </div>
         `).join('')}
 

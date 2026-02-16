@@ -58,19 +58,19 @@ const MoneyGame = (() => {
   const IMG_H = 1024;
 
   // Pixel coordinates for cropping each currency from the sprite
-  // These define the exact bounding box of each item
+  // Auto-calibrated from image analysis
   const SPRITE_REGIONS = {
-    note5:   { x: 38,   y: 48,  w: 445, h: 280 },
-    note10:  { x: 530,  y: 48,  w: 445, h: 280 },
-    note20:  { x: 1038, y: 48,  w: 455, h: 280 },
-    note50:  { x: 530,  y: 352, w: 445, h: 280 },
-    note100: { x: 1038, y: 352, w: 455, h: 280 },
-    coin5c:  { x: 92,   y: 712, w: 148, h: 148 },
-    coin10c: { x: 275,  y: 712, w: 148, h: 148 },
-    coin20c: { x: 468,  y: 698, w: 180, h: 180 },
-    coin50c: { x: 688,  y: 678, w: 215, h: 215 },
-    coin1:   { x: 942,  y: 693, w: 200, h: 200 },
-    coin2:   { x: 1188, y: 693, w: 200, h: 200 },
+    note5:   { x: 27,   y: 120, w: 468, h: 230 },
+    note10:  { x: 516,  y: 119, w: 504, h: 230 },
+    note20:  { x: 1020, y: 120, w: 488, h: 228 },
+    note50:  { x: 260,  y: 400, w: 510, h: 280 },
+    note100: { x: 770,  y: 400, w: 510, h: 280 },
+    coin5c:  { x: 92,   y: 701, w: 167, h: 169 },
+    coin10c: { x: 275,  y: 697, w: 174, h: 176 },
+    coin20c: { x: 460,  y: 693, w: 220, h: 186 },
+    coin50c: { x: 670,  y: 669, w: 250, h: 216 },
+    coin1:   { x: 920,  y: 680, w: 240, h: 210 },
+    coin2:   { x: 1160, y: 700, w: 160, h: 186 },
   };
 
   /* ---------- Render Currency Item ---------- */
@@ -372,9 +372,9 @@ const MoneyGame = (() => {
 
     if (correct) {
       gameState.score++;
-      if (typeof App !== 'undefined') App.speak('Correct!');
+      speakValue('Correct!');
     } else {
-      if (typeof App !== 'undefined') App.speak(`That's ${selected.name}`);
+      speakValue(`That's ${selected.name}`);
     }
 
     render();
@@ -388,7 +388,7 @@ const MoneyGame = (() => {
 
     if (correct) {
       gameState.score++;
-      if (typeof App !== 'undefined') App.speak('Correct!');
+      speakValue('Correct!');
     }
 
     render();
