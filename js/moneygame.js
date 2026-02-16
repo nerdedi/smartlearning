@@ -57,22 +57,22 @@ const MoneyGame = (() => {
   const IMG_W = 1536;
   const IMG_H = 1024;
 
-  // Exact pixel crop regions for each currency item
+  // Sprite regions as percentages of total image (more reliable across sizes)
   const SPRITE_REGIONS = {
-    // Row 1: Notes $5, $10, $20 - each note is ~430px wide, ~270px tall
-    note5:   { x: 40,   y: 55,  w: 430, h: 270 },
-    note10:  { x: 540,  y: 55,  w: 430, h: 270 },
-    note20:  { x: 1050, y: 55,  w: 440, h: 270 },
-    // Row 2: $50 (with portrait, middle), $100 (right)
-    note50:  { x: 540,  y: 360, w: 430, h: 270 },
-    note100: { x: 1050, y: 360, w: 440, h: 270 },
-    // Row 3: Coins - varying sizes
-    coin5c:  { x: 95,   y: 720, w: 145, h: 145 },
-    coin10c: { x: 280,  y: 720, w: 145, h: 145 },
-    coin20c: { x: 475,  y: 710, w: 175, h: 175 },
-    coin50c: { x: 695,  y: 690, w: 210, h: 210 },
-    coin1:   { x: 950,  y: 705, w: 195, h: 195 },
-    coin2:   { x: 1195, y: 705, w: 195, h: 195 },
+    // Row 1: Notes $5, $10, $20 - positions as % of image
+    note5:   { x: 2.5,  y: 5,   w: 29,  h: 28 },
+    note10:  { x: 35,   y: 5,   w: 29,  h: 28 },
+    note20:  { x: 68,   y: 5,   w: 29,  h: 28 },
+    // Row 2: $50 (middle), $100 (right)
+    note50:  { x: 35,   y: 35,  w: 29,  h: 28 },
+    note100: { x: 68,   y: 35,  w: 29,  h: 28 },
+    // Row 3: Coins
+    coin5c:  { x: 6,    y: 70,  w: 10,  h: 15 },
+    coin10c: { x: 18,   y: 70,  w: 10,  h: 15 },
+    coin20c: { x: 31,   y: 69,  w: 12,  h: 17 },
+    coin50c: { x: 45,   y: 67,  w: 14,  h: 21 },
+    coin1:   { x: 62,   y: 68,  w: 13,  h: 20 },
+    coin2:   { x: 78,   y: 68,  w: 13,  h: 20 },
   };
 
   /* ---------- Render Currency Item ---------- */
@@ -81,26 +81,23 @@ const MoneyGame = (() => {
     const sizeClass = `money-${size}`;
     const clickAttr = clickable ? `onclick="${onclick}" tabindex="0" role="button"` : '';
 
-    // Use real sprite image
+    // Use real sprite image with percentage-based positioning
     if (gameState.useSpriteImage && SPRITE_REGIONS[item.id]) {
       const region = SPRITE_REGIONS[item.id];
 
-      // Target display sizes
-      const noteSize = size === 'large' ? { w: 200, h: 125 } : size === 'small' ? { w: 120, h: 75 } : { w: 160, h: 100 };
-      const coinSize = size === 'large' ? { w: 90, h: 90 } : size === 'small' ? { w: 55, h: 55 } : { w: 70, h: 70 };
+      // Target display sizes (fixed aspect ratios)
+      const noteSize = size === 'large' ? { w: 180, h: 115 } : size === 'small' ? { w: 110, h: 70 } : { w: 145, h: 92 };
+      const coinSize = size === 'large' ? { w: 80, h: 80 } : size === 'small' ? { w: 50, h: 50 } : { w: 65, h: 65 };
       const displaySize = isNote ? noteSize : coinSize;
 
-      // Scale factor: how much to scale the sprite region to fit display size
-      const scaleX = displaySize.w / region.w;
-      const scaleY = displaySize.h / region.h;
+      // Use background-size percentages to scale the sprite
+      // background-size: (100 / regionWidth)% means the region width fills the container
+      const bgSizeX = (100 / region.w) * 100;
+      const bgSizeY = (100 / region.h) * 100;
 
-      // Scale the entire image by the same factor
-      const bgW = Math.round(IMG_W * scaleX);
-      const bgH = Math.round(IMG_H * scaleY);
-
-      // Position = region position * scale factor
-      const bgX = Math.round(region.x * scaleX);
-      const bgY = Math.round(region.y * scaleY);
+      // Position as percentage: where the region starts
+      const bgPosX = (region.x / (100 - region.w)) * 100;
+      const bgPosY = (region.y / (100 - region.h)) * 100;
 
       return `
         <div class="money-item ${isNote ? 'money-note' : 'money-coin'} ${sizeClass}" data-id="${item.id}" ${clickAttr}>
@@ -108,10 +105,11 @@ const MoneyGame = (() => {
             width: ${displaySize.w}px;
             height: ${displaySize.h}px;
             background-image: url('${SPRITE_IMAGE}');
-            background-position: -${bgX}px -${bgY}px;
-            background-size: ${bgW}px ${bgH}px;
+            background-position: ${bgPosX.toFixed(2)}% ${bgPosY.toFixed(2)}%;
+            background-size: ${bgSizeX.toFixed(1)}% ${bgSizeY.toFixed(1)}%;
             border-radius: ${isNote ? '8px' : '50%'};
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            overflow: hidden;
           "></div>
           <div class="money-label">${item.name}</div>
         </div>`;
@@ -432,7 +430,8 @@ const MoneyGame = (() => {
       totalRounds: 5,
       selected: null,
       currentChallenge: null,
-      feedback: null
+      feedback: null,
+      useSpriteImage: true
     };
     render();
   }
@@ -444,12 +443,13 @@ const MoneyGame = (() => {
   }
 
   function speakValue(name) {
-    if (typeof App !== 'undefined') {
-      App.speak(name);
-    } else if ('speechSynthesis' in window) {
+    // Always speak when tapping money (don't rely on App settings)
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel(); // Stop any current speech
       const utterance = new SpeechSynthesisUtterance(name);
       utterance.lang = 'en-AU';
-      utterance.rate = 0.9;
+      utterance.rate = 0.85;
+      utterance.volume = 1;
       speechSynthesis.speak(utterance);
     }
   }
