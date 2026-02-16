@@ -2,10 +2,9 @@
    Smart Learning for Independence – App Core
    Routing, screen rendering, activity handlers, accessibility
    ============================================================ */
-
 const App = (() => {
   /* ---------- State ---------- */
-  let screen = 'welcome';      // welcome | dashboard | module | portfolio | checklist | settings
+  let screen = 'welcome';      // welcome | dashboard | module | portfolio | checklist | settings | educator | educator-learner | educator-checklist | media-manager | export
   let activeModuleId = null;
   let modulePhase = 'learn';    // learn | activity | quiz | done
   let quizIndex = 0;
@@ -128,6 +127,10 @@ const App = (() => {
         <div style="margin-top:1.5rem;">
           ${renderA11yToolbar()}
         </div>
+
+        <button class="btn btn-ghost btn-sm" onclick="App.go('educator')" style="margin-top:1.5rem;opacity:0.7;">
+          🔐 Educator Login
+        </button>
       </div>
     </div>`;
   }
@@ -939,9 +942,101 @@ const App = (() => {
       case 'module':    html = renderModule(); break;
       case 'portfolio': html = renderPortfolio(); break;
       case 'checklist': html = renderChecklist(); break;
+      case 'educator':  html = Educator.renderDashboard(); break;
+      case 'educator-learner': html = Educator.renderLearnerDetail(); break;
+      case 'educator-checklist': html = Educator.renderChecklistReport(); break;
+      case 'media-manager': html = renderMediaManager(); break;
+      case 'export':    html = renderExportPage(); break;
       default:          html = renderWelcome();
     }
     root().innerHTML = html;
+  }
+
+  /* ---------- Screen: Media Manager ---------- */
+  function renderMediaManager() {
+    const isEducator = typeof Educator !== 'undefined' && Educator.isLoggedIn();
+    return `
+    <div class="screen">
+      <header class="app-header">
+        <div class="header-inner">
+          <button class="btn btn-round" onclick="App.go('${isEducator ? 'educator' : 'dashboard'}')" aria-label="Back">←</button>
+          <div class="header-title-group">
+            <h1 class="heading" style="font-size:var(--fs-xl);">📷 Media Library</h1>
+            <p class="text-muted">Photos, videos, and resources</p>
+          </div>
+        </div>
+      </header>
+      <div class="container space-y-lg" style="padding-bottom:3rem;">
+        ${Media.renderUploadForm()}
+        <div class="card">
+          <h2 class="heading" style="margin-bottom:1rem;">📚 All Media</h2>
+          ${Media.renderGallery(null, { editable: true })}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  /* ---------- Screen: Export ---------- */
+  function renderExportPage() {
+    return `
+    <div class="screen">
+      <header class="app-header">
+        <div class="header-inner">
+          <button class="btn btn-round" onclick="App.go('educator')" aria-label="Back">←</button>
+          <div class="header-title-group">
+            <h1 class="heading" style="font-size:var(--fs-xl);">📥 Export Data</h1>
+            <p class="text-muted">Download reports and backups</p>
+          </div>
+        </div>
+      </header>
+      <div class="container space-y-lg" style="padding-bottom:3rem;">
+        <div class="grid grid-2">
+          <div class="card text-center">
+            <span style="font-size:3rem;">📊</span>
+            <h3 class="heading" style="margin:0.5rem 0;">Learner Report (CSV)</h3>
+            <p class="text-muted" style="font-size:0.85rem;margin-bottom:1rem;">All learner progress in spreadsheet format</p>
+            <button class="btn btn-primary" onclick="Export.downloadCSV()">📥 Download CSV</button>
+          </div>
+          <div class="card text-center">
+            <span style="font-size:3rem;">📄</span>
+            <h3 class="heading" style="margin:0.5rem 0;">Summary Report (PDF)</h3>
+            <p class="text-muted" style="font-size:0.85rem;margin-bottom:1rem;">Print-ready overview for acquittal</p>
+            <button class="btn btn-primary" onclick="Export.downloadPDF()">📄 Generate PDF</button>
+          </div>
+          <div class="card text-center">
+            <span style="font-size:3rem;">📚</span>
+            <h3 class="heading" style="margin:0.5rem 0;">Module Stats (CSV)</h3>
+            <p class="text-muted" style="font-size:0.85rem;margin-bottom:1rem;">Module completion and quiz data</p>
+            <button class="btn btn-primary" onclick="Export.downloadModuleStatsCSV()">📥 Download CSV</button>
+          </div>
+          <div class="card text-center">
+            <span style="font-size:3rem;">💾</span>
+            <h3 class="heading" style="margin:0.5rem 0;">Full Backup (JSON)</h3>
+            <p class="text-muted" style="font-size:0.85rem;margin-bottom:1rem;">Complete data backup for restoration</p>
+            <button class="btn btn-primary" onclick="Export.exportJSON()">💾 Download Backup</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="heading" style="margin-bottom:0.75rem;">📤 Restore from Backup</h3>
+          <input type="file" id="import-file" accept=".json" class="input">
+          <button class="btn btn-ghost" style="margin-top:0.5rem;" onclick="App.importBackup()">📤 Import Data</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function importBackup() {
+    const input = document.getElementById('import-file');
+    if (!input.files[0]) {
+      toast('Please select a backup file', 'error');
+      return;
+    }
+    Export.importJSON(input.files[0]).then(() => {
+      toast('✅ Data restored successfully!', 'success');
+      render();
+    }).catch(err => {
+      toast('❌ ' + err.message, 'error');
+    });
   }
 
   /* ---------- Escape HTML ---------- */
@@ -980,6 +1075,7 @@ const App = (() => {
     togglePledge,
     rateSkill, saveChecklist,
     toggleSetting,
+    importBackup,
   };
 })();
 

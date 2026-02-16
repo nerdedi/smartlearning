@@ -1216,3 +1216,363 @@ h3, .h3 { font-size: var(--fs-lg); }
     --clr-text-muted: rgba(255, 255, 255, 0.9);
   }
 }
+
+/* ========================================
+   MEDIA GALLERY & LIGHTBOX
+   ======================================== */
+
+.media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.media-item {
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.media-item:hover, .media-item:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.media-item img, .media-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-item .media-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.media-item:hover .media-overlay,
+.media-item:focus .media-overlay {
+  opacity: 1;
+}
+
+.media-item .media-caption {
+  font-size: 0.75rem;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.media-item .play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+
+/* Lightbox Overlay */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  position: relative;
+  text-align: center;
+}
+
+.lightbox-content img,
+.lightbox-content video,
+.lightbox-content iframe {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: var(--radius);
+}
+
+.lightbox-content iframe {
+  width: 90vw;
+  height: 50.625vw; /* 16:9 */
+  max-height: 80vh;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  font-size: 1.5rem;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.lightbox-close:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.lightbox-caption {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--clr-text-muted);
+}
+
+.lightbox-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+/* ========================================
+   UPLOAD FORM
+   ======================================== */
+
+.upload-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  padding-bottom: 0.5rem;
+}
+
+.upload-tab {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: transparent;
+  border: none;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.upload-tab.active {
+  background: rgba(255,255,255,0.1);
+  color: var(--clr-text);
+}
+
+.upload-section {
+  display: none;
+  padding: 1rem 0;
+}
+
+.upload-section.active {
+  display: block;
+}
+
+.upload-dropzone {
+  border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: var(--radius);
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255,255,255,0.02);
+}
+
+.upload-dropzone:hover, .upload-dropzone.dragover {
+  border-color: var(--clr-accent);
+  background: rgba(255,255,255,0.05);
+}
+
+.upload-dropzone input[type="file"] {
+  display: none;
+}
+
+/* ========================================
+   DATA TABLES (Educator Dashboard)
+   ======================================== */
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -0.5rem;
+  padding: 0 0.5rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 500px;
+}
+
+.data-table th, .data-table td {
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.data-table th {
+  background: rgba(255,255,255,0.05);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--clr-text-muted);
+  position: sticky;
+  top: 0;
+}
+
+.data-table tr:hover td {
+  background: rgba(255,255,255,0.03);
+}
+
+.data-table .text-right {
+  text-align: right;
+}
+
+.data-table .text-center {
+  text-align: center;
+}
+
+/* Mini progress bar */
+.progress-mini {
+  height: 0.5rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 100px;
+  overflow: hidden;
+  min-width: 60px;
+}
+
+.progress-mini-fill {
+  height: 100%;
+  background: var(--clr-success);
+  border-radius: 100px;
+  transition: width 0.3s ease;
+}
+
+/* ========================================
+   VIDEO EMBED
+   ======================================== */
+
+.video-embed {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #000;
+}
+
+.video-embed iframe,
+.video-embed video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ========================================
+   EDUCATOR DASHBOARD EXTRAS
+   ======================================== */
+
+.stat-card {
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--clr-text-muted);
+}
+
+.stat-card.accent {
+  background: linear-gradient(135deg, var(--clr-accent) 0%, var(--clr-accent-2) 100%);
+}
+
+.stat-card.accent .stat-label {
+  color: rgba(255,255,255,0.8);
+}
+
+/* PIN entry */
+.pin-input {
+  font-size: 1.5rem;
+  letter-spacing: 0.5rem;
+  text-align: center;
+  padding: 0.75rem;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+/* Educator nav */
+.educator-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--clr-text-muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+
+/* ========================================
+   PRINT STYLES FOR REPORTS
+   ======================================== */
+
+@media print {
+  .lightbox-overlay { display: none !important; }
+
+  .data-table { font-size: 10pt; }
+  .data-table th, .data-table td {
+    border: 1px solid #ccc;
+    padding: 0.4rem;
+  }
+  .data-table th { background: #eee; }
+
+  .stat-card {
+    border: 1px solid #ccc;
+    background: transparent;
+  }
+  .stat-card.accent { background: #f0f0f0; }
+
+  .progress-mini { border: 1px solid #ccc; }
+  .progress-mini-fill { background: #666; }
+}
