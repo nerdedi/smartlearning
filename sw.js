@@ -17,6 +17,7 @@ const ASSETS_TO_CACHE = [
   '/js/media.js',
   '/js/educator.js',
   '/js/export.js',
+  '/js/moneygame.js',
   '/manifest.json',
 ];
 

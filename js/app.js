@@ -326,6 +326,8 @@ const App = (() => {
       activityHTML = renderScenarioActivity(act);
     } else if (act.type === 'budget-builder' || act.type === 'budget-challenge') {
       activityHTML = renderBudgetActivity(act);
+    } else if (act.type === 'money-game') {
+      activityHTML = renderMoneyGameActivity(act);
     } else if (act.type === 'steps-order') {
       activityHTML = renderStepsOrderActivity(act);
     } else if (act.type === 'spot-the-danger' || act.type === 'spot-the-risk') {
@@ -555,6 +557,14 @@ const App = (() => {
   function toggleBudgetItem(i) {
     activityState.budgetSelected[i] = !activityState.budgetSelected[i];
     render();
+  }
+
+  function renderMoneyGameActivity(act) {
+    // Uses the MoneyGame module to render an interactive money matching game
+    if (typeof MoneyGame !== 'undefined') {
+      return MoneyGame.renderWidget();
+    }
+    return `<div class="card"><p>Money Game loading...</p></div>`;
   }
 
   /* --- Generic activity renderers for remaining types --- */

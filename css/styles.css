@@ -1554,6 +1554,465 @@ h3, .h3 { font-size: var(--fs-lg); }
 }
 
 /* ========================================
+   MONEY MATCHING GAME
+   ======================================== */
+
+.money-game-widget {
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.game-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(255,255,255,0.1);
+  padding-bottom: 0.5rem;
+}
+
+.game-tab {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  background: transparent;
+  border: none;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.game-tab:hover {
+  color: var(--clr-text);
+  background: rgba(255,255,255,0.05);
+}
+
+.game-tab.active {
+  background: rgba(255,255,255,0.1);
+  color: var(--clr-accent);
+}
+
+.money-game-container {
+  min-height: 400px;
+}
+
+.money-game-section {
+  margin-bottom: 2rem;
+}
+
+.money-game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.game-progress {
+  flex: 1;
+  min-width: 200px;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: var(--clr-text-muted);
+  margin-bottom: 0.25rem;
+  display: block;
+}
+
+.progress-bar {
+  height: 0.5rem;
+  background: rgba(255,255,255,0.1);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--clr-success), var(--clr-accent));
+  border-radius: 100px;
+  transition: width 0.3s ease;
+}
+
+.game-score {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--clr-accent);
+}
+
+/* Money Grid */
+.money-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.money-grid-notes {
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+
+.money-grid-coins {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+
+/* Money Items */
+.money-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.money-item:hover {
+  transform: scale(1.05);
+}
+
+.money-item:focus {
+  outline: 3px solid var(--clr-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+.money-label {
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* Sprite-based money display */
+.money-sprite {
+  background-repeat: no-repeat;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.note-sprite {
+  border-radius: 8px;
+}
+
+.coin-sprite {
+  border-radius: 50%;
+}
+
+/* Notes */
+.note-visual {
+  width: 140px;
+  height: 70px;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.money-large .note-visual {
+  width: 160px;
+  height: 80px;
+}
+
+.money-small .note-visual {
+  width: 100px;
+  height: 50px;
+}
+
+.note-corner {
+  position: absolute;
+  font-weight: 800;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.note-tl {
+  top: 4px;
+  left: 6px;
+}
+
+.note-br {
+  bottom: 4px;
+  right: 6px;
+}
+
+.note-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.windgap-text {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.65rem;
+  color: #e63946;
+  text-transform: lowercase;
+}
+
+.windgap-tagline {
+  font-size: 0.35rem;
+  color: #333;
+  margin-top: -1px;
+}
+
+.note-icon {
+  position: absolute;
+  bottom: 8px;
+  left: 10px;
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+/* Coins */
+.coin-visual {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.3),
+    inset 0 2px 4px rgba(255,255,255,0.3),
+    inset 0 -2px 4px rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.money-large .coin-visual {
+  width: 80px;
+  height: 80px;
+}
+
+.money-small .coin-visual {
+  width: 45px;
+  height: 45px;
+}
+
+.coin-silver {
+  background: linear-gradient(145deg, #e8e8e8, #b8b8b8);
+  border: 2px solid #989898;
+}
+
+.coin-gold {
+  background: linear-gradient(145deg, #f4d03f, #c9a227);
+  border: 2px solid #a67c00;
+}
+
+.coin-value {
+  font-weight: 800;
+  font-size: 1rem;
+  color: #333;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.coin-icon {
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.money-small .coin-value {
+  font-size: 0.75rem;
+}
+
+.money-small .coin-icon {
+  font-size: 0.65rem;
+}
+
+.coin-dodecagon .coin-visual {
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 79% 10%, 98% 35%, 98% 65%, 79% 90%, 50% 100%, 21% 90%, 2% 65%, 2% 35%, 21% 10%);
+}
+
+.coin-small .coin-visual {
+  width: 50px;
+  height: 50px;
+}
+
+/* Match Game */
+.match-challenge {
+  text-align: center;
+}
+
+.highlight {
+  color: var(--clr-accent);
+  font-weight: 700;
+}
+
+.match-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+@media (min-width: 600px) {
+  .match-options {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.match-option {
+  background: rgba(255,255,255,0.05);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.match-option:hover:not(:disabled) {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.match-option.correct {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: var(--clr-success);
+}
+
+.match-option.incorrect {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--clr-danger);
+}
+
+.match-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Count Game */
+.count-challenge {
+  text-align: center;
+}
+
+.count-display {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+}
+
+.count-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.count-option {
+  min-width: 100px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.count-option.correct {
+  background: var(--clr-success) !important;
+  color: white !important;
+}
+
+.count-option.incorrect {
+  background: var(--clr-danger) !important;
+  color: white !important;
+}
+
+/* Game Feedback */
+.game-feedback {
+  padding: 1rem;
+  border-radius: var(--radius);
+  text-align: center;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  animation: slideUp 0.3s ease;
+}
+
+.feedback-correct {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid var(--clr-success);
+  color: var(--clr-success);
+}
+
+.feedback-incorrect {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid var(--clr-danger);
+  color: #fca5a5;
+}
+
+/* Results Screen */
+.game-results {
+  text-align: center;
+  padding: 2rem;
+}
+
+.results-trophy {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.results-score {
+  margin: 1rem 0;
+}
+
+.score-number {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--clr-accent);
+}
+
+.score-total {
+  font-size: 1.5rem;
+  color: var(--clr-text-muted);
+}
+
+.results-stars {
+  font-size: 2rem;
+  margin: 1rem 0;
+  letter-spacing: 0.25rem;
+}
+
+.results-message {
+  font-size: 1.1rem;
+  color: var(--clr-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.results-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
    PRINT STYLES FOR REPORTS
    ======================================== */
 

@@ -244,18 +244,20 @@ const MODULES = [
     icon: '💵', badge: '💵 Money Smart',
     description: 'Understand prices and simple budgeting.',
     outcomes: [
-      'Recognise money values',
+      'Recognise Australian notes and coins',
+      'Match money to its value',
       'Compare prices of everyday items',
       'Understand needs vs wants in a budget',
     ],
-    vocabulary: ['price', 'cost', 'budget', 'change', 'total', 'expensive', 'cheap'],
-    tools: ['Smart Board shopping game', 'Price comparison cards'],
+    vocabulary: ['price', 'cost', 'budget', 'change', 'total', 'expensive', 'cheap', 'notes', 'coins'],
+    tools: ['Smart Board shopping game', 'Price comparison cards', 'Windgap Money Cards'],
     teachContent: [
       { type: 'info', title: 'Australian Money', body: 'Australia uses dollars ($) and cents (¢). There are 100 cents in $1. Notes come in $5, $10, $20, $50, and $100. Coins are 5¢, 10¢, 20¢, 50¢, $1, and $2.' },
       { type: 'info', title: 'Understanding Prices', body: 'Every item in a shop has a price tag. When you see $4.50, that means 4 dollars and 50 cents. Always check the price before you buy!' },
       { type: 'info', title: 'Budgeting Basics', body: 'A budget is a plan for your money. Write down how much you have, then plan what to spend it on. Needs first (food, bills), then wants (treats, fun).' },
     ],
     activities: [
+      { type: 'money-game', title: '💵 Money Matching Game', instruction: 'Learn to recognise Australian notes and coins, then play matching games!' },
       { type: 'budget-challenge', title: 'Shopping Challenge', instruction: 'You have $25 to spend. Pick items but stay under budget!',
         budget: 25,
         items: [

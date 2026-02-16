@@ -47,7 +47,29 @@ const MoneyGame = (() => {
     selected: null,
     currentChallenge: null,
     feedback: null,
-    useSpriteImage: false, // Will be set based on image availability
+    useSpriteImage: true, // Use actual Windgap currency image
+  };
+
+  // Sprite image path
+  const SPRITE_IMAGE = 'assets/money/windgap-currency.png';
+
+  // Image dimensions: 1536 x 1024
+  // Crop regions for each currency item in pixels
+  const SPRITE_REGIONS = {
+    // Row 1: Notes $5, $10, $20 (y: 30-340)
+    note5:   { x: 35, y: 30, w: 420, h: 260 },
+    note10:  { x: 535, y: 30, w: 420, h: 260 },
+    note20:  { x: 1040, y: 30, w: 420, h: 260 },
+    // Row 2: Notes $50, $50 variant, $100 (y: 340-620)
+    note50:  { x: 285, y: 340, w: 420, h: 260 },  // Using the one with person
+    note100: { x: 1040, y: 340, w: 420, h: 260 },
+    // Row 3: Coins (y: 700-980)
+    coin5c:  { x: 80, y: 710, w: 130, h: 130 },
+    coin10c: { x: 230, y: 710, w: 130, h: 130 },
+    coin20c: { x: 380, y: 705, w: 160, h: 145 },
+    coin50c: { x: 570, y: 695, w: 180, h: 170 },
+    coin1:   { x: 790, y: 700, w: 175, h: 165 },
+    coin2:   { x: 1000, y: 705, w: 170, h: 160 },
   };
 
   /* ---------- Render Currency Item ---------- */
@@ -56,6 +78,41 @@ const MoneyGame = (() => {
     const sizeClass = `money-${size}`;
     const clickAttr = clickable ? `onclick="${onclick}" tabindex="0" role="button"` : '';
 
+    // Use real sprite image
+    if (gameState.useSpriteImage && SPRITE_REGIONS[item.id]) {
+      const region = SPRITE_REGIONS[item.id];
+
+      // Calculate display dimensions based on size
+      let scale = size === 'large' ? 0.4 : size === 'small' ? 0.2 : 0.3;
+      if (!isNote) scale = size === 'large' ? 0.7 : size === 'small' ? 0.35 : 0.5;
+
+      const displayW = Math.round(region.w * scale);
+      const displayH = Math.round(region.h * scale);
+
+      // Calculate background position and size
+      // We use object-fit approach with a clipped container
+      const bgScale = 1536 * scale / region.w;
+      const bgW = Math.round(1536 * scale);
+      const bgH = Math.round(1024 * scale);
+      const bgX = Math.round(region.x * scale);
+      const bgY = Math.round(region.y * scale);
+
+      return `
+        <div class="money-item ${isNote ? 'money-note' : 'money-coin'} ${sizeClass}" data-id="${item.id}" ${clickAttr}>
+          <div class="money-sprite" style="
+            width: ${displayW}px;
+            height: ${displayH}px;
+            background-image: url('${SPRITE_IMAGE}');
+            background-position: -${bgX}px -${bgY}px;
+            background-size: ${bgW}px ${bgH}px;
+            border-radius: ${isNote ? '8px' : '50%'};
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+          "></div>
+          <div class="money-label">${item.name}</div>
+        </div>`;
+    }
+
+    // Fallback to CSS-styled representation
     if (isNote) {
       return `
         <div class="money-item money-note ${sizeClass}" data-id="${item.id}" ${clickAttr}>
