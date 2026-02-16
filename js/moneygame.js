@@ -84,39 +84,16 @@ const MoneyGame = (() => {
       return `<div class="money-item ${sizeClass}">${item.name}</div>`;
     }
 
-    // Target display sizes
-    const noteSize = size === 'large' ? { w: 180, h: 113 } : size === 'small' ? { w: 110, h: 69 } : { w: 145, h: 91 };
-    const coinSize = size === 'large' ? { w: 88, h: 88 } : size === 'small' ? { w: 54, h: 54 } : { w: 70, h: 70 };
-    const displaySize = isNote ? noteSize : coinSize;
+    // UI scale based on size variant
+    const uiScale = isNote
+      ? (size === 'large' ? 0.42 : size === 'small' ? 0.24 : 0.32)
+      : (size === 'large' ? 0.50 : size === 'small' ? 0.32 : 0.40);
 
-    // Use uniform scale based on the constraining dimension
-    const scaleX = displaySize.w / region.w;
-    const scaleY = displaySize.h / region.h;
-    const scale = Math.min(scaleX, scaleY);
-
-    // Scale the entire sprite image
-    const bgW = Math.round(IMG_W * scale);
-    const bgH = Math.round(IMG_H * scale);
-
-    // Position = negative offset of region start, scaled
-    const bgX = Math.round(region.x * scale);
-    const bgY = Math.round(region.y * scale);
-
-    // Actual rendered size of the region
-    const renderedW = Math.round(region.w * scale);
-    const renderedH = Math.round(region.h * scale);
+    const spriteClass = isNote ? 'note-sprite' : 'coin-sprite';
 
     return `
       <div class="money-item ${isNote ? 'money-note' : 'money-coin'} ${sizeClass}" data-id="${item.id}" ${clickAttr}>
-        <div class="money-sprite" style="
-          width: ${renderedW}px;
-          height: ${renderedH}px;
-          background: url('${SPRITE_IMAGE}') no-repeat;
-          background-position: ${-bgX}px ${-bgY}px;
-          background-size: ${bgW}px ${bgH}px;
-          border-radius: ${isNote ? '8px' : '50%'};
-          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        "></div>
+        <div class="money-sprite ${spriteClass} spr-${item.id}" style="--ui-scale: ${uiScale};"></div>
         <div class="money-label">${item.name}</div>
       </div>`;
   }
