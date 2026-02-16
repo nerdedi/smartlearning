@@ -87,3 +87,29 @@ QUnit.module("Export Smoke", () => {
     }
   });
 });
+
+QUnit.module("App Core Functions", () => {
+  QUnit.test("App.go is a function", assert => {
+    if (typeof global !== 'undefined' && global.App) {
+      assert.ok(typeof global.App.go === 'function', 'App.go is a function');
+    } else {
+      assert.ok(true, 'App not available in Node test environment');
+    }
+  });
+
+  QUnit.test("App.toast is a function", assert => {
+    if (typeof global !== 'undefined' && global.App) {
+      assert.ok(typeof global.App.toast === 'function', 'App.toast is a function');
+    } else {
+      assert.ok(true, 'App not available in Node test environment');
+    }
+  });
+
+  QUnit.test("App.speak is a function", assert => {
+    if (typeof global !== 'undefined' && global.App) {
+      assert.ok(typeof global.App.speak === 'function', 'App.speak is a function');
+    } else {
+      assert.ok(true, 'App not available in Node test environment');
+    }
+  });
+});

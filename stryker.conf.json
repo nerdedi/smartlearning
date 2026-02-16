@@ -1,0 +1,14 @@
+{
+  "$schema": "https://stryker-mutator.io/schema/stryker-schema.json",
+  "mutator": "javascript",
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "npm test"
+  },
+  "reporters": ["html", "clear-text", "progress"],
+  "coverageAnalysis": "off",
+  "files": [
+    "js/**/*.js",
+    "test/**/*.js"
+  ]
+}

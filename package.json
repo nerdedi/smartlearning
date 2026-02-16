@@ -7,6 +7,8 @@
     "test": "qunit"
   },
   "devDependencies": {
+    "@stryker-mutator/core": "^9.5.1",
+    "jsdoc": "^4.0.5",
     "qunit": "^2.25.0"
   },
   "keywords": [],
