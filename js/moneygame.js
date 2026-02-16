@@ -57,22 +57,20 @@ const MoneyGame = (() => {
   const IMG_W = 1536;
   const IMG_H = 1024;
 
-  // Sprite regions as percentages of total image (more reliable across sizes)
+  // Pixel coordinates for cropping each currency from the sprite
+  // These define the exact bounding box of each item
   const SPRITE_REGIONS = {
-    // Row 1: Notes $5, $10, $20 - positions as % of image
-    note5:   { x: 2.5,  y: 5,   w: 29,  h: 28 },
-    note10:  { x: 35,   y: 5,   w: 29,  h: 28 },
-    note20:  { x: 68,   y: 5,   w: 29,  h: 28 },
-    // Row 2: $50 (middle), $100 (right)
-    note50:  { x: 35,   y: 35,  w: 29,  h: 28 },
-    note100: { x: 68,   y: 35,  w: 29,  h: 28 },
-    // Row 3: Coins
-    coin5c:  { x: 6,    y: 70,  w: 10,  h: 15 },
-    coin10c: { x: 18,   y: 70,  w: 10,  h: 15 },
-    coin20c: { x: 31,   y: 69,  w: 12,  h: 17 },
-    coin50c: { x: 45,   y: 67,  w: 14,  h: 21 },
-    coin1:   { x: 62,   y: 68,  w: 13,  h: 20 },
-    coin2:   { x: 78,   y: 68,  w: 13,  h: 20 },
+    note5:   { x: 38,   y: 48,  w: 445, h: 280 },
+    note10:  { x: 530,  y: 48,  w: 445, h: 280 },
+    note20:  { x: 1038, y: 48,  w: 455, h: 280 },
+    note50:  { x: 530,  y: 352, w: 445, h: 280 },
+    note100: { x: 1038, y: 352, w: 455, h: 280 },
+    coin5c:  { x: 92,   y: 712, w: 148, h: 148 },
+    coin10c: { x: 275,  y: 712, w: 148, h: 148 },
+    coin20c: { x: 468,  y: 698, w: 180, h: 180 },
+    coin50c: { x: 688,  y: 678, w: 215, h: 215 },
+    coin1:   { x: 942,  y: 693, w: 200, h: 200 },
+    coin2:   { x: 1188, y: 693, w: 200, h: 200 },
   };
 
   /* ---------- Render Currency Item ---------- */
@@ -80,68 +78,47 @@ const MoneyGame = (() => {
     const isNote = item.id.startsWith('note');
     const sizeClass = `money-${size}`;
     const clickAttr = clickable ? `onclick="${onclick}" tabindex="0" role="button"` : '';
+    const region = SPRITE_REGIONS[item.id];
 
-    // Use real sprite image with percentage-based positioning
-    if (gameState.useSpriteImage && SPRITE_REGIONS[item.id]) {
-      const region = SPRITE_REGIONS[item.id];
-
-      // Target display sizes (fixed aspect ratios)
-      const noteSize = size === 'large' ? { w: 180, h: 115 } : size === 'small' ? { w: 110, h: 70 } : { w: 145, h: 92 };
-      const coinSize = size === 'large' ? { w: 80, h: 80 } : size === 'small' ? { w: 50, h: 50 } : { w: 65, h: 65 };
-      const displaySize = isNote ? noteSize : coinSize;
-
-      // Use background-size percentages to scale the sprite
-      // background-size: (100 / regionWidth)% means the region width fills the container
-      const bgSizeX = (100 / region.w) * 100;
-      const bgSizeY = (100 / region.h) * 100;
-
-      // Position as percentage: where the region starts
-      const bgPosX = (region.x / (100 - region.w)) * 100;
-      const bgPosY = (region.y / (100 - region.h)) * 100;
-
-      return `
-        <div class="money-item ${isNote ? 'money-note' : 'money-coin'} ${sizeClass}" data-id="${item.id}" ${clickAttr}>
-          <div class="money-sprite" style="
-            width: ${displaySize.w}px;
-            height: ${displaySize.h}px;
-            background-image: url('${SPRITE_IMAGE}');
-            background-position: ${bgPosX.toFixed(2)}% ${bgPosY.toFixed(2)}%;
-            background-size: ${bgSizeX.toFixed(1)}% ${bgSizeY.toFixed(1)}%;
-            border-radius: ${isNote ? '8px' : '50%'};
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-            overflow: hidden;
-          "></div>
-          <div class="money-label">${item.name}</div>
-        </div>`;
+    if (!region) {
+      return `<div class="money-item ${sizeClass}">${item.name}</div>`;
     }
 
-    // Fallback to CSS-styled representation
-    if (isNote) {
-      return `
-        <div class="money-item money-note ${sizeClass}" data-id="${item.id}" ${clickAttr}>
-          <div class="note-visual" style="background: linear-gradient(135deg, ${item.color} 0%, ${lighten(item.color, 20)} 100%);">
-            <div class="note-corner note-tl">${item.label.replace('$', '')}</div>
-            <div class="note-logo">
-              <span class="windgap-text">windgap</span>
-              <span class="windgap-tagline">Creating Opportunities</span>
-            </div>
-            <div class="note-corner note-br">${item.label.replace('$', '')}</div>
-            <div class="note-icon">${item.icon}</div>
-          </div>
-          <div class="money-label">${item.name}</div>
-        </div>`;
-    } else {
-      const shapeClass = item.shape === 'dodecagon' ? 'coin-dodecagon' : item.shape === 'circle-small' ? 'coin-small' : '';
-      const isGold = item.value >= 1;
-      return `
-        <div class="money-item money-coin ${sizeClass} ${shapeClass}" data-id="${item.id}" ${clickAttr}>
-          <div class="coin-visual ${isGold ? 'coin-gold' : 'coin-silver'}">
-            <div class="coin-value">${item.label.replace('c', '').replace('$', '')}</div>
-            <div class="coin-icon">${item.icon}</div>
-          </div>
-          <div class="money-label">${item.name}</div>
-        </div>`;
-    }
+    // Target display sizes
+    const noteSize = size === 'large' ? { w: 180, h: 113 } : size === 'small' ? { w: 110, h: 69 } : { w: 145, h: 91 };
+    const coinSize = size === 'large' ? { w: 88, h: 88 } : size === 'small' ? { w: 54, h: 54 } : { w: 70, h: 70 };
+    const displaySize = isNote ? noteSize : coinSize;
+
+    // Use uniform scale based on the constraining dimension
+    const scaleX = displaySize.w / region.w;
+    const scaleY = displaySize.h / region.h;
+    const scale = Math.min(scaleX, scaleY);
+
+    // Scale the entire sprite image
+    const bgW = Math.round(IMG_W * scale);
+    const bgH = Math.round(IMG_H * scale);
+
+    // Position = negative offset of region start, scaled
+    const bgX = Math.round(region.x * scale);
+    const bgY = Math.round(region.y * scale);
+
+    // Actual rendered size of the region
+    const renderedW = Math.round(region.w * scale);
+    const renderedH = Math.round(region.h * scale);
+
+    return `
+      <div class="money-item ${isNote ? 'money-note' : 'money-coin'} ${sizeClass}" data-id="${item.id}" ${clickAttr}>
+        <div class="money-sprite" style="
+          width: ${renderedW}px;
+          height: ${renderedH}px;
+          background: url('${SPRITE_IMAGE}') no-repeat;
+          background-position: ${-bgX}px ${-bgY}px;
+          background-size: ${bgW}px ${bgH}px;
+          border-radius: ${isNote ? '8px' : '50%'};
+          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        "></div>
+        <div class="money-label">${item.name}</div>
+      </div>`;
   }
 
   function lighten(color, percent) {
@@ -223,8 +200,16 @@ const MoneyGame = (() => {
 
       ${gameState.feedback ? `
         <div class="game-feedback ${gameState.feedback.correct ? 'feedback-correct' : 'feedback-incorrect'}">
-          ${gameState.feedback.correct ? '✅ Correct!' : `❌ That's ${gameState.feedback.selectedName}. Try to remember: ${challenge.targetValue} looks like this!`}
+          ${gameState.feedback.correct ? '✅ Correct! Well done!' : `❌ That's ${gameState.feedback.selectedName}.`}
         </div>
+        ${!gameState.feedback.correct ? `
+          <div class="feedback-hint" style="text-align:center; margin-top:1rem; padding:1rem; background:rgba(255,255,255,0.1); border-radius:var(--radius);">
+            <p style="margin-bottom:0.75rem;">This is ${challenge.targetValue}:</p>
+            <div style="display:flex; justify-content:center;">
+              ${renderCurrency(targetItem, 'large')}
+            </div>
+          </div>
+        ` : ''}
         <div class="text-center" style="margin-top:1rem;">
           <button class="btn btn-primary" onclick="MoneyGame.nextRound()">
             ${gameState.round + 1 >= gameState.totalRounds ? '🏆 See Results' : '➡️ Next Round'}
@@ -443,14 +428,26 @@ const MoneyGame = (() => {
   }
 
   function speakValue(name) {
-    // Always speak when tapping money (don't rely on App settings)
-    if ('speechSynthesis' in window) {
-      speechSynthesis.cancel(); // Stop any current speech
-      const utterance = new SpeechSynthesisUtterance(name);
-      utterance.lang = 'en-AU';
-      utterance.rate = 0.85;
-      utterance.volume = 1;
-      speechSynthesis.speak(utterance);
+    // Force speech synthesis - don't rely on settings
+    try {
+      if ('speechSynthesis' in window) {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+
+        // Create and configure utterance
+        const utterance = new SpeechSynthesisUtterance(name);
+        utterance.lang = 'en-AU';
+        utterance.rate = 0.85;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        // Small delay to ensure cancel completes
+        setTimeout(() => {
+          window.speechSynthesis.speak(utterance);
+        }, 50);
+      }
+    } catch (e) {
+      console.log('Speech synthesis error:', e);
     }
   }
 
