@@ -54,22 +54,22 @@ const MoneyGame = (() => {
   const SPRITE_IMAGE = 'assets/money/windgap-currency.png';
 
   // Image dimensions: 1536 x 1024
-  // Crop regions for each currency item in pixels
+  // Sprite regions as percentages of total image (more reliable than pixels)
   const SPRITE_REGIONS = {
-    // Row 1: Notes $5, $10, $20 (y: 30-340)
-    note5:   { x: 35, y: 30, w: 420, h: 260 },
-    note10:  { x: 535, y: 30, w: 420, h: 260 },
-    note20:  { x: 1040, y: 30, w: 420, h: 260 },
-    // Row 2: Notes $50, $50 variant, $100 (y: 340-620)
-    note50:  { x: 285, y: 340, w: 420, h: 260 },  // Using the one with person
-    note100: { x: 1040, y: 340, w: 420, h: 260 },
-    // Row 3: Coins (y: 700-980)
-    coin5c:  { x: 80, y: 710, w: 130, h: 130 },
-    coin10c: { x: 230, y: 710, w: 130, h: 130 },
-    coin20c: { x: 380, y: 705, w: 160, h: 145 },
-    coin50c: { x: 570, y: 695, w: 180, h: 170 },
-    coin1:   { x: 790, y: 700, w: 175, h: 165 },
-    coin2:   { x: 1000, y: 705, w: 170, h: 160 },
+    // Row 1: Notes $5, $10, $20 (top row)
+    note5:   { xPct: 2.5, yPct: 3, wPct: 28, hPct: 29 },
+    note10:  { xPct: 35, yPct: 3, wPct: 28, hPct: 29 },
+    note20:  { xPct: 68, yPct: 3, wPct: 28, hPct: 29 },
+    // Row 2: Notes $50, $100 (middle row - using middle $50 with person)
+    note50:  { xPct: 35, yPct: 35, wPct: 28, hPct: 29 },
+    note100: { xPct: 68, yPct: 35, wPct: 28, hPct: 29 },
+    // Row 3: Coins (bottom row)
+    coin5c:  { xPct: 5, yPct: 70, wPct: 10, hPct: 22 },
+    coin10c: { xPct: 15, yPct: 70, wPct: 10, hPct: 22 },
+    coin20c: { xPct: 25.5, yPct: 70, wPct: 11, hPct: 22 },
+    coin50c: { xPct: 37.5, yPct: 68, wPct: 13, hPct: 26 },
+    coin1:   { xPct: 52, yPct: 69, wPct: 13, hPct: 24 },
+    coin2:   { xPct: 66, yPct: 69, wPct: 13, hPct: 24 },
   };
 
   /* ---------- Render Currency Item ---------- */
@@ -78,30 +78,29 @@ const MoneyGame = (() => {
     const sizeClass = `money-${size}`;
     const clickAttr = clickable ? `onclick="${onclick}" tabindex="0" role="button"` : '';
 
-    // Use real sprite image
+    // Use real sprite image with percentage-based positioning
     if (gameState.useSpriteImage && SPRITE_REGIONS[item.id]) {
       const region = SPRITE_REGIONS[item.id];
 
-      // Calculate display dimensions based on size
-      let scale = size === 'large' ? 0.4 : size === 'small' ? 0.2 : 0.3;
-      if (!isNote) scale = size === 'large' ? 0.7 : size === 'small' ? 0.35 : 0.5;
+      // Display sizes
+      const noteSize = size === 'large' ? { w: 180, h: 110 } : size === 'small' ? { w: 110, h: 65 } : { w: 150, h: 90 };
+      const coinSize = size === 'large' ? { w: 85, h: 85 } : size === 'small' ? { w: 50, h: 50 } : { w: 65, h: 65 };
+      const displaySize = isNote ? noteSize : coinSize;
 
-      const displayW = Math.round(region.w * scale);
-      const displayH = Math.round(region.h * scale);
+      // Calculate background size so the region fills the display area
+      // Background size = display size / region percentage
+      const bgW = Math.round(displaySize.w / (region.wPct / 100));
+      const bgH = Math.round(displaySize.h / (region.hPct / 100));
 
-      // Calculate background position and size
-      // We use object-fit approach with a clipped container
-      const bgScale = 1536 * scale / region.w;
-      const bgW = Math.round(1536 * scale);
-      const bgH = Math.round(1024 * scale);
-      const bgX = Math.round(region.x * scale);
-      const bgY = Math.round(region.y * scale);
+      // Position as percentage of background size
+      const bgX = Math.round(bgW * (region.xPct / 100));
+      const bgY = Math.round(bgH * (region.yPct / 100));
 
       return `
         <div class="money-item ${isNote ? 'money-note' : 'money-coin'} ${sizeClass}" data-id="${item.id}" ${clickAttr}>
           <div class="money-sprite" style="
-            width: ${displayW}px;
-            height: ${displayH}px;
+            width: ${displaySize.w}px;
+            height: ${displaySize.h}px;
             background-image: url('${SPRITE_IMAGE}');
             background-position: -${bgX}px -${bgY}px;
             background-size: ${bgW}px ${bgH}px;
