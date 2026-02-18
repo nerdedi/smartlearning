@@ -3,10 +3,10 @@
   "mutator": "javascript",
   "testRunner": "command",
   "commandRunner": {
-    "command": "npx qunit test/lib.test.js"
+    "command": "npx qunit"
   },
   "reporters": ["html", "clear-text", "progress"],
   "coverageAnalysis": "off",
-  "files": ["src/**/*.js", "tests/**/*.js", "test/**/*.cjs"],
+  "files": ["src/**/*.js", "tests/**/*.js", "test/**/*.js", "test/**/*.cjs"],
   "mutate": ["src/**/*.js"]
 }
