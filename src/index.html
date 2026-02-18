@@ -1,28 +1,132 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-AU" class="">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>SmartLearning</title>
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <meta name="theme-color" content="#0b5fff" />
-    <link rel="icon" href="./icons/icon-192.png" sizes="192x192" />
-    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-    <link rel="stylesheet" href="./styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Smart Learning for Independence — Interactive digital skills modules for adults and youth with disabilities." />
+    <meta name="theme-color" content="#064e3b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Smart Learning" />
+    <title>Smart Learning for Independence</title>
+    <link rel="manifest" href="../manifest.json" />
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/icon-192.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/styles.css" />
   </head>
   <body>
-    <main>
-      <h1>SmartLearning</h1>
-      <p>Welcome!</p>
-      <button id="actionBtn">Do a thing</button>
-      <output id="result"></output>
-    </main>
-    <script type="module" src="./app.js" defer></script>
+    <a href="#app" class="skip-link">Skip to content</a>
+    <div id="app" role="main" aria-live="polite">
+      <nav>
+        <a href="#dashboard" id="nav-dashboard">Curriculum</a>
+        <a href="#resources" id="nav-resources">Resources</a>
+        <a href="#governance" id="nav-governance">Governance & Team</a>
+        <a href="#attendance" id="nav-attendance">Attendance Log</a>
+        <a href="#assessment" id="nav-assessment">Assessment Log</a>
+        <a href="#reporting" id="nav-reporting">Reporting Dashboard</a>
+        <a href="#volunteer" id="nav-volunteer">Volunteer Roster</a>
+        <a href="#risk" id="nav-risk">Risk Assessment</a>
+        <a href="#comms" id="nav-comms">Comms Log</a>
+        <a href="#showcase" id="nav-showcase">Showcase Planner</a>
+                  <section id="comms-section" style="display:none;"></section>
+                  <section id="showcase-section" style="display:none;"></section>
+                <section id="volunteer-section" style="display:none;"></section>
+                <section id="risk-section" style="display:none;"></section>
+              <section id="reporting-section" style="display:none;"></section>
+            <section id="assessment-section" style="display:none;"></section>
+          <section id="attendance-section" style="display:none;"></section>
+        <!-- Add more nav links as features are built -->
+      </nav>
+      <section id="dashboard-section" style="display:block;"></section>
+      <section id="resources-section" style="display:none;">
+              <section id="governance-section" style="display:none;">
+                <h2>Governance & Team Information</h2>
+                <div id="governance-content"></div>
+              </section>
+        <h2>Downloadable Resource Templates</h2>
+        <ul>
+          <li><a href="../resources/lesson-plan-template.txt" download>Lesson Plan Template</a></li>
+          <li><a href="../resources/ilp-template.txt" download>ILP Template</a></li>
+          <li><a href="../resources/assessment-sheet-template.txt" download>Assessment Sheet Template</a></li>
+          <li><a href="../resources/budget-tracker.csv" download>Budget Tracker (CSV)</a></li>
+          <li><a href="../resources/attendance-log.csv" download>Attendance Log (CSV)</a></li>
+          <li><a href="../resources/posters.txt" download>Posters (Safe Online, Consent, etc.)</a></li>
+          <li><a href="../resources/volunteer-showcase-certificate.txt" download>Volunteer Guide, Showcase Run Sheet, Certificate</a></li>
+        </ul>
+      </section>
+    </div>
+    <script type="module">
+      import { renderDashboard } from './dashboard.js';
+      const dashboardSection = document.getElementById('dashboard-section');
+      const resourcesSection = document.getElementById('resources-section');
+      const navDashboard = document.getElementById('nav-dashboard');
+      const navResources = document.getElementById('nav-resources');
+      function showSection(section) {
+        dashboardSection.style.display = section === 'dashboard' ? 'block' : 'none';
+        resourcesSection.style.display = section === 'resources' ? 'block' : 'none';
+        governanceSection.style.display = section === 'governance' ? 'block' : 'none';
+        attendanceSection.style.display = section === 'attendance' ? 'block' : 'none';
+        assessmentSection.style.display = section === 'assessment' ? 'block' : 'none';
+        reportingSection.style.display = section === 'reporting' ? 'block' : 'none';
+        volunteerSection.style.display = section === 'volunteer' ? 'block' : 'none';
+        riskSection.style.display = section === 'risk' ? 'block' : 'none';
+        commsSection.style.display = section === 'comms' ? 'block' : 'none';
+        showcaseSection.style.display = section === 'showcase' ? 'block' : 'none';
+      }
+      navDashboard.addEventListener('click', e => { e.preventDefault(); showSection('dashboard'); });
+      navResources.addEventListener('click', e => { e.preventDefault(); showSection('resources'); });
+      document.getElementById('nav-governance').addEventListener('click', e => { e.preventDefault(); showSection('governance'); });
+      document.getElementById('nav-attendance').addEventListener('click', e => { e.preventDefault(); showSection('attendance'); });
+      document.getElementById('nav-assessment').addEventListener('click', e => { e.preventDefault(); showSection('assessment'); });
+      document.getElementById('nav-reporting').addEventListener('click', e => { e.preventDefault(); showSection('reporting'); });
+      document.getElementById('nav-volunteer').addEventListener('click', e => { e.preventDefault(); showSection('volunteer'); });
+      document.getElementById('nav-risk').addEventListener('click', e => { e.preventDefault(); showSection('risk'); });
+      document.getElementById('nav-comms').addEventListener('click', e => { e.preventDefault(); showSection('comms'); });
+      document.getElementById('nav-showcase').addEventListener('click', e => { e.preventDefault(); showSection('showcase'); });
+      // Load governance info
+      fetch('../resources/governance-team-info.md').then(r => r.text()).then(md => {
+        document.getElementById('governance-content').innerText = md;
+      });
+      // Load attendance log
+      import('./attendance.js').then(mod => {
+        mod.renderAttendanceForm(document.getElementById('attendance-section'));
+      });
+      // Load assessment log
+      import('./assessment.js').then(mod => {
+        mod.renderAssessmentForm(document.getElementById('assessment-section'));
+      });
+      // Load reporting dashboard
+      import('./reporting.js').then(mod => {
+        mod.renderReporting(document.getElementById('reporting-section'));
+      });
+      // Load volunteer log
+      import('./volunteer.js').then(mod => {
+        mod.renderVolunteerForm(document.getElementById('volunteer-section'));
+      });
+      // Load risk log
+      import('./risk.js').then(mod => {
+        mod.renderRiskForm(document.getElementById('risk-section'));
+      });
+      // Load comms log
+      import('./comms.js').then(mod => {
+        mod.renderCommsForm(document.getElementById('comms-section'));
+      });
+      // Load showcase planner
+      import('./showcase.js').then(mod => {
+        mod.renderShowcaseForm(document.getElementById('showcase-section'));
+      });
+      renderDashboard(dashboardSection);
+    </script>
     <script>
-      // Register service worker (PWA)
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./sw.js').catch(console.error);
+          navigator.serviceWorker
+            .register('/sw.js')
+            .then((reg) => console.log('[PWA] Service Worker registered'))
+            .catch((err) => console.log('[PWA] Service Worker registration failed:', err));
         });
       }
     </script>
