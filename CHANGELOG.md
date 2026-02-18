@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/nerdedi/smartlearning/compare/v1.1.0...v1.2.0) (2026-02-18)
+
+
+### Features
+
+* add resource templates, assessment, attendance, and volunteer logs for Smart Learning ([d39e3a4](https://github.com/nerdedi/smartlearning/commit/d39e3a4d41e89198923cee74e0d42d3f721e42d1))
+
 # [1.1.0](https://github.com/nerdedi/smartlearning/compare/v1.0.1...v1.1.0) (2026-02-18)
 
 
