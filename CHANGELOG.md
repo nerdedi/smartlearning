@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/nerdedi/smartlearning/compare/v1.0.1...v1.1.0) (2026-02-18)
+
+
+### Features
+
+* add Cypress configuration and end-to-end tests for SmartLearning ([6d15bb8](https://github.com/nerdedi/smartlearning/commit/6d15bb8bf5738cd74804fed1ecdd33ad5abd3440))
+
 ## [1.0.1](https://github.com/nerdedi/smartlearning/compare/v1.0.0...v1.0.1) (2026-02-16)
 
 
