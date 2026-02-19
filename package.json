@@ -14,15 +14,15 @@
     "lhci": "lhci autorun --upload.target=temporary-public-storage",
     "release": "semantic-release"
   },
-    "browserslist": [
-      "defaults",
-      "not IE 11",
-      "not dead"
-    ],
-    "prettier": {
-      "singleQuote": true,
-      "semi": false
-    },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not dead"
+  ],
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
+  },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
     "@semantic-release/changelog": "^6.0.3",
@@ -37,6 +37,7 @@
     "eslint-plugin-promise": "^6.6.0",
     "http-server": "^14.1.1",
     "jsdoc": "^4.0.5",
+    "png-to-ico": "^3.0.1",
     "prettier": "^3.2.5",
     "puppeteer": "^23.8.0",
     "qunit": "^2.25.0",

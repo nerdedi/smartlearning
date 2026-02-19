@@ -23,5 +23,9 @@ QUnit.module('pwa / manifest / service worker', () => {
 
     const offline = await fetch('/offline.html')
     assert.ok(offline.ok, 'offline.html is available')
+
+    // favicon
+    const favicon = await fetch('/assets/icons/favicon.ico')
+    assert.ok(favicon.ok, 'favicon.ico is available')
   })
 })
