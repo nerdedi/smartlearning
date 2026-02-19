@@ -100,6 +100,7 @@ npm run lhci     # Run Lighthouse CI (uses temporary-public-storage)
 
 # Local development
 - Pre-commit hooks are enabled via `husky` + `lint-staged`: staged JS files are automatically linted and formatted before commits.
+- Commit messages are validated using `commitlint` (Conventional Commits). Follow Conventional Commits so `semantic-release` can create releases automatically.
 
 # CI checks
 - The repository includes CI checks that enforce linting, unit tests, and Lighthouse performance/accessibility thresholds.
