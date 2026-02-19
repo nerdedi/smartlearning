@@ -1,3 +1,15 @@
+# [1.3.0](https://github.com/nerdedi/smartlearning/compare/v1.2.0...v1.3.0) (2026-02-19)
+
+
+### Bug Fixes
+
+* correct typo in viewport meta tag and update styles header comment ([c9994aa](https://github.com/nerdedi/smartlearning/commit/c9994aa3090ec3347b6a7371ff74a1c9308caff7))
+
+
+### Features
+
+* enhance PWA support with updated manifest, service worker, and offline page ([8d32578](https://github.com/nerdedi/smartlearning/commit/8d3257892c2224a81467bc12943e10ed11f60e49))
+
 # [1.2.0](https://github.com/nerdedi/smartlearning/compare/v1.1.0...v1.2.0) (2026-02-18)
 
 
