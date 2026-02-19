@@ -1,5 +1,7 @@
 # Smart Learning for Independence 🎓
 
+[![CI](https://github.com/nerdedi/smartlearning/actions/workflows/ci.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/ci.yml) [![Lighthouse CI](https://github.com/nerdedi/smartlearning/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/lighthouse.yml) [![Icons regenerate](https://github.com/nerdedi/smartlearning/actions/workflows/icons-regenerate.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/icons-regenerate.yml)
+
 > Interactive digital skills training modules for adults and youth with disabilities
 
 **A Windgap Foundation Project** — Part of the LLND & Transition program, funded by Transurban Community Grants.
@@ -53,6 +55,7 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 | 18  | Emergency Response | 000, contacts, first aid basics     |
 
 ### Strand 4: Work Readiness (Modules 19-24)
+
 ```
 
 | #   | Module            | Skills                                        |
