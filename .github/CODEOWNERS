@@ -1,6 +1,24 @@
 # Code owners for the repository
 # Use GitHub usernames (teams also supported)
+# Best practice: list owners for critical paths and use teams (e.g. @org/maintainers) instead of single users where possible.
 
+# GitHub workflow and repo config
 /.github/ @nerdedi
+/.github/workflows/ @nerdedi
+/.github/dependabot.yml @nerdedi
+
+# Source, tests and tooling
 /src/ @nerdedi
+/tests/ @nerdedi
+/tools/ @nerdedi
+/.husky/ @nerdedi
+
+# Assets & docs
+/assets/ @nerdedi
 /README.md @nerdedi
+
+# Important single files
+/package.json @nerdedi
+/manifest.json @nerdedi
+
+# NOTE: replace `@nerdedi` with your org team (e.g. `@your-org/maintainers`) for shared ownership
