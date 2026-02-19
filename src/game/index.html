@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en-AU" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Learning — Adventure</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&amp;family=OpenDyslexic&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --color-bg: #1a1a2e;
+        --color-surface: #16213e;
+        --color-text: #eaf0f6;
+        --color-primary: #e94560;
+        --color-secondary: #0f3460;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        font-family:
+          Nunito,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          'Helvetica Neue',
+          Arial;
+        color: var(--color-text);
+        background: var(--color-bg);
+      }
+      .high-contrast {
+        --color-bg: #000;
+        --color-surface: #111;
+        --color-text: #fff;
+        --color-primary: #ffff00;
+        --color-secondary: #0066ff;
+      }
+      .dyslexic-font {
+        font-family: 'OpenDyslexic', sans-serif !important;
+      }
+      .large-text {
+        font-size: 1.25em;
+      }
+      .reduce-motion * {
+        animation: none !important;
+        transition: none !important;
+      }
+      .game-canvas {
+        image-rendering: pixelated;
+        background: linear-gradient(
+          180deg,
+          #87ceeb 0%,
+          #98d8aa 70%,
+          #4a7c59 100%
+        );
+      }
+      .btn-game {
+        background: linear-gradient(
+          180deg,
+          var(--color-primary) 0%,
+          #c73e54 100%
+        );
+        border: 3px solid #fff;
+        border-radius: 16px;
+        padding: 16px 32px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #fff;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        box-shadow:
+          0 4px 0 #8b2a3a,
+          0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+      .btn-game:focus {
+        outline: 4px solid #ffd93d;
+        outline-offset: 2px;
+      }
+      .world-gate {
+        background: linear-gradient(180deg, #2d3a4f 0%, #1a2332 100%);
+        border: 4px solid;
+        border-radius: 20px 20px 0 0;
+        cursor: pointer;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+      .world-gate:focus {
+        outline: 4px solid #ffd93d;
+        outline-offset: 4px;
+      }
+      .help-owl {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        font-size: 3rem;
+        cursor: pointer;
+        animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      }
+      .modal-overlay {
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(4px);
+      }
+      .toast {
+        position: fixed;
+        bottom: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--color-surface);
+        border: 2px solid var(--color-primary);
+        padding: 16px 32px;
+        border-radius: 12px;
+        z-index: 1001;
+        animation: slideIn 0.3s ease;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      /* small-screen adjustments */
+      @media (max-width: 640px) {
+        .text-8xl {
+          font-size: 4rem;
+        }
+        .text-6xl {
+          font-size: 2.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="h-full overflow-auto">
+    <div id="app" class="h-full w-full" style="background: var(--color-bg)">
+      <!-- Loading Screen -->
+      <div
+        id="loading-screen"
+        class="h-full w-full flex flex-col items-center justify-center"
+      >
+        <div class="text-6xl mb-8 animate-bounce">🦉</div>
+        <h1 class="text-3xl font-bold mb-4">Smart Learning for Independence</h1>
+        <p class="text-xl opacity-80">Loading your adventure...</p>
+        <div class="mt-8 w-64 h-4 bg-gray-700 rounded-full overflow-hidden">
+          <div
+            id="loading-bar"
+            class="h-full bg-gradient-to-r from-pink-500 to-yellow-500 rounded-full transition-all duration-500"
+            style="width: 0%"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Main Menu (rendered by game.js) -->
+      <div id="main-menu" class="h-full w-full hidden"></div>
+      <div id="hub-screen" class="h-full w-full hidden overflow-auto"></div>
+      <div id="world-screen" class="h-full w-full hidden overflow-auto">
+        <div id="world-content" class="min-h-full w-full p-4 md:p-8"></div>
+      </div>
+      <div id="game-screen" class="h-full w-full hidden">
+        <div
+          id="game-hud"
+          class="flex justify-between items-center p-4"
+          style="background: rgba(0, 0, 0, 0.7)"
+        ></div>
+        <div id="game-area" class="flex-1 relative overflow-hidden game-canvas">
+          <canvas id="game-canvas" class="w-full h-full"></canvas>
+          <div
+            id="touch-controls"
+            class="absolute bottom-4 left-0 right-0 flex justify-between px-4 md:hidden"
+            style="display: none"
+          >
+            <div class="flex gap-2">
+              <button id="btn-left" class="touch-control">⬅️</button
+              ><button id="btn-right" class="touch-control">➡️</button>
+            </div>
+            <div class="flex gap-2">
+              <button id="btn-jump" class="touch-control">⬆️</button
+              ><button id="btn-interact" class="touch-control">✋</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Supporting modals/containers used by game.js -->
+      <div id="minigame-screen" class="h-full w-full hidden overflow-auto">
+        <div
+          id="minigame-content"
+          class="min-h-full w-full p-4 md:p-8 flex flex-col items-center justify-center"
+        ></div>
+      </div>
+      <div id="quiz-screen" class="h-full w-full hidden overflow-auto">
+        <div
+          id="quiz-content"
+          class="min-h-full w-full p-4 md:p-8 flex flex-col items-center justify-center"
+          style="background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%)"
+        ></div>
+      </div>
+      <div id="results-screen" class="h-full w-full hidden overflow-auto">
+        <div
+          id="results-content"
+          class="min-h-full w-full p-4 md:p-8 flex flex-col items-center justify-center"
+          style="background: linear-gradient(180deg, #1a1a2e 0%, #0f3460 100%)"
+        ></div>
+      </div>
+
+      <!-- Settings & Progress (in-page UI) -->
+      <div id="settings-modal" class="fixed inset-0 hidden z-50"></div>
+      <div id="progress-modal" class="fixed inset-0 hidden z-50"></div>
+
+      <!-- Pause Modal -->
+      <div id="pause-modal" class="fixed inset-0 hidden z-50">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div
+          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-3xl p-8 text-center"
+          style="background: var(--color-surface)"
+        >
+          <h2 class="text-3xl font-bold mb-6">⏸️ Paused</h2>
+          <div class="flex flex-col gap-4">
+            <button id="resume-btn" class="btn-game">▶️ Resume</button>
+            <button
+              id="restart-btn"
+              class="btn-game bg-gradient-to-b from-yellow-500 to-yellow-700"
+              style="box-shadow: 0 4px 0 #8b6914"
+            >
+              🔄 Restart
+            </button>
+            <button
+              id="exit-btn"
+              class="btn-game bg-gradient-to-b from-gray-500 to-gray-700"
+              style="box-shadow: 0 4px 0 #3d3d3d"
+            >
+              🚪 Exit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help Owl & panel -->
+      <button
+        id="help-owl"
+        class="help-owl"
+        aria-label="Get help from the Help Owl"
+      >
+        🦉
+      </button>
+      <div
+        id="help-panel"
+        class="fixed bottom-24 right-4 hidden z-50 w-80 rounded-2xl p-6"
+        style="background: var(--color-surface); border: 3px solid #ffd93d"
+      ></div>
+
+      <div id="toast-container"></div>
+    </div>
+
+    <script type="module" src="./game.js"></script>
+  </body>
+</html>
