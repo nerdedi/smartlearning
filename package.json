@@ -39,7 +39,7 @@
     "jsdoc": "^4.0.5",
     "png-to-ico": "^3.0.1",
     "prettier": "^3.2.5",
-    "puppeteer": "^23.8.0",
+    "puppeteer": "^24.37.4",
     "qunit": "^2.25.0",
     "semantic-release": "^23.0.0"
   },
