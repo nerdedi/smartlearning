@@ -89,8 +89,12 @@ npm start        # runs a simple http-server at http://localhost:8000
 
 # Useful dev scripts
 npm run lint     # ESLint checks
-npm test         # Run headless QUnit tests
+npm test         # Run headless QUnit tests (requires Chromium libs locally)
 npm run e2e      # Run Cypress end-to-end tests (CI/runner environment)
+npm run lhci     # Run Lighthouse CI (uses temporary-public-storage)
+
+# To run QUnit headless locally (Puppeteer), install required system libs on Debian/Ubuntu:
+# sudo apt-get install -y libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libnss3 libxss1 libx11-xcb1 libxcomposite1 libasound2 libgbm1
 
 # Open http://localhost:8000
 ```
