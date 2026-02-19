@@ -1164,4 +1164,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initialize()
 })
 
-export { initialize }
+export { initialize, calculateStats, saveProgress }
