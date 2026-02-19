@@ -1,5 +1,7 @@
 /* eslint-env mocha */
 /* global cy, describe, it, beforeEach */
+import 'cypress-axe'
+
 describe('SmartLearning (E2E)', () => {
   beforeEach(() => {
     cy.visit('/')
@@ -31,5 +33,28 @@ describe('SmartLearning (E2E)', () => {
     cy.get('body').should('have.class', 'large-text')
     cy.get('#setting-dyslexic').check().should('be.checked')
     cy.get('body').should('have.class', 'dyslexic-font')
+  })
+
+  it('a11y: main & game pages should have no critical violations', () => {
+    cy.visit('/')
+    cy.injectAxe()
+    cy.checkA11y(null, { includedImpacts: ['critical'] })
+
+    cy.visit('/game/index.html')
+    cy.injectAxe()
+    cy.checkA11y()
+  })
+
+  it('game UI: start level and pause/resume', () => {
+    cy.visit('/game/index.html')
+    cy.get('#start-adventure').click()
+    cy.get('#hub-screen button[data-world]').first().click()
+    cy.get('#level-grid button[data-level]').first().click()
+
+    cy.get('#game-hud').should('be.visible')
+    cy.get('#pause-btn').should('be.visible').click()
+    cy.get('#pause-modal').should('be.visible')
+    cy.get('#resume-btn').click()
+    cy.get('#pause-modal').should('not.be.visible')
   })
 })

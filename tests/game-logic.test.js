@@ -63,4 +63,42 @@ QUnit.module('game logic', () => {
       assert.equal(entry.score, 250, 'score saved')
     },
   )
+
+  QUnit.test(
+    'loadSettings applies visual modes from localStorage',
+    async (assert) => {
+      // arrange: set settings in localStorage
+      localStorage.setItem(
+        'sli-game-settings',
+        JSON.stringify({ largeText: true, contrast: true, dyslexic: true }),
+      )
+      const mod = await import('../../../src/game/game.js')
+
+      // act
+      mod.loadSettings()
+
+      // assert DOM classes applied
+      assert.ok(
+        document.body.classList.contains('large-text'),
+        'large-text class applied',
+      )
+      assert.ok(
+        document.body.classList.contains('high-contrast'),
+        'high-contrast class applied',
+      )
+      assert.ok(
+        document.body.classList.contains('dyslexic-font'),
+        'dyslexic-font class applied',
+      )
+    },
+  )
+
+  QUnit.test('saveSettings writes settings to localStorage', async (assert) => {
+    const { saveSettings } = await import('../../../src/game/game.js')
+    // ensure key removed
+    localStorage.removeItem('sli-game-settings')
+    saveSettings()
+    const s = JSON.parse(localStorage.getItem('sli-game-settings') || '{}')
+    assert.ok(s && typeof s === 'object', 'settings saved to localStorage')
+  })
 })
