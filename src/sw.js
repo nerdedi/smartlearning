@@ -1,28 +1,55 @@
-// Minimal "network-first" with cache fallback
-const CACHE = 'smartlearning-v1'
-const CORE_ASSETS = ['/', '/index.html', '/styles.css', '/app.js', '/manifest.webmanifest']
+const CACHE = 'smartlearning-v2';
+const CORE_ASSETS = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './css/styles.css',
+  './js/app.js',
+  './js/modules.js',
+  './js/storage.js',
+  './js/media.js',
+  './js/educator.js',
+  './js/export.js',
+  './js/moneygame.js',
+  './offline.html'
+];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE_ASSETS)))
-})
+  event.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll(CORE_ASSETS)).catch(console.error)
+  );
+  self.skipWaiting();
+});
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
-  )
-})
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
 
 self.addEventListener('fetch', (event) => {
-  const { request } = event
+  const { request } = event;
+  if (request.method !== 'GET') return;
   event.respondWith(
-    fetch(request)
-      .then((res) => {
-        const copy = res.clone()
-        caches.open(CACHE).then((c) => c.put(request, copy))
-        return res
-      })
-      .catch(() => caches.match(request))
-  )
-})
+    caches.match(request).then((cached) => {
+      return (
+        cached ||
+        fetch(request)
+          .then((res) => {
+            // Cache static assets (images, css, js)
+            if (
+              request.url.startsWith(self.location.origin) &&
+              /\\.(png|jpg|jpeg|svg|webp|ico|css|js)$/.test(request.url)
+            ) {
+              const copy = res.clone();
+              caches.open(CACHE).then((c) => c.put(request, copy));
+            }
+            return res;
+          })
+          .catch(() => caches.match('./offline.html'))
+      );
+    })
+  );
+});

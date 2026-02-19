@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "serve": "npx http-server ./src -p 8000 -c-1",
+    "start": "npm run serve",
     "test": "node ./tools/run-qunit-headless.mjs",
     "lint": "eslint src tests --ext .js --max-warnings 0",
     "format": "prettier --write .",
@@ -12,6 +13,18 @@
     "cypress:open": "cypress open",
     "release": "semantic-release"
   },
+    "browserslist": [
+      "defaults",
+      "not IE 11",
+      "not dead"
+    ],
+    "eslintConfig": {
+      "extends": ["standard"]
+    },
+    "prettier": {
+      "singleQuote": true,
+      "semi": false
+    },
   "devDependencies": {
     "@lhci/cli": "^0.15.1",
     "@semantic-release/changelog": "^6.0.3",

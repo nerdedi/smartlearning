@@ -9,13 +9,20 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Smart Learning" />
     <title>Smart Learning for Independence</title>
-    <link rel="manifest" href="../manifest.json" />
-    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/icon-192.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="72x72" href="../assets/icons/icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="96x96" href="../assets/icons/icon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="128x128" href="../assets/icons/icon-128x128.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="../assets/icons/icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="../assets/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/icon-180x180.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="../assets/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="384x384" href="../assets/icons/icon-384x384.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="../assets/icons/icon-512x512.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
     <a href="#app" class="skip-link">Skip to content</a>
@@ -124,7 +131,7 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker
-            .register('/sw.js')
+            .register('./sw.js')
             .then((reg) => console.log('[PWA] Service Worker registered'))
             .catch((err) => console.log('[PWA] Service Worker registration failed:', err));
         });
