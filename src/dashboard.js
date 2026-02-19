@@ -1,7 +1,7 @@
-import { modules } from './modules-data.js';
+import { modules } from './modules-data.js'
 
 // Render the curriculum dashboard
-export function renderDashboard(container) {
+export function renderDashboard (container) {
   container.innerHTML = `
     <h2>Curriculum Dashboard</h2>
     <div class="modules-list">
@@ -20,14 +20,14 @@ export function renderDashboard(container) {
         </div>
       `).join('')}
     </div>
-  `;
+  `
 
   // Add event listeners for completion
   container.querySelectorAll('.mark-complete').forEach(btn => {
     btn.addEventListener('click', e => {
-      btn.textContent = 'Completed!';
-      btn.disabled = true;
-      btn.classList.add('completed');
-    });
-  });
+      btn.textContent = 'Completed!'
+      btn.disabled = true
+      btn.classList.add('completed')
+    })
+  })
 }

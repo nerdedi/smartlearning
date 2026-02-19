@@ -1,17 +1,17 @@
 // comms.js - Comms log and newsletter/social post generator for Smart Learning
-const COMMS_KEY = 'comms-log';
+const COMMS_KEY = 'comms-log'
 
-export function getComms() {
-  return JSON.parse(localStorage.getItem(COMMS_KEY) || '[]');
+export function getComms () {
+  return JSON.parse(localStorage.getItem(COMMS_KEY) || '[]')
 }
 
-export function addComms(date, type, summary, highlights, notes) {
-  const log = getComms();
-  log.push({ date, type, summary, highlights, notes });
-  localStorage.setItem(COMMS_KEY, JSON.stringify(log));
+export function addComms (date, type, summary, highlights, notes) {
+  const log = getComms()
+  log.push({ date, type, summary, highlights, notes })
+  localStorage.setItem(COMMS_KEY, JSON.stringify(log))
 }
 
-export function renderCommsForm(container) {
+export function renderCommsForm (container) {
   container.innerHTML = `
     <h2>Comms Log & Post Generator</h2>
     <form id="comms-form">
@@ -30,37 +30,37 @@ export function renderCommsForm(container) {
       <button type="submit">Generate</button>
     </form>
     <div id="postgen-output"></div>
-  `;
-  const form = container.querySelector('#comms-form');
-  const tableBody = container.querySelector('#comms-table tbody');
-  function renderTable() {
-    const log = getComms();
-    tableBody.innerHTML = log.map(e => `<tr><td>${e.date}</td><td>${e.type}</td><td>${e.summary}</td><td>${e.highlights||''}</td><td>${e.notes||''}</td></tr>`).join('');
+  `
+  const form = container.querySelector('#comms-form')
+  const tableBody = container.querySelector('#comms-table tbody')
+  function renderTable () {
+    const log = getComms()
+    tableBody.innerHTML = log.map(e => `<tr><td>${e.date}</td><td>${e.type}</td><td>${e.summary}</td><td>${e.highlights || ''}</td><td>${e.notes || ''}</td></tr>`).join('')
   }
   form.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = new FormData(form);
-    addComms(data.get('date'), data.get('type'), data.get('summary'), data.get('highlights'), data.get('notes'));
-    form.reset();
-    renderTable();
-  });
-  renderTable();
+    e.preventDefault()
+    const data = new FormData(form)
+    addComms(data.get('date'), data.get('type'), data.get('summary'), data.get('highlights'), data.get('notes'))
+    form.reset()
+    renderTable()
+  })
+  renderTable()
   // Post generator
-  const postForm = container.querySelector('#postgen-form');
-  const postOut = container.querySelector('#postgen-output');
+  const postForm = container.querySelector('#postgen-form')
+  const postOut = container.querySelector('#postgen-output')
   postForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = new FormData(postForm);
-    const type = data.get('type');
-    const msg = data.get('message');
-    let template = '';
+    e.preventDefault()
+    const data = new FormData(postForm)
+    const type = data.get('type')
+    const msg = data.get('message')
+    let template = ''
     if (type === 'Newsletter') {
-      template = `This month at Smart Learning: ${msg}`;
+      template = `This month at Smart Learning: ${msg}`
     } else if (type === 'Social Post') {
-      template = `Smart Learning highlight: ${msg} #Inclusion #DigitalSkills`;
+      template = `Smart Learning highlight: ${msg} #Inclusion #DigitalSkills`
     } else {
-      template = `Showcase highlight: ${msg}`;
+      template = `Showcase highlight: ${msg}`
     }
-    postOut.textContent = template;
-  });
+    postOut.textContent = template
+  })
 }

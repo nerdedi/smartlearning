@@ -18,9 +18,6 @@
       "not IE 11",
       "not dead"
     ],
-    "eslintConfig": {
-      "extends": ["standard"]
-    },
     "prettier": {
       "singleQuote": true,
       "semi": false

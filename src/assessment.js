@@ -1,17 +1,17 @@
 // assessment.js - Digital assessment log for Smart Learning
-const ASSESSMENT_KEY = 'assessment-log';
+const ASSESSMENT_KEY = 'assessment-log'
 
-export function getAssessments() {
-  return JSON.parse(localStorage.getItem(ASSESSMENT_KEY) || '[]');
+export function getAssessments () {
+  return JSON.parse(localStorage.getItem(ASSESSMENT_KEY) || '[]')
 }
 
-export function addAssessment(module, date, participant, criteria, comments, evidence) {
-  const log = getAssessments();
-  log.push({ module, date, participant, criteria, comments, evidence });
-  localStorage.setItem(ASSESSMENT_KEY, JSON.stringify(log));
+export function addAssessment (module, date, participant, criteria, comments, evidence) {
+  const log = getAssessments()
+  log.push({ module, date, participant, criteria, comments, evidence })
+  localStorage.setItem(ASSESSMENT_KEY, JSON.stringify(log))
 }
 
-export function renderAssessmentForm(container) {
+export function renderAssessmentForm (container) {
   container.innerHTML = `
     <h2>Assessment Log</h2>
     <form id="assessment-form">
@@ -24,19 +24,19 @@ export function renderAssessmentForm(container) {
       <button type="submit">Add Entry</button>
     </form>
     <table id="assessment-table"><thead><tr><th>Module</th><th>Date</th><th>Participant</th><th>Criteria</th><th>Comments</th><th>Evidence</th></tr></thead><tbody></tbody></table>
-  `;
-  const form = container.querySelector('#assessment-form');
-  const tableBody = container.querySelector('#assessment-table tbody');
-  function renderTable() {
-    const log = getAssessments();
-    tableBody.innerHTML = log.map(e => `<tr><td>${e.module}</td><td>${e.date}</td><td>${e.participant}</td><td>${e.criteria}</td><td>${e.comments||''}</td><td>${e.evidence||''}</td></tr>`).join('');
+  `
+  const form = container.querySelector('#assessment-form')
+  const tableBody = container.querySelector('#assessment-table tbody')
+  function renderTable () {
+    const log = getAssessments()
+    tableBody.innerHTML = log.map(e => `<tr><td>${e.module}</td><td>${e.date}</td><td>${e.participant}</td><td>${e.criteria}</td><td>${e.comments || ''}</td><td>${e.evidence || ''}</td></tr>`).join('')
   }
   form.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = new FormData(form);
-    addAssessment(data.get('module'), data.get('date'), data.get('participant'), data.get('criteria'), data.get('comments'), data.get('evidence'));
-    form.reset();
-    renderTable();
-  });
-  renderTable();
+    e.preventDefault()
+    const data = new FormData(form)
+    addAssessment(data.get('module'), data.get('date'), data.get('participant'), data.get('criteria'), data.get('comments'), data.get('evidence'))
+    form.reset()
+    renderTable()
+  })
+  renderTable()
 }

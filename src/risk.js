@@ -1,17 +1,17 @@
 // risk.js - Risk assessment log for Smart Learning
-const RISK_KEY = 'risk-log';
+const RISK_KEY = 'risk-log'
 
-export function getRisks() {
-  return JSON.parse(localStorage.getItem(RISK_KEY) || '[]');
+export function getRisks () {
+  return JSON.parse(localStorage.getItem(RISK_KEY) || '[]')
 }
 
-export function addRisk(date, description, mitigation, status, notes) {
-  const log = getRisks();
-  log.push({ date, description, mitigation, status, notes });
-  localStorage.setItem(RISK_KEY, JSON.stringify(log));
+export function addRisk (date, description, mitigation, status, notes) {
+  const log = getRisks()
+  log.push({ date, description, mitigation, status, notes })
+  localStorage.setItem(RISK_KEY, JSON.stringify(log))
 }
 
-export function renderRiskForm(container) {
+export function renderRiskForm (container) {
   container.innerHTML = `
     <h2>Risk Assessment Log</h2>
     <form id="risk-form">
@@ -23,19 +23,19 @@ export function renderRiskForm(container) {
       <button type="submit">Add Entry</button>
     </form>
     <table id="risk-table"><thead><tr><th>Date</th><th>Description</th><th>Mitigation</th><th>Status</th><th>Notes</th></tr></thead><tbody></tbody></table>
-  `;
-  const form = container.querySelector('#risk-form');
-  const tableBody = container.querySelector('#risk-table tbody');
-  function renderTable() {
-    const log = getRisks();
-    tableBody.innerHTML = log.map(e => `<tr><td>${e.date}</td><td>${e.description}</td><td>${e.mitigation}</td><td>${e.status}</td><td>${e.notes||''}</td></tr>`).join('');
+  `
+  const form = container.querySelector('#risk-form')
+  const tableBody = container.querySelector('#risk-table tbody')
+  function renderTable () {
+    const log = getRisks()
+    tableBody.innerHTML = log.map(e => `<tr><td>${e.date}</td><td>${e.description}</td><td>${e.mitigation}</td><td>${e.status}</td><td>${e.notes || ''}</td></tr>`).join('')
   }
   form.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = new FormData(form);
-    addRisk(data.get('date'), data.get('description'), data.get('mitigation'), data.get('status'), data.get('notes'));
-    form.reset();
-    renderTable();
-  });
-  renderTable();
+    e.preventDefault()
+    const data = new FormData(form)
+    addRisk(data.get('date'), data.get('description'), data.get('mitigation'), data.get('status'), data.get('notes'))
+    form.reset()
+    renderTable()
+  })
+  renderTable()
 }
