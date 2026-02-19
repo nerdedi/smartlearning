@@ -56,7 +56,6 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 
 ### Strand 4: Work Readiness (Modules 19-24)
 
-```
 
 | #   | Module            | Skills                                        |
 | --- | ----------------- | --------------------------------------------- |
