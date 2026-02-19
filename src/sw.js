@@ -2,6 +2,8 @@ const CACHE = 'smartlearning-v2'
 const CORE_ASSETS = [
   './',
   './index.html',
+  './game/index.html',
+  './game/game.js',
   './manifest.webmanifest',
   './css/styles.css',
   './js/app.js',
@@ -11,21 +13,29 @@ const CORE_ASSETS = [
   './js/educator.js',
   './js/export.js',
   './js/moneygame.js',
-  './offline.html'
+  './offline.html',
 ]
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((c) => c.addAll(CORE_ASSETS)).catch(console.error)
+    caches
+      .open(CACHE)
+      .then((c) => c.addAll(CORE_ASSETS))
+      .catch(console.error),
   )
   self.skipWaiting()
 })
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)),
+        ),
+      )
+      .then(() => self.clients.claim()),
   )
 })
 
@@ -50,6 +60,6 @@ self.addEventListener('fetch', (event) => {
           })
           .catch(() => caches.match('./offline.html'))
       )
-    })
+    }),
   )
 })
