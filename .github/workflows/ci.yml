@@ -15,5 +15,9 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
+      - name: Verify favicon is up-to-date
+        run: |
+          node tools/generate-favicon.mjs
+          git diff --exit-code -- assets/icons/favicon.ico || (echo "favicon.ico is out of date — regenerate and commit (node tools/generate-favicon.mjs)" && exit 1)
       - run: npm run lint
       - run: npm test

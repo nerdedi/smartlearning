@@ -26,5 +26,10 @@ jobs:
       - name: Start static server
         run: npx http-server ./src -p 8080 -c-1 &
 
-      - name: Run LHCI (autorun)
-        run: npx lhci autorun --upload.target=temporary-public-storage
+      - name: Run LHCI (autorun + assertions)
+        run: npx lhci autorun --upload.target=temporary-public-storage \
+             --assert.performance=70 \
+             --assert.accessibility=90 \
+             --assert.seo=80 \
+             --assert['best-practices']=80 \
+             --assert.pwa=60

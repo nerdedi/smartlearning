@@ -35,7 +35,7 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 | #   | Module           | Skills                               |
 | --- | ---------------- | ------------------------------------ |
 | 7   | Money Awareness  | Notes, coins, card types             |
-| 8   | Banking Basics   | Account types, statements, transfers |
+
 | 9   | Budgeting        | Income/expenses, pay yourself first  |
 | 10  | Safe Payments    | Tap-to-pay, receipts, scam detection |
 | 11  | Shopping Smart   | Compare prices, needs vs wants       |
@@ -53,6 +53,7 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 | 18  | Emergency Response | 000, contacts, first aid basics     |
 
 ### Strand 4: Work Readiness (Modules 19-24)
+```
 
 | #   | Module            | Skills                                        |
 | --- | ----------------- | --------------------------------------------- |
@@ -96,13 +97,17 @@ npm run lhci     # Run Lighthouse CI (uses temporary-public-storage)
 # To run QUnit headless locally (Puppeteer), install required system libs on Debian/Ubuntu:
 # sudo apt-get install -y libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libnss3 libxss1 libx11-xcb1 libxcomposite1 libasound2 libgbm1
 
+# CI checks
+- The repository includes CI checks that enforce linting, unit tests, and Lighthouse performance/accessibility thresholds.
+- The CI also verifies that `assets/icons/favicon.ico` is generated from the source SVG; run `node tools/generate-favicon.mjs` after updating the logo.
+
 # Open http://localhost:8000
 ```
 
 ## Architecture
 
-```
-smartlearning/
+```text
+learning/
 ├── index.html          # Main entry point
 ├── manifest.json       # PWA manifest
 ├── sw.js               # Service worker (offline support)
