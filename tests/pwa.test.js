@@ -6,8 +6,8 @@ QUnit.module('pwa / manifest / service worker', () => {
     const json = await res.json()
     assert.strictEqual(json.name, 'Smart Learning for Independence', 'manifest name is correct')
     assert.strictEqual(json.start_url, './index.html', 'start_url is correct')
-    assert.ok(Array.isArray(json.icons) && json.icons.length >= 3, 'manifest contains icons')
-    // check that the referenced icon files exist
+    assert.ok(Array.isArray(json.icons) && json.icons.length >= 3, 'manifest contains icons')    // manifest should include an SVG app icon (vector form)
+    assert.ok(json.icons.some(i => i.type === 'image/svg+xml' || /\.svg$/.test(i.src)), 'manifest includes an SVG icon');    // check that the referenced icon files exist
     for (const icon of json.icons) {
       const r = await fetch('/' + icon.src)
       assert.ok(r.ok, `icon exists: ${icon.src}`)
