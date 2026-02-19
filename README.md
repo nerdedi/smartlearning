@@ -56,7 +56,6 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 
 ### Strand 4: Work Readiness (Modules 19-24)
 
-
 | #   | Module            | Skills                                        |
 | --- | ----------------- | --------------------------------------------- |
 | 19  | Job Exploring     | Interest matching, local opportunities        |
@@ -99,8 +98,12 @@ npm run lhci     # Run Lighthouse CI (uses temporary-public-storage)
 # To run QUnit headless locally (Puppeteer), install required system libs on Debian/Ubuntu:
 # sudo apt-get install -y libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0 libnss3 libxss1 libx11-xcb1 libxcomposite1 libasound2 libgbm1
 
+# Local development
+- Pre-commit hooks are enabled via `husky` + `lint-staged`: staged JS files are automatically linted and formatted before commits.
+
 # CI checks
 - The repository includes CI checks that enforce linting, unit tests, and Lighthouse performance/accessibility thresholds.
+- Dependabot is enabled to open weekly dependency update PRs.
 - The CI also verifies that `assets/icons/favicon.ico` is generated from the source SVG; run `node tools/generate-favicon.mjs` after updating the logo.
 
 # Open http://localhost:8000

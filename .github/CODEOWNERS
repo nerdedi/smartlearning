@@ -1,0 +1,6 @@
+# Code owners for the repository
+# Use GitHub usernames (teams also supported)
+
+/.github/ @nerdedi
+/src/ @nerdedi
+/README.md @nerdedi
