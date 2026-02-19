@@ -104,7 +104,7 @@ npm run lhci     # Run Lighthouse CI (uses temporary-public-storage)
 
 # CI checks
 - The repository includes CI checks that enforce linting, unit tests, and Lighthouse performance/accessibility thresholds.
-- Dependabot is enabled to open weekly dependency update PRs. Patch and minor Dependabot PRs will be auto-labeled `automerge` and merged automatically when CI checks pass (major bumps are not auto-merged).
+- Dependabot is enabled to open weekly dependency update PRs. Patch and minor Dependabot PRs will be auto-labeled `automerge` and merged automatically when CI checks pass (major bumps are not auto-merged). Dependabot *security* updates are also auto-labeled and auto-merged (regardless of semver level) once CI passes.
 - The CI also verifies that `assets/icons/favicon.ico` is generated from the source SVG; run `node tools/generate-favicon.mjs` after updating the logo.
 
 # Open http://localhost:8000

@@ -31,20 +31,28 @@ jobs:
               return
             }
 
-            const title = pr.title || ''
-            const match = title.match(/Bump .* from (\d+\.\d+\.\d+) to (\d+\.\d+\.\d+)/)
-            if (!match) {
-              core.info('PR title does not match expected version bump pattern — skipping')
-              return
-            }
+            // Detect Dependabot security updates via label or text
+            const labels = pr.labels || [];
+            const isSecurity = labels.some(l => l.name && l.name.toLowerCase().includes('security')) || /security/i.test(pr.title || '') || /security/i.test(pr.body || '');
 
-            const oldVer = match[1].split('.').map(n => parseInt(n, 10))
-            const newVer = match[2].split('.').map(n => parseInt(n, 10))
+            if (!isSecurity) {
+              const title = pr.title || '';
+              const match = title.match(/Bump .* from (\d+\.\d+\.\d+) to (\d+\.\d+\.\d+)/);
+              if (!match) {
+                core.info('PR title does not match expected version bump pattern — skipping')
+                return
+              }
 
-            // Block major version bumps from being auto-merged
-            if (oldVer[0] !== newVer[0]) {
-              core.info(`Major version bump detected (${match[1]} -> ${match[2]}) — skipping auto-merge`)
-              return
+              const oldVer = match[1].split('.').map(n => parseInt(n, 10))
+              const newVer = match[2].split('.').map(n => parseInt(n, 10))
+
+              // Block major version bumps from being auto-merged
+              if (oldVer[0] !== newVer[0]) {
+                core.info(`Major version bump detected (${match[1]} -> ${match[2]}) — skipping auto-merge`)
+                return
+              }
+            } else {
+              core.info('Dependabot security update detected — allowing auto-merge (subject to CI)')
             }
 
             const labelName = 'automerge'
@@ -53,7 +61,7 @@ jobs:
               await github.rest.issues.getLabel(context.repo({ name: labelName }))
             } catch (err) {
               core.info('Label not found — creating label')
-              await github.rest.issues.createLabel(context.repo({ name: labelName, color: '0e8a16', description: 'Auto-merge safe dependency updates (patch/minor)' }))
+              await github.rest.issues.createLabel(context.repo({ name: labelName, color: '0e8a16', description: 'Auto-merge safe dependency updates (patch/minor/security)' }))
             }
 
             // Add label to PR
