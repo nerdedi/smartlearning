@@ -1,0 +1,69 @@
+name: Dependabot auto-merge (minor/patch)
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited, labeled]
+
+jobs:
+  label-and-automerge:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+      checks: read
+      issues: write
+
+    steps:
+      - name: Inspect PR and add 'automerge' label for safe Dependabot updates
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request
+            if (!pr) {
+              core.info('No pull_request in context — skipping')
+              return
+            }
+
+            // Only act on Dependabot PRs
+            if (pr.user?.login !== 'dependabot[bot]') {
+              core.info(`PR author is ${pr.user?.login} — not dependabot; skipping`)
+              return
+            }
+
+            const title = pr.title || ''
+            const match = title.match(/Bump .* from (\d+\.\d+\.\d+) to (\d+\.\d+\.\d+)/)
+            if (!match) {
+              core.info('PR title does not match expected version bump pattern — skipping')
+              return
+            }
+
+            const oldVer = match[1].split('.').map(n => parseInt(n, 10))
+            const newVer = match[2].split('.').map(n => parseInt(n, 10))
+
+            // Block major version bumps from being auto-merged
+            if (oldVer[0] !== newVer[0]) {
+              core.info(`Major version bump detected (${match[1]} -> ${match[2]}) — skipping auto-merge`)
+              return
+            }
+
+            const labelName = 'automerge'
+            // Ensure label exists
+            try {
+              await github.rest.issues.getLabel(context.repo({ name: labelName }))
+            } catch (err) {
+              core.info('Label not found — creating label')
+              await github.rest.issues.createLabel(context.repo({ name: labelName, color: '0e8a16', description: 'Auto-merge safe dependency updates (patch/minor)' }))
+            }
+
+            // Add label to PR
+            await github.rest.issues.addLabels(context.repo({ issue_number: pr.number, labels: [labelName] }))
+            core.info(`Added label '${labelName}' to PR #${pr.number}`)
+
+      - name: Auto-merge labeled Dependabot PRs when checks pass
+        uses: pascalgn/automerge-action@v0.14.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_method: squash
+          label: automerge
+          rebase_after_pull_request: false
