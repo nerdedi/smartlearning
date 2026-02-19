@@ -57,4 +57,13 @@ describe('SmartLearning (E2E)', () => {
     cy.get('#resume-btn').click()
     cy.get('#pause-modal').should('not.be.visible')
   })
+
+  it('keyboard: Start Adventure is operable with Enter and has aria-label', () => {
+    cy.visit('/game/index.html')
+    cy.get('#start-adventure')
+      .should('have.attr', 'aria-label', 'Start your adventure')
+      .focus()
+      .type('{enter}')
+    cy.get('#hub-screen').should('be.visible')
+  })
 })

@@ -1144,6 +1144,31 @@ function showToast(message) {
   setTimeout(() => t.remove(), 3000)
 }
 
+// --- pure helpers (testable) ---
+function rectsIntersect(a, b) {
+  return (
+    a.x < b.x + b.width &&
+    a.x + a.width > b.x &&
+    a.y < b.y + b.height &&
+    a.y + a.height > b.y
+  )
+}
+
+function playerOnPlatform(playerRect, platformRect) {
+  const feetY = playerRect.y + playerRect.height
+  const onTop =
+    feetY >= platformRect.y &&
+    feetY <= platformRect.y + Math.min(12, platformRect.height)
+  const horizontallyOverlapping =
+    playerRect.x + playerRect.width > platformRect.x &&
+    playerRect.x < platformRect.x + platformRect.width
+  return onTop && horizontallyOverlapping
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value))
+}
+
 // ============ Start ============
 document.addEventListener('DOMContentLoaded', () => {
   // wire help owl
@@ -1164,4 +1189,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initialize()
 })
 
-export { calculateStats, initialize, saveProgress, saveSettings, loadSettings }
+export {
+  calculateStats,
+  initialize,
+  loadSettings,
+  saveProgress,
+  saveSettings,
+  rectsIntersect,
+  playerOnPlatform,
+  clamp,
+}
