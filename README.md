@@ -84,12 +84,15 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 git clone https://github.com/your-org/smartlearning.git
 cd smartlearning
 
-# Start a local server (any of these work)
-npx serve .
-python3 -m http.server 8080
-php -S localhost:8080
+# Start a local dev server (serves `src/`)
+npm start        # runs a simple http-server at http://localhost:8000
 
-# Open http://localhost:8080
+# Useful dev scripts
+npm run lint     # ESLint checks
+npm test         # Run headless QUnit tests
+npm run e2e      # Run Cypress end-to-end tests (CI/runner environment)
+
+# Open http://localhost:8000
 ```
 
 ## Architecture
