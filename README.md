@@ -1,6 +1,6 @@
 # Smart Learning for Independence 🎓
 
-[![CI](https://github.com/nerdedi/smartlearning/actions/workflows/ci.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/ci.yml) [![Lighthouse CI](https://github.com/nerdedi/smartlearning/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/lighthouse.yml) [![Icons regenerate](https://github.com/nerdedi/smartlearning/actions/workflows/icons-regenerate.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/icons-regenerate.yml)
+[![CI](https://github.com/nerdedi/smartlearning/actions/workflows/ci.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/ci.yml) [![Lighthouse CI](https://github.com/nerdedi/smartlearning/actions/workflows/lighthouse.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/lighthouse.yml) [![LHCI report](https://nerdedi.github.io/smartlearning/lhci/report/badge.svg)](https://nerdedi.github.io/smartlearning/) [![Icons regenerate](https://github.com/nerdedi/smartlearning/actions/workflows/icons-regenerate.yml/badge.svg)](https://github.com/nerdedi/smartlearning/actions/workflows/icons-regenerate.yml)
 
 > Interactive digital skills training modules for adults and youth with disabilities
 
@@ -37,7 +37,7 @@ Smart Learning for Independence is a Progressive Web App (PWA) delivering 24 int
 | #   | Module           | Skills                               |
 | --- | ---------------- | ------------------------------------ |
 | 7   | Money Awareness  | Notes, coins, card types             |
-
+| 8   | Banking Basics   | Account types, statements, transfers |
 | 9   | Budgeting        | Income/expenses, pay yourself first  |
 | 10  | Safe Payments    | Tap-to-pay, receipts, scam detection |
 | 11  | Shopping Smart   | Compare prices, needs vs wants       |
@@ -110,7 +110,7 @@ npm run lhci     # Run Lighthouse CI (uses temporary-public-storage)
 ## Architecture
 
 ```text
-learning/
+smartlearning/
 ├── index.html          # Main entry point
 ├── manifest.json       # PWA manifest
 ├── sw.js               # Service worker (offline support)

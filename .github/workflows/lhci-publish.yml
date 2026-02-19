@@ -1,0 +1,47 @@
+name: Publish LHCI Report
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start static server
+        run: npx http-server ./src -p 8080 -c-1 &
+
+      - name: Run LHCI (filesystem)
+        run: npx lhci autorun --upload.target=filesystem --upload.outputPath=./lhci-report
+
+      - name: Show report files
+        run: ls -la lhci-report || true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./lhci-report
+
+  deploy:
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
