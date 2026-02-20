@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Install axe-core CLI
-        run: npm install -g axe-core-cli
+        run: npm install -g @axe-core/cli
       - name: Start server
         run: |
           npx serve . &
