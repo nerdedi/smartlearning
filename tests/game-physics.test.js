@@ -19,16 +19,16 @@ QUnit.module('game physics helpers', () => {
       // feetY = 240 -> considered on top
       assert.ok(
         playerOnPlatform(player, platform),
-        'player feet are on the platform',
+        'player feet are on the platform'
       )
 
       // player above platform (gap)
       const player2 = { x: 100, y: 100, width: 40, height: 60 }
       assert.notOk(
         playerOnPlatform(player2, platform),
-        'player not on platform',
+        'player not on platform'
       )
-    },
+    }
   )
 
   QUnit.test('clamp restricts values', async (assert) => {

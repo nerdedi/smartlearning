@@ -3,7 +3,7 @@ import { GAME_CONTENT } from '../modules-data.js'
 // === Default configuration & state ===
 const defaultConfig = {
   welcome_title: 'Welcome to Town Square!',
-  help_owl_name: 'Ollie',
+  help_owl_name: 'Ollie'
 }
 
 const gameState = {
@@ -23,21 +23,21 @@ const gameState = {
     tts: false,
     autoJump: false,
     oneButton: false,
-    slowMotion: false,
-  },
+    slowMotion: false
+  }
 }
 
 // Local storage keys
 const STORAGE_KEYS = {
   SETTINGS: 'sli-game-settings',
-  PROGRESS: 'sli-player-progress',
+  PROGRESS: 'sli-player-progress'
 }
 
 // DOM short-hands
 const $id = (id) => document.getElementById(id)
 
 // ============ Initialization ============
-async function initialize() {
+async function initialize () {
   // animate loading bar
   const loadingBar = $id('loading-bar')
   for (let i = 0; i <= 100; i += 12) {
@@ -65,7 +65,7 @@ async function initialize() {
 }
 
 // ============ Screen management & UI rendering ============
-function showScreen(screenId) {
+function showScreen (screenId) {
   const screens = [
     'loading-screen',
     'main-menu',
@@ -74,7 +74,7 @@ function showScreen(screenId) {
     'game-screen',
     'minigame-screen',
     'quiz-screen',
-    'results-screen',
+    'results-screen'
   ]
   screens.forEach((id) => {
     const el = $id(id)
@@ -83,7 +83,7 @@ function showScreen(screenId) {
   gameState.currentScreen = screenId
 }
 
-function renderMainMenu() {
+function renderMainMenu () {
   const el = $id('main-menu')
   el.innerHTML = `
     <div class="h-full w-full flex flex-col items-center justify-center p-8" style="background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
@@ -105,14 +105,14 @@ function renderMainMenu() {
   $id('view-progress').addEventListener('click', () => showProgress())
 }
 
-function startGame() {
+function startGame () {
   renderHub()
   showScreen('hub-screen')
   updateProgressUI()
 }
 
 // ============ Settings modal (rendered on demand) ============
-function showSettings() {
+function showSettings () {
   const modal = $id('settings-modal')
   modal.innerHTML = `
     <div class="modal-overlay absolute inset-0" onclick=""></div>
@@ -154,7 +154,7 @@ function showSettings() {
     tts: 'setting-tts',
     autoJump: 'setting-autojump',
     oneButton: 'setting-onebutton',
-    slowMotion: 'setting-slowmo',
+    slowMotion: 'setting-slowmo'
   }
   Object.keys(map).forEach((k) => {
     const el = $id(map[k])
@@ -174,13 +174,13 @@ function showSettings() {
   modal.classList.remove('hidden')
 }
 
-function hideSettings() {
+function hideSettings () {
   $id('settings-modal').classList.add('hidden')
   saveSettings()
 }
 
 // Hub / world grid
-function renderHub() {
+function renderHub () {
   const hub = $id('hub-screen')
   hub.innerHTML = `
     <div class="min-h-full w-full p-4 md:p-8" style="background: linear-gradient(180deg, #87CEEB 0%, #98D8AA 60%, #4A7C59 100%);">
@@ -226,14 +226,14 @@ function renderHub() {
 }
 
 // ============ World & Level navigation ============
-function enterWorld(worldId) {
+function enterWorld (worldId) {
   gameState.currentWorld = worldId
   const world = GAME_CONTENT.worlds.find((w) => w.id === worldId)
   const content = $id('world-content')
   content.style.background = world.bgGradient || ''
 
   const worldProgress = gameState.playerProgress.filter(
-    (p) => p.type === 'level' && p.world_id === worldId,
+    (p) => p.type === 'level' && p.world_id === worldId
   )
 
   content.innerHTML = `
@@ -282,7 +282,7 @@ function enterWorld(worldId) {
   showScreen('world-screen')
 }
 
-function startLevel(worldId, levelId) {
+function startLevel (worldId, levelId) {
   gameState.currentWorld = worldId
   gameState.currentLevel = levelId
   gameState.score = 500
@@ -306,7 +306,7 @@ function startLevel(worldId, levelId) {
 }
 
 // ============ Simple persistence (localStorage + dataSdk fallback) ============
-async function saveProgress(data) {
+async function saveProgress (data) {
   // if dataSdk available, try to use it (non-blocking)
   if (window.dataSdk && window.dataSdk.create) {
     try {
@@ -315,7 +315,7 @@ async function saveProgress(data) {
         (p) =>
           p.type === 'level' &&
           p.world_id === data.world_id &&
-          p.level_id === data.level_id,
+          p.level_id === data.level_id
       )
       if (existing && window.dataSdk.update) {
         const res = await window.dataSdk.update({ ...existing, ...data })
@@ -335,23 +335,23 @@ async function saveProgress(data) {
     (p) =>
       p.type === data.type &&
       p.world_id === data.world_id &&
-      p.level_id === data.level_id,
+      p.level_id === data.level_id
   )
   if (idx >= 0) {
     gameState.playerProgress[idx] = {
       ...gameState.playerProgress[idx],
-      ...data,
+      ...data
     }
   } else {
     gameState.playerProgress.push({
       id: `level-${data.world_id}-${data.level_id}`,
-      ...data,
+      ...data
     })
   }
   try {
     localStorage.setItem(
       STORAGE_KEYS.PROGRESS,
-      JSON.stringify(gameState.playerProgress),
+      JSON.stringify(gameState.playerProgress)
     )
   } catch (e) {
     /* ignore */
@@ -367,7 +367,7 @@ let checkpoint = null
 let goal = null
 const keys = { left: false, right: false, jump: false, interact: false }
 
-function initPlatformer(world, level) {
+function initPlatformer (world, level) {
   const canvas = $id('game-canvas')
   const ctx = canvas.getContext('2d')
   const rect = canvas.parentElement.getBoundingClientRect()
@@ -382,7 +382,7 @@ function initPlatformer(world, level) {
     vx: 0,
     vy: 0,
     grounded: false,
-    facing: 1,
+    facing: 1
   }
 
   const platformHeight = 20
@@ -393,7 +393,7 @@ function initPlatformer(world, level) {
     { x: 350, y: groundY - 150, width: 120, height: platformHeight },
     { x: 550, y: groundY - 100, width: 120, height: platformHeight },
     { x: 750, y: groundY - 180, width: 120, height: platformHeight },
-    { x: 950, y: groundY - 120, width: 150, height: platformHeight },
+    { x: 950, y: groundY - 120, width: 150, height: platformHeight }
   ]
 
   collectiblesInGame = level.collectibles.map((name, i) => ({
@@ -403,7 +403,7 @@ function initPlatformer(world, level) {
     height: 40,
     name,
     icon: level.collectibleIcon,
-    collected: false,
+    collected: false
   }))
 
   checkpoint = {
@@ -411,14 +411,14 @@ function initPlatformer(world, level) {
     y: groundY - 80,
     width: 60,
     height: 80,
-    activated: false,
+    activated: false
   }
   goal = { x: canvas.width - 100, y: groundY - 100, width: 60, height: 100 }
 
   if (gameLoop) cancelAnimationFrame(gameLoop)
   gameState.isPaused = false
 
-  function update() {
+  function update () {
     if (gameState.isPaused || gameState.currentScreen !== 'game-screen') {
       gameLoop = requestAnimationFrame(update)
       return
@@ -542,7 +542,7 @@ function initPlatformer(world, level) {
   gameLoop = requestAnimationFrame(update)
 }
 
-function render(ctx, canvas, world) {
+function render (ctx, canvas, world) {
   const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height)
   gradient.addColorStop(0, '#87CEEB')
   gradient.addColorStop(0.7, '#98D8AA')
@@ -563,7 +563,7 @@ function render(ctx, canvas, world) {
         plat.x,
         plat.y,
         plat.x,
-        plat.y + plat.height,
+        plat.y + plat.height
       )
       platGrad.addColorStop(0, '#8B7355')
       platGrad.addColorStop(1, '#5C4033')
@@ -576,7 +576,7 @@ function render(ctx, canvas, world) {
       plat.y,
       plat.width,
       plat.height,
-      plat.isGround ? 0 : 8,
+      plat.isGround ? 0 : 8
     )
     ctx.fill()
   })
@@ -597,7 +597,7 @@ function render(ctx, canvas, world) {
   drawPlayer(ctx)
 }
 
-function drawPlayer(ctx) {
+function drawPlayer (ctx) {
   ctx.save()
   ctx.translate(player.x + player.width / 2, player.y)
   ctx.scale(player.facing, 1)
@@ -606,7 +606,7 @@ function drawPlayer(ctx) {
   ctx.restore()
 }
 
-function roundRect(ctx, x, y, w, h, r) {
+function roundRect (ctx, x, y, w, h, r) {
   const radius = r || 0
   ctx.beginPath()
   ctx.moveTo(x + radius, y)
@@ -622,7 +622,7 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ============ Mini-games / Quiz / Results ============
-function startMinigame() {
+function startMinigame () {
   const world = GAME_CONTENT.worlds.find((w) => w.id === gameState.currentWorld)
   const level = world.levels.find((l) => l.id === gameState.currentLevel)
   const mg = level.minigame
@@ -663,7 +663,7 @@ function startMinigame() {
     .querySelectorAll('#sorting-items button[data-safe]')
     .forEach((btn) => {
       btn.addEventListener('click', () =>
-        sortItem(btn, btn.getAttribute('data-safe') === 'true'),
+        sortItem(btn, btn.getAttribute('data-safe') === 'true')
       )
     })
 
@@ -672,7 +672,7 @@ function startMinigame() {
     .querySelectorAll('#spotting-items button[data-scam]')
     .forEach((btn) => {
       btn.addEventListener('click', () =>
-        spotItem(btn, btn.getAttribute('data-scam') === 'true'),
+        spotItem(btn, btn.getAttribute('data-scam') === 'true')
       )
     })
 
@@ -681,7 +681,7 @@ function startMinigame() {
     .querySelectorAll('#word-buttons button[data-word]')
     .forEach((btn) => {
       btn.addEventListener('click', () =>
-        addWord(btn.getAttribute('data-word')),
+        addWord(btn.getAttribute('data-word'))
       )
     })
   container.querySelectorAll('button[data-num]').forEach((btn) => {
@@ -697,28 +697,28 @@ function startMinigame() {
   })
 }
 
-function renderChecklistGame(mg) {
+function renderChecklistGame (mg) {
   return `<div class="space-y-4" id="checklist-items">${mg.items.map((item, i) => `<label class="flex items-center gap-4 p-4 rounded-xl" style="background:rgba(255,255,255,0.9);color:#1a1a2e;"><input class="w-8 h-8 checklist-item" type="checkbox" data-index="${i}"><span class="text-xl font-semibold">${item}</span></label>`).join('')}</div>`
 }
-function renderSortingGame(mg) {
+function renderSortingGame (mg) {
   const shuffled = [...mg.items].sort(() => Math.random() - 0.5)
   return `<div class="grid grid-cols-1 md:grid-cols-2 gap-8"><div class="p-4 rounded-xl" style="background:rgba(0,200,100,0.08);border:3px dashed #4CAF50;"><h3 class="text-xl font-bold mb-4 text-center" style="color:#2E7D32;">✅ SAFE</h3><div id="safe-zone" class="min-h-40 space-y-2"></div></div><div class="p-4 rounded-xl" style="background:rgba(255,100,100,0.08);border:3px dashed #F44336;"><h3 class="text-xl font-bold mb-4 text-center" style="color:#C62828;">⚠️ UNSAFE</h3><div id="unsafe-zone" class="min-h-40 space-y-2"></div></div></div><div class="mt-8 space-y-3" id="sorting-items">${shuffled.map((item, i) => `<button onclick="" data-safe="${item.safe}" class="w-full p-4 rounded-xl text-left font-semibold" style="background:rgba(255,255,255,0.9);color:#1a1a2e;">${item.text}</button>`).join('')}</div>`
 }
-function renderMatchingGame(mg) {
+function renderMatchingGame (mg) {
   return `<div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="matching-items">${mg.pairs.map((pair) => `<div class="p-4 rounded-xl" style="background:rgba(255,255,255,0.9);color:#1a1a2e;"><div class="text-2xl mb-2">${pair.item}</div><div class="text-lg opacity-70">${pair.match}</div></div>`).join('')}</div>`
 }
-function renderBuilderGame(mg) {
+function renderBuilderGame (mg) {
   return `<div class="text-center mb-6"><div id="password-display" class="text-3xl font-mono p-4 rounded-xl mb-4" style="background:rgba(255,255,255,0.9);color:#1a1a2e;">Tap words below...</div></div><div class="mb-4"><h4 class="font-bold mb-2">Pick 3 Words:</h4><div class="flex flex-wrap gap-2" id="word-buttons">${mg.words.map((word) => `<button onclick="" data-word="${word}" class="px-4 py-2 rounded-lg font-semibold" style="background:rgba(255,255,255,0.9);color:#1a1a2e;">${word}</button>`).join('')}</div></div><div><h4 class="font-bold mb-2">Add a Number:</h4><div class="flex flex-wrap gap-2">${mg.numbers.map((num) => `<button onclick="" data-num="${num}" class="w-12 h-12 rounded-lg font-bold text-xl" style="background:rgba(255,255,255,0.9);color:#1a1a2e;">${num}</button>`).join('')}</div></div>`
 }
-function renderSpottingGame(mg) {
+function renderSpottingGame (mg) {
   return `<div class="space-y-4" id="spotting-items">${mg.items.map((item) => `<button class="w-full p-4 rounded-xl text-left font-semibold" data-scam="${item.isScam}">📧 ${item.text}</button>`).join('')}</div><p class="text-center mt-4 opacity-70">Tap the messages that look like scams!</p>`
 }
-function renderShowcaseGame(mg) {
+function renderShowcaseGame (mg) {
   return `<div class="space-y-6" id="showcase-items">${mg.challenges.map((ch, i) => `<div class="p-4 rounded-xl" style="background:rgba(255,255,255,0.9);color:#1a1a2e;"><label class="block font-bold mb-2">${i + 1}. ${ch.task}</label><textarea id="showcase-${i}" rows="2" class="w-full p-3 rounded-lg border-2 border-gray-300 focus:border-pink-500 outline-none resize-none" placeholder="Type your answer..."></textarea></div>`).join('')}</div>`
 }
 
 // ---------- minigame helpers (sorting / spotting / builder) ----------
-function sortItem(button, isSafe) {
+function sortItem (button, isSafe) {
   const zone = isSafe
     ? document.getElementById('safe-zone')
     : document.getElementById('unsafe-zone')
@@ -728,7 +728,7 @@ function sortItem(button, isSafe) {
   button.onclick = null
 }
 
-function spotItem(button, isScam) {
+function spotItem (button, isScam) {
   if (isScam) {
     button.style.background = '#FFCDD2'
     button.innerHTML =
@@ -746,19 +746,19 @@ function spotItem(button, isScam) {
 }
 
 const passwordParts = []
-function addWord(word) {
+function addWord (word) {
   if (passwordParts.filter((p) => isNaN(p)).length < 3) {
     passwordParts.push(word)
     updatePasswordDisplay()
   }
 }
-function addNumber(num) {
+function addNumber (num) {
   if (!passwordParts.some((p) => !isNaN(p))) {
     passwordParts.push(num)
     updatePasswordDisplay()
   }
 }
-function updatePasswordDisplay() {
+function updatePasswordDisplay () {
   const display = document.getElementById('password-display')
   if (display) {
     display.textContent =
@@ -766,13 +766,13 @@ function updatePasswordDisplay() {
   }
 }
 
-function startQuiz() {
+function startQuiz () {
   const world = GAME_CONTENT.worlds.find((w) => w.id === gameState.currentWorld)
   const level = world.levels.find((l) => l.id === gameState.currentLevel)
   const quiz = level.quiz || []
   const state = { currentQuestion: 0, correct: 0 }
 
-  function renderQuestion() {
+  function renderQuestion () {
     const q = quiz[state.currentQuestion]
     $id('quiz-content').innerHTML = `
       <div class="max-w-xl w-full text-center">
@@ -804,7 +804,7 @@ function startQuiz() {
   renderQuestion()
 }
 
-function showResults(correctAnswers = 0, total = 0) {
+function showResults (correctAnswers = 0, total = 0) {
   const world = GAME_CONTENT.worlds.find((w) => w.id === gameState.currentWorld)
   const level = world.levels.find((l) => l.id === gameState.currentLevel)
 
@@ -833,7 +833,7 @@ function showResults(correctAnswers = 0, total = 0) {
   showScreen('results-screen')
 }
 
-async function saveAndContinue(stars) {
+async function saveAndContinue (stars) {
   const portfolioText = $id('portfolio-input')?.value || ''
   await saveProgress({
     type: 'level',
@@ -843,49 +843,49 @@ async function saveAndContinue(stars) {
     score: gameState.score,
     completed: true,
     badge_earned: stars >= 1,
-    portfolio_text: portfolioText,
+    portfolio_text: portfolioText
   })
   showToast('Progress saved!')
   enterWorld(gameState.currentWorld)
 }
 
 // ============ Controls & settings ============
-function pauseGame() {
+function pauseGame () {
   gameState.isPaused = true
   $id('pause-modal') && $id('pause-modal').classList.remove('hidden')
 }
-function resumeGame() {
+function resumeGame () {
   gameState.isPaused = false
   $id('pause-modal') && $id('pause-modal').classList.add('hidden')
 }
-function restartLevel() {
+function restartLevel () {
   $id('pause-modal') && $id('pause-modal').classList.add('hidden')
   startLevel(gameState.currentWorld, gameState.currentLevel)
 }
-function exitToHub() {
+function exitToHub () {
   $id('pause-modal') && $id('pause-modal').classList.add('hidden')
   if (gameLoop) cancelAnimationFrame(gameLoop)
   showScreen('hub-screen')
 }
 
-function applySettings() {
+function applySettings () {
   document.body.classList.toggle('high-contrast', gameState.settings.contrast)
   document.body.classList.toggle('large-text', gameState.settings.largeText)
   document.body.classList.toggle('dyslexic-font', gameState.settings.dyslexic)
   document.body.classList.toggle(
     'reduce-motion',
-    gameState.settings.reduceMotion,
+    gameState.settings.reduceMotion
   )
 }
-function saveSettings() {
+function saveSettings () {
   try {
     localStorage.setItem(
       STORAGE_KEYS.SETTINGS,
-      JSON.stringify(gameState.settings),
+      JSON.stringify(gameState.settings)
     )
   } catch (e) {}
 }
-function loadSettings() {
+function loadSettings () {
   try {
     const s = localStorage.getItem(STORAGE_KEYS.SETTINGS)
     if (s) gameState.settings = { ...gameState.settings, ...JSON.parse(s) }
@@ -894,15 +894,15 @@ function loadSettings() {
 }
 
 // ============ Progress UI ============
-function showProgress() {
+function showProgress () {
   renderProgressModal()
   $id('progress-modal').classList.remove('hidden')
 }
-function hideProgress() {
+function hideProgress () {
   $id('progress-modal').classList.add('hidden')
 }
 
-function renderProgressModal() {
+function renderProgressModal () {
   const content = $id('progress-modal')
   const stats = calculateStats()
   content.innerHTML = `
@@ -921,7 +921,7 @@ function renderProgressModal() {
           .filter((p) => p.type === 'level' && p.portfolio_text)
           .map(
             (p) =>
-              `<div class="p-4 rounded-xl" style="background: rgba(255,255,255,0.1);"><div class="font-bold mb-1">World ${p.world_id}, Level ${p.level_id}</div><p class="opacity-80">${p.portfolio_text}</p></div>`,
+              `<div class="p-4 rounded-xl" style="background: rgba(255,255,255,0.1);"><div class="font-bold mb-1">World ${p.world_id}, Level ${p.level_id}</div><p class="opacity-80">${p.portfolio_text}</p></div>`
           )
           .join('') ||
         '<p class="opacity-60">Complete levels to build your portfolio!</p>'
@@ -940,19 +940,19 @@ function renderProgressModal() {
     .addEventListener('click', exportPortfolio)
 }
 
-function calculateStats() {
+function calculateStats () {
   const levelProgress = gameState.playerProgress.filter(
-    (p) => p.type === 'level',
+    (p) => p.type === 'level'
   )
   return {
     totalStars: levelProgress.reduce((s, p) => s + (p.stars || 0), 0),
     totalBadges: levelProgress.filter((p) => p.badge_earned).length,
     totalPoints: levelProgress.reduce((s, p) => s + (p.score || 0), 0),
-    completedLevels: levelProgress.filter((p) => p.completed).length,
+    completedLevels: levelProgress.filter((p) => p.completed).length
   }
 }
 
-function updateProgressUI() {
+function updateProgressUI () {
   const stats = calculateStats()
   $id('total-stars') && ($id('total-stars').textContent = stats.totalStars)
   $id('total-badges') && ($id('total-badges').textContent = stats.totalBadges)
@@ -960,7 +960,7 @@ function updateProgressUI() {
 
   GAME_CONTENT.worlds.forEach((world) => {
     const worldProgress = gameState.playerProgress.filter(
-      (p) => p.type === 'level' && p.world_id === world.id,
+      (p) => p.type === 'level' && p.world_id === world.id
     )
     const completedInWorld = worldProgress.filter((p) => p.completed).length
     const progressEl = $id(`world-${world.id}-progress`)
@@ -970,10 +970,10 @@ function updateProgressUI() {
   })
 }
 
-function exportPortfolio() {
+function exportPortfolio () {
   const stats = calculateStats()
   const portfolioItems = gameState.playerProgress.filter(
-    (p) => p.type === 'level' && p.portfolio_text,
+    (p) => p.type === 'level' && p.portfolio_text
   )
   let content = `SMART LEARNING FOR INDEPENDENCE - PORTFOLIO\n${'='.repeat(50)}\n\n`
   content += `Total Stars: ${stats.totalStars}\nTotal Badges: ${stats.totalBadges}\nTotal Points: ${stats.totalPoints}\nLevels Completed: ${stats.completedLevels}/24\n\nPORTFOLIO ENTRIES\n${'-'.repeat(30)}\n\n`
@@ -993,7 +993,7 @@ function exportPortfolio() {
 }
 
 // ============ Controls (keyboard / touch) ============
-function setupKeyboardControls() {
+function setupKeyboardControls () {
   document.addEventListener('keydown', (e) => {
     if (gameState.currentScreen !== 'game-screen') return
     switch (e.key) {
@@ -1041,7 +1041,7 @@ function setupKeyboardControls() {
   })
 }
 
-function setupTouchControls() {
+function setupTouchControls () {
   const btnLeft = $id('btn-left')
   const btnRight = $id('btn-right')
   const btnJump = $id('btn-jump')
@@ -1081,7 +1081,7 @@ function setupTouchControls() {
 }
 
 // ============ Help / TTS / Toasts ============
-function showHelp() {
+function showHelp () {
   const helpText = getContextualHelp()
   const panel = $id('help-panel')
   panel.innerHTML = `
@@ -1101,10 +1101,10 @@ function showHelp() {
   $id('help-settings')?.addEventListener('click', showSettings)
   if (gameState.settings.tts) readAloud(helpText)
 }
-function hideHelp() {
+function hideHelp () {
   $id('help-panel').classList.add('hidden')
 }
-function getContextualHelp() {
+function getContextualHelp () {
   switch (gameState.currentScreen) {
     case 'main-menu':
       return "G'day! Tap 'Start Adventure' to begin learning."
@@ -1122,7 +1122,7 @@ function getContextualHelp() {
       return "I'm here to help!"
   }
 }
-function readAloud(text) {
+function readAloud (text) {
   if ('speechSynthesis' in window) {
     const u = new SpeechSynthesisUtterance(text)
     u.lang = 'en-AU'
@@ -1132,10 +1132,10 @@ function readAloud(text) {
 }
 
 // ============ Utilities ============
-function delay(ms) {
+function delay (ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
-function showToast(message) {
+function showToast (message) {
   const container = $id('toast-container')
   const t = document.createElement('div')
   t.className = 'toast'
@@ -1145,7 +1145,7 @@ function showToast(message) {
 }
 
 // --- pure helpers (testable) ---
-function rectsIntersect(a, b) {
+function rectsIntersect (a, b) {
   return (
     a.x < b.x + b.width &&
     a.x + a.width > b.x &&
@@ -1154,7 +1154,7 @@ function rectsIntersect(a, b) {
   )
 }
 
-function playerOnPlatform(playerRect, platformRect) {
+function playerOnPlatform (playerRect, platformRect) {
   const feetY = playerRect.y + playerRect.height
   const onTop =
     feetY >= platformRect.y &&
@@ -1165,7 +1165,7 @@ function playerOnPlatform(playerRect, platformRect) {
   return onTop && horizontallyOverlapping
 }
 
-function clamp(value, min, max) {
+function clamp (value, min, max) {
   return Math.max(min, Math.min(max, value))
 }
 
@@ -1197,5 +1197,5 @@ export {
   saveSettings,
   rectsIntersect,
   playerOnPlatform,
-  clamp,
+  clamp
 }

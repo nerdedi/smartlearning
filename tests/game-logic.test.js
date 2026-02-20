@@ -7,22 +7,22 @@ QUnit.module('game logic', () => {
         stars: 2,
         badge_earned: true,
         score: 100,
-        completed: true,
+        completed: true
       },
       {
         type: 'level',
         stars: 1,
         badge_earned: false,
         score: 50,
-        completed: false,
+        completed: false
       },
       {
         type: 'other',
         stars: 1,
         badge_earned: false,
         score: 10,
-        completed: true,
-      },
+        completed: true
+      }
     ]
 
     const stats = calculateStats(progress)
@@ -32,7 +32,7 @@ QUnit.module('game logic', () => {
     assert.equal(
       stats.completedLevels,
       1,
-      'counts completed levels only for type=level',
+      'counts completed levels only for type=level'
     )
   })
 
@@ -48,20 +48,20 @@ QUnit.module('game logic', () => {
         level_id: 1,
         stars: 2,
         score: 250,
-        completed: true,
+        completed: true
       })
 
       const saved = JSON.parse(
-        localStorage.getItem('sli-player-progress') || '[]',
+        localStorage.getItem('sli-player-progress') || '[]'
       )
       assert.ok(
         Array.isArray(saved) && saved.length > 0,
-        'progress saved in localStorage',
+        'progress saved in localStorage'
       )
       const entry = saved.find((p) => p.world_id === 99 && p.level_id === 1)
       assert.ok(entry, 'saved progress entry exists')
       assert.equal(entry.score, 250, 'score saved')
-    },
+    }
   )
 
   QUnit.test(
@@ -70,7 +70,7 @@ QUnit.module('game logic', () => {
       // arrange: set settings in localStorage
       localStorage.setItem(
         'sli-game-settings',
-        JSON.stringify({ largeText: true, contrast: true, dyslexic: true }),
+        JSON.stringify({ largeText: true, contrast: true, dyslexic: true })
       )
       const mod = await import('../../../src/game/game.js')
 
@@ -80,17 +80,17 @@ QUnit.module('game logic', () => {
       // assert DOM classes applied
       assert.ok(
         document.body.classList.contains('large-text'),
-        'large-text class applied',
+        'large-text class applied'
       )
       assert.ok(
         document.body.classList.contains('high-contrast'),
-        'high-contrast class applied',
+        'high-contrast class applied'
       )
       assert.ok(
         document.body.classList.contains('dyslexic-font'),
-        'dyslexic-font class applied',
+        'dyslexic-font class applied'
       )
-    },
+    }
   )
 
   QUnit.test('saveSettings writes settings to localStorage', async (assert) => {

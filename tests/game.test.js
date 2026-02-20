@@ -5,7 +5,7 @@ QUnit.module('game integration', () => {
     assert.equal(
       link.getAttribute('href'),
       'game/index.html',
-      'link points to the game page',
+      'link points to the game page'
     )
   })
 })
