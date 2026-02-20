@@ -25,7 +25,12 @@ const server = http.createServer(async (req, res) => {
 });
 
 await new Promise((resolve) => server.listen(8123, resolve));
-const browser = await puppeteer.launch({ headless: 'new' });
+const launchOptions = { headless: 'new' };
+if (process.env.CI || process.env.GITHUB_ACTIONS) {
+  // required on some CI runners where the Chromium sandbox is not available
+  launchOptions.args = ['--no-sandbox', '--disable-setuid-sandbox'];
+}
+const browser = await puppeteer.launch(launchOptions);
 const page = await browser.newPage();
 page.on('console', (msg) => {
   const args = msg.args();

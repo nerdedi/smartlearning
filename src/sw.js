@@ -13,7 +13,7 @@ const CORE_ASSETS = [
   './js/educator.js',
   './js/export.js',
   './js/moneygame.js',
-  './offline.html',
+  './offline.html'
 ]
 
 self.addEventListener('install', (event) => {
@@ -21,7 +21,7 @@ self.addEventListener('install', (event) => {
     caches
       .open(CACHE)
       .then((c) => c.addAll(CORE_ASSETS))
-      .catch(console.error),
+      .catch(console.error)
   )
   self.skipWaiting()
 })
@@ -32,10 +32,10 @@ self.addEventListener('activate', (event) => {
       .keys()
       .then((keys) =>
         Promise.all(
-          keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)),
-        ),
+          keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))
+        )
       )
-      .then(() => self.clients.claim()),
+      .then(() => self.clients.claim())
   )
 })
 
@@ -60,6 +60,6 @@ self.addEventListener('fetch', (event) => {
           })
           .catch(() => caches.match('./offline.html'))
       )
-    }),
+    })
   )
 })
