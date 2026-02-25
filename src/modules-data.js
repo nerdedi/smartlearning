@@ -6,16 +6,16 @@ export const modules = [
     strand: 'Digital Foundations & Safety',
     title: 'Getting Started with iPads & Smart Board',
     outcomes: [
-      'Turn on/unlock; open apps; use Home/Back; use Smart Board tools.',
+      'Turn on/unlock; open apps; use Home/Back; use Smart Board tools.'
     ],
     activities: [
-      'Device tour; tap/drag/swipe practice on a simple game; Smart Board name writing.',
+      'Device tour; tap/drag/swipe practice on a simple game; Smart Board name writing.'
     ],
     adjustments: ['Switch access for tapping; larger text; visual step cards.'],
     assessment: "'I can open and close an app' demo video.",
     portfolio:
-      'Photo of learner using device + short audio intro recorded with dictation.',
-  },
+      'Photo of learner using device + short audio intro recorded with dictation.'
+  }
   // ... (Add all 24 modules here, abbreviated for brevity)
 ]
 
@@ -46,22 +46,22 @@ export const GAME_CONTENT = {
               'Unlock my screen',
               'Open an app',
               'Close an app',
-              'Go to home screen',
-            ],
+              'Go to home screen'
+            ]
           },
           quiz: [
             {
               question: 'What is an icon?',
               options: ['A small picture you tap', 'A type of food', 'A song'],
-              correct: 0,
+              correct: 0
             },
             {
               question: 'To open an app, you:',
               options: ['Shake the device', 'Tap the icon', 'Blow on it'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'What I can do with my iPad today',
+          portfolio: 'What I can do with my iPad today'
         },
         {
           id: 2,
@@ -76,26 +76,26 @@ export const GAME_CONTENT = {
             pairs: [
               { item: '🔊 Speak Screen', match: 'Reads text aloud' },
               { item: '🔍 Zoom', match: 'Makes things bigger' },
-              { item: '⚫ High Contrast', match: 'Makes text clearer' },
-            ],
+              { item: '⚫ High Contrast', match: 'Makes text clearer' }
+            ]
           },
           quiz: [
             {
               question: 'Speak Screen helps by:',
               options: ['Making text bigger', 'Reading aloud', 'Playing music'],
-              correct: 1,
+              correct: 1
             },
             {
               question: 'Settings are found:',
               options: [
                 'In the Settings app',
                 'Under your pillow',
-                'At the shops',
+                'At the shops'
               ],
-              correct: 0,
-            },
+              correct: 0
+            }
           ],
-          portfolio: 'My helpful settings',
+          portfolio: 'My helpful settings'
         },
         {
           id: 3,
@@ -112,8 +112,8 @@ export const GAME_CONTENT = {
               { text: 'Asking a trusted person for help', safe: true },
               { text: 'Sharing your password', safe: false },
               { text: 'Using websites you know', safe: true },
-              { text: 'Telling strangers where you live', safe: false },
-            ],
+              { text: 'Telling strangers where you live', safe: false }
+            ]
           },
           quiz: [
             {
@@ -121,17 +121,17 @@ export const GAME_CONTENT = {
               options: [
                 'Ignore it',
                 'Ask a trusted person',
-                'Give your details',
+                'Give your details'
               ],
-              correct: 1,
+              correct: 1
             },
             {
               question: 'Safe websites often have:',
               options: ['Lots of popups', 'A padlock icon', 'Scary pictures'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My 3 safety rules',
+          portfolio: 'My 3 safety rules'
         },
         {
           id: 4,
@@ -151,9 +151,9 @@ export const GAME_CONTENT = {
               'Moon',
               'Star',
               'Pizza',
-              'Rainbow',
+              'Rainbow'
             ],
-            numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+            numbers: ['1', '2', '3', '4', '5', '6', '7', '8', '9']
           },
           quiz: [
             {
@@ -161,17 +161,17 @@ export const GAME_CONTENT = {
               options: [
                 'Yes, with everyone',
                 'No, keep it private',
-                'Only on social media',
+                'Only on social media'
               ],
-              correct: 1,
+              correct: 1
             },
             {
               question: 'A strong password has:',
               options: ['Your name', 'Multiple words and numbers', 'Just 123'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My password rules (not my actual password!)',
+          portfolio: 'My password rules (not my actual password!)'
         },
         {
           id: 5,
@@ -187,12 +187,12 @@ export const GAME_CONTENT = {
               { text: 'You won $1,000,000! Click now!', isScam: true },
               {
                 text: 'Email from your bank asking to update details via link',
-                isScam: true,
+                isScam: true
               },
               { text: 'Official app from the app store', isScam: false },
               { text: 'URGENT: Your account will be deleted!', isScam: true },
-              { text: 'Message from a friend you know', isScam: false },
-            ],
+              { text: 'Message from a friend you know', isScam: false }
+            ]
           },
           quiz: [
             {
@@ -200,17 +200,17 @@ export const GAME_CONTENT = {
               options: [
                 'No rush, take your time',
                 'URGENT! Act now!',
-                'Have a nice day',
+                'Have a nice day'
               ],
-              correct: 1,
+              correct: 1
             },
             {
               question: 'If you get a scam message:',
               options: ['Click the link', 'Delete and report it', 'Send money'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'How to spot a scam',
+          portfolio: 'How to spot a scam'
         },
         {
           id: 6,
@@ -225,28 +225,28 @@ export const GAME_CONTENT = {
             challenges: [
               { task: 'Name 3 things you can do on your device', type: 'text' },
               { task: 'What makes a password strong?', type: 'text' },
-              { task: "Who do you ask if you're unsure online?", type: 'text' },
-            ],
+              { task: "Who do you ask if you're unsure online?", type: 'text' }
+            ]
           },
           quiz: [
             {
               question: 'What did you learn in this world?',
               options: ['Nothing', 'Device and safety skills', 'How to cook'],
-              correct: 1,
+              correct: 1
             },
             {
               question: 'You should keep learning about:',
               options: [
                 'Online safety',
                 'Nothing more',
-                'Giving away passwords',
+                'Giving away passwords'
               ],
-              correct: 0,
-            },
+              correct: 0
+            }
           ],
-          portfolio: 'What I learned about digital foundations',
-        },
-      ],
+          portfolio: 'What I learned about digital foundations'
+        }
+      ]
     },
     {
       id: 2,
@@ -266,16 +266,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'matching',
             title: 'Match the Money',
-            instruction: 'Match each coin to its value',
+            instruction: 'Match each coin to its value'
           },
           quiz: [
             {
               question: 'How many cents in a dollar?',
               options: ['10', '100', '50'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'Australian money I know',
+          portfolio: 'Australian money I know'
         },
         {
           id: 2,
@@ -286,16 +286,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'budget',
             title: 'Budget Builder',
-            instruction: 'Drag items into needs vs wants',
+            instruction: 'Drag items into needs vs wants'
           },
           quiz: [
             {
               question: 'A budget helps you:',
               options: ['Spend everything', 'Plan your money', 'Ignore bills'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My simple budget plan',
+          portfolio: 'My simple budget plan'
         },
         {
           id: 3,
@@ -306,16 +306,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'sorting',
             title: 'Safe Banking?',
-            instruction: 'Sort safe vs unsafe banking habits',
+            instruction: 'Sort safe vs unsafe banking habits'
           },
           quiz: [
             {
               question: 'Check your bank on:',
               options: ['Any WiFi', 'Secure networks only', 'Public computers'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My safe banking rules',
+          portfolio: 'My safe banking rules'
         },
         {
           id: 4,
@@ -326,16 +326,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'reading',
             title: 'Read the Statement',
-            instruction: 'Find information on the statement',
+            instruction: 'Find information on the statement'
           },
           quiz: [
             {
               question: 'A statement shows:',
               options: ['Only money in', 'Money in and out', 'Nothing'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'What I learned about statements',
+          portfolio: 'What I learned about statements'
         },
         {
           id: 5,
@@ -346,7 +346,7 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'spotting',
             title: 'Money Scam Spotter',
-            instruction: 'Find the scam attempts',
+            instruction: 'Find the scam attempts'
           },
           quiz: [
             {
@@ -354,12 +354,12 @@ export const GAME_CONTENT = {
               options: [
                 'Ask for passwords by email',
                 'Never ask for your PIN',
-                'Want iTunes cards',
+                'Want iTunes cards'
               ],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'Money scam warning signs',
+          portfolio: 'Money scam warning signs'
         },
         {
           id: 6,
@@ -370,18 +370,18 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'showcase',
             title: 'Money Master!',
-            instruction: 'Show your financial skills',
+            instruction: 'Show your financial skills'
           },
           quiz: [
             {
               question: "You're now better at:",
               options: ['Wasting money', 'Managing money', 'Ignoring money'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My financial skills summary',
-        },
-      ],
+          portfolio: 'My financial skills summary'
+        }
+      ]
     },
     {
       id: 3,
@@ -401,16 +401,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'maps',
             title: 'Find the Place',
-            instruction: 'Tap the correct location',
+            instruction: 'Tap the correct location'
           },
           quiz: [
             {
               question: 'Maps help you:',
               options: ['Get lost', 'Find places', 'Cook dinner'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'Places I can find on a map',
+          portfolio: 'Places I can find on a map'
         },
         {
           id: 2,
@@ -421,16 +421,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'planner',
             title: 'Plan Your Trip',
-            instruction: 'Choose the right transport',
+            instruction: 'Choose the right transport'
           },
           quiz: [
             {
               question: 'Before travelling, you should:',
               options: ['Just guess', 'Check the timetable', 'Stay home'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My transport plan',
+          portfolio: 'My transport plan'
         },
         {
           id: 3,
@@ -441,16 +441,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'sequence',
             title: 'Tap On, Tap Off',
-            instruction: 'Put the steps in order',
+            instruction: 'Put the steps in order'
           },
           quiz: [
             {
               question: 'You tap your card:',
               options: ['Only at the end', 'On and off', 'Never'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'How to use my travel card',
+          portfolio: 'How to use my travel card'
         },
         {
           id: 4,
@@ -461,16 +461,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'matching',
             title: 'Match the App',
-            instruction: 'Match apps to what they do',
+            instruction: 'Match apps to what they do'
           },
           quiz: [
             {
               question: 'Community apps help with:',
               options: ['Nothing', 'Local information', 'Breaking things'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'Useful apps for my community',
+          portfolio: 'Useful apps for my community'
         },
         {
           id: 5,
@@ -481,16 +481,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'sorting',
             title: 'Who Can Help?',
-            instruction: 'Match problems to helpers',
+            instruction: 'Match problems to helpers'
           },
           quiz: [
             {
               question: 'In an emergency, call:',
               options: ['Your friend', '000', 'No one'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'People who can help me',
+          portfolio: 'People who can help me'
         },
         {
           id: 6,
@@ -501,7 +501,7 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'showcase',
             title: 'Community Expert!',
-            instruction: 'Show your travel and tech skills',
+            instruction: 'Show your travel and tech skills'
           },
           quiz: [
             {
@@ -509,14 +509,14 @@ export const GAME_CONTENT = {
               options: [
                 'Get more lost',
                 'Navigate your community',
-                'Avoid all technology',
+                'Avoid all technology'
               ],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My community skills',
-        },
-      ],
+          portfolio: 'My community skills'
+        }
+      ]
     },
     {
       id: 4,
@@ -536,16 +536,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'builder',
             title: 'Build an Email',
-            instruction: 'Put the email parts together',
+            instruction: 'Put the email parts together'
           },
           quiz: [
             {
               question: 'An email needs:',
               options: ['A subject line', 'Lots of emojis', 'All capitals'],
-              correct: 0,
-            },
+              correct: 0
+            }
           ],
-          portfolio: 'My sample work email',
+          portfolio: 'My sample work email'
         },
         {
           id: 2,
@@ -556,16 +556,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'search',
             title: 'Find a Job',
-            instruction: 'Use filters to find jobs',
+            instruction: 'Use filters to find jobs'
           },
           quiz: [
             {
               question: 'Job sites help you:',
               options: ['Find work opportunities', 'Play games', 'Order food'],
-              correct: 0,
-            },
+              correct: 0
+            }
           ],
-          portfolio: "Jobs I'm interested in",
+          portfolio: "Jobs I'm interested in"
         },
         {
           id: 3,
@@ -576,7 +576,7 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'builder',
             title: 'Build Your Resume',
-            instruction: 'Add sections to your resume',
+            instruction: 'Add sections to your resume'
           },
           quiz: [
             {
@@ -584,12 +584,12 @@ export const GAME_CONTENT = {
               options: [
                 'Your favourite foods',
                 'Your skills and experience',
-                'Your passwords',
+                'Your passwords'
               ],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'Key points for my resume',
+          portfolio: 'Key points for my resume'
         },
         {
           id: 4,
@@ -600,16 +600,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'sequence',
             title: 'Video Call Steps',
-            instruction: 'Put the steps in order',
+            instruction: 'Put the steps in order'
           },
           quiz: [
             {
               question: 'Before a video call, check:',
               options: ['Your camera and mic', 'Nothing', 'The weather'],
-              correct: 0,
-            },
+              correct: 0
+            }
           ],
-          portfolio: 'My video call checklist',
+          portfolio: 'My video call checklist'
         },
         {
           id: 5,
@@ -620,16 +620,16 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'sorting',
             title: 'Professional or Not?',
-            instruction: 'Sort the messages',
+            instruction: 'Sort the messages'
           },
           quiz: [
             {
               question: 'Professional messages are:',
               options: ['Rude and short', 'Clear and polite', 'Full of slang'],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My professional communication tips',
+          portfolio: 'My professional communication tips'
         },
         {
           id: 6,
@@ -640,7 +640,7 @@ export const GAME_CONTENT = {
           minigame: {
             type: 'showcase',
             title: 'Work Ready!',
-            instruction: 'Show your job skills',
+            instruction: 'Show your job skills'
           },
           quiz: [
             {
@@ -648,14 +648,14 @@ export const GAME_CONTENT = {
               options: [
                 'Avoiding work',
                 'Finding and doing work',
-                'Playing games all day',
+                'Playing games all day'
               ],
-              correct: 1,
-            },
+              correct: 1
+            }
           ],
-          portfolio: 'My work readiness summary',
-        },
-      ],
-    },
-  ],
+          portfolio: 'My work readiness summary'
+        }
+      ]
+    }
+  ]
 }
